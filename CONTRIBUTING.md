@@ -16,6 +16,9 @@ own presentation and networking. Household predicates, current membership/stamp 
 transactional revision checks are required for data access and mutation. Preserve exact source
 quantities, unresolved amounts, immutable cooking snapshots and editable shopping snapshots.
 
+All web UI changes must follow the [web design system](docs/design/web-design-system.md), including
+Light, Dark and System appearance, shared semantic tokens and responsive accessibility requirements.
+
 Use pinned dependencies and source-controlled EF migrations. Regenerate both clients after contract
 changes, include meaningful business/race acceptance tests, run the appropriate backend/web/native
 checks, and record only executed results. Follow [development](docs/development.md),

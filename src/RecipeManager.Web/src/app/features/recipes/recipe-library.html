@@ -146,94 +146,146 @@
     </p>
   }
 } @else if (!selectedId()) {
-  <header class="page-header">
+  <header class="page-header library-header">
     <div>
-      <p class="eyebrow">Your shared kitchen</p>
-      <h1>Recipes</h1>
-      <p>Find a favourite, cook something new and keep the recipes worth repeating.</p>
-    </div>
-    <div class="actions">
-      <a class="button-link" routerLink="/recipes/new">New recipe</a
-      ><a class="button-link" routerLink="/recipes/import">Import recipe</a
-      ><a routerLink="/ingredients">Ingredient catalogue</a>
-    </div>
-  </header>
-  <p><a routerLink="/recipes/organisers">Collections and tags</a></p>
-  <form [formGroup]="filters" (ngSubmit)="search()">
-    <div class="filters">
-      <label for="recipe-search"
-        >Search recipes and ingredients<input
-          id="recipe-search"
-          type="search"
-          formControlName="query"
-          maxlength="200"
-      /></label>
-      <div>
-        <label for="recipe-archive-filter">Archived recipes</label
-        ><select id="recipe-archive-filter" formControlName="archived">
-          <option value="exclude">Hide archived</option>
-          <option value="include">Include archived</option>
-          <option value="only">Archived only</option>
-        </select>
+      <div class="library-heading">
+        <span class="library-heading-icon"><app-icon name="book" /></span>
+        <div>
+          <h1>
+            {{
+              browseTitle() === 'Collection recipes'
+                ? collectionTitle() || browseTitle()
+                : browseTitle()
+            }}
+          </h1>
+          <p>
+            {{ items().length }}{{ nextCursor() ? '+' : '' }}
+            {{ items().length === 1 && !nextCursor() ? 'recipe' : 'recipes'
+            }}{{ nextCursor() ? ' loaded' : '' }}
+          </p>
+        </div>
       </div>
     </div>
+    <div class="actions">
+      <a class="button-link primary" routerLink="/recipes/new" aria-label="New recipe"
+        ><app-icon name="plus" />New</a
+      ><a class="button-link" routerLink="/recipes/import" aria-label="Import recipe">Import</a
+      ><a
+        class="button-link organiser-action"
+        routerLink="/recipes/organisers"
+        aria-label="Collections and tags"
+        title="Collections and tags"
+        ><app-icon name="settings"
+      /></a>
+    </div>
+  </header>
+  <form class="library-filters" [formGroup]="filters" (ngSubmit)="search()">
+    <label class="library-search" for="recipe-search"
+      ><span class="sr-only">Search recipes and ingredients</span><app-icon name="search" /><input
+        placeholder="Search these recipes…"
+        id="recipe-search"
+        type="search"
+        formControlName="query"
+        maxlength="200"
+    /></label>
+    <button type="submit" [disabled]="busy()" aria-label="Search recipes">
+      <app-icon name="search" /><span class="search-button-text">Search</span>
+    </button>
     <button
       type="button"
       (click)="showOrganisers.set(!showOrganisers())"
       [attr.aria-expanded]="showOrganisers()"
+      aria-label="Filter by collections and tags"
     >
-      Filter by collections and tags
+      <app-icon name="settings" />Filters
+    </button>
+    <button class="clear-filters" type="button" (click)="clearFilters()" [disabled]="busy()">
+      Clear filters
     </button>
     @if (showOrganisers()) {
-      <app-organiser-picker
-        kind="collections"
-        [selected]="filters.controls.collectionIds.value"
-        (selectedChange)="filters.controls.collectionIds.setValue($event)"
-      />
-      <app-organiser-picker
-        kind="tags"
-        [selected]="filters.controls.tagIds.value"
-        (selectedChange)="filters.controls.tagIds.setValue($event)"
-      />
+      <section class="advanced-filters" aria-label="Recipe filters">
+        <div class="filter-options">
+          <label for="recipe-archive-filter"
+            >Archived recipes<select id="recipe-archive-filter" formControlName="archived">
+              <option value="exclude">Hide archived</option>
+              <option value="include">Include archived</option>
+              <option value="only">Archived only</option>
+            </select></label
+          >
+          <label class="check"
+            ><input type="checkbox" formControlName="favouriteOnly" />Favourites only</label
+          >
+        </div>
+        <app-organiser-picker
+          kind="collections"
+          [selected]="filters.controls.collectionIds.value"
+          (selectedChange)="filters.controls.collectionIds.setValue($event)"
+        />
+        <app-organiser-picker
+          kind="tags"
+          [selected]="filters.controls.tagIds.value"
+          (selectedChange)="filters.controls.tagIds.setValue($event)"
+        />
+      </section>
     }
-    <button type="button" (click)="clearFilters()" [disabled]="busy()">Clear filters</button>
-    <label class="check"
-      ><input type="checkbox" formControlName="favouriteOnly" />Favourites only</label
-    ><button type="submit" [disabled]="busy()">Search recipes</button>
   </form>
   <div class="recipe-grid" [attr.aria-busy]="busy()">
     @for (recipe of items(); track recipe.id) {
-      <article class="card">
-        @if (recipe.imageAssetId) {
-          <img
-            [src]="'/api/v1/images/' + recipe.imageAssetId"
-            [alt]="recipe.title"
-            loading="lazy"
-          />
-        }
-        <h2>
-          <a [routerLink]="['/recipes', recipe.id]">{{ recipe.title }}</a>
-        </h2>
-        @if (recipe.archived) {
-          <span class="badge">Archived</span>
-        }
-        @if (recipe.description) {
-          <p>{{ recipe.description }}</p>
-        }
-        <p>Serves {{ recipe.defaultServings }}</p>
-        <button
-          type="button"
-          (click)="favourite(recipe)"
-          [disabled]="busy()"
-          [attr.aria-pressed]="recipe.favourite"
-          [attr.aria-label]="
-            (recipe.favourite ? 'Remove ' : 'Favourite ') +
-            recipe.title +
-            (recipe.favourite ? ' from favourites' : '')
-          "
-        >
-          {{ recipe.favourite ? '★ Favourited' : '☆ Favourite' }}
-        </button>
+      <article class="recipe-card">
+        <div class="recipe-cover">
+          <a
+            class="recipe-cover-link"
+            [routerLink]="['/recipes', recipe.id]"
+            [attr.aria-label]="'Open ' + recipe.title"
+            tabindex="-1"
+          >
+            @if (recipe.imageAssetId) {
+              <img
+                [src]="'/api/v1/images/' + recipe.imageAssetId"
+                [alt]="recipe.title"
+                loading="lazy"
+              />
+            } @else {
+              <div class="recipe-placeholder">
+                <app-icon name="dish" /><span>From your kitchen</span>
+              </div>
+            }
+          </a>
+          <button
+            class="favourite-control"
+            type="button"
+            (click)="favourite(recipe)"
+            [disabled]="busy()"
+            [attr.aria-pressed]="recipe.favourite"
+            [attr.aria-label]="
+              (recipe.favourite ? 'Remove ' : 'Favourite ') +
+              recipe.title +
+              (recipe.favourite ? ' from favourites' : '')
+            "
+          >
+            <app-icon name="heart" [filled]="recipe.favourite" />
+          </button>
+        </div>
+        <div class="recipe-card-body">
+          <h2>
+            <a [routerLink]="['/recipes', recipe.id]">{{ recipe.title }}</a>
+          </h2>
+          @if (recipe.archived) {
+            <span class="badge">Archived</span>
+          }
+          <div class="recipe-metadata">
+            @if (recipe.prepMinutes !== null && recipe.cookMinutes !== null) {
+              <span
+                ><app-icon name="clock" />{{ recipe.prepMinutes + recipe.cookMinutes }} min</span
+              >
+            } @else if (recipe.prepMinutes !== null) {
+              <span><app-icon name="clock" />Prep {{ recipe.prepMinutes }} min</span>
+            } @else if (recipe.cookMinutes !== null) {
+              <span><app-icon name="clock" />Cook {{ recipe.cookMinutes }} min</span>
+            }
+            <span><app-icon name="servings" />Serves {{ recipe.defaultServings }}</span>
+          </div>
+        </div>
       </article>
     } @empty {
       @if (!loading()) {

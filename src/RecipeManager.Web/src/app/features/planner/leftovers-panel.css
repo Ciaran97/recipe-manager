@@ -2,8 +2,8 @@
   display: block;
 }
 .source-summary {
-  background: #f0f4e9;
-  border: 1px solid #d4dfc9;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 0.8rem;
   padding: 1rem;
   margin: 1rem 0;
@@ -33,7 +33,7 @@ dd {
 .recipe-refresh {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #d9dfd3;
+  border-top: 1px solid var(--border);
 }
 summary {
   min-height: 2.75rem;
@@ -41,20 +41,20 @@ summary {
   font-weight: 650;
 }
 .dependent {
-  border: 1px solid #d7dfcf;
+  border: 1px solid var(--border);
   border-radius: 0.7rem;
   padding: 1rem;
   margin: 1rem 0;
 }
 .dependent.conflict {
-  border-color: #ae392e;
+  border-color: var(--danger);
 }
 .dependent h4 {
   margin-top: 0;
 }
 .refresh-comparison section {
   padding: 0.8rem;
-  border: 1px solid #d7dfcf;
+  border: 1px solid var(--border);
   border-radius: 0.7rem;
 }
 .check {

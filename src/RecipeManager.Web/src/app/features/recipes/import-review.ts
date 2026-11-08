@@ -37,8 +37,8 @@ interface PendingCommit {
       gap: 0.5rem;
     }
     .candidate-choices [aria-pressed='true'] {
-      outline: 2px solid #154a35;
-      background: #e3eee4;
+      outline: 2px solid var(--accent);
+      background: var(--surface-raised);
     }
     .import-actions {
       display: flex;
