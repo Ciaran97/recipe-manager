@@ -49,3 +49,7 @@ ios/Local.xcconfig
 
 # Public local CA exported by the home-server guide
 /recipe-manager-local-root.crt
+
+# Private server overrides and update lock
+/deploy/compose.home.yaml
+/deploy/.update-lock/

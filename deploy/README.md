@@ -4,6 +4,8 @@
 `compose.yaml` runs private PostgreSQL, an explicit one-shot migrator and the API/static host.
 `compose.tls.yaml` optionally adds household HTTPS using a pinned Caddy image and private local CA.
 
+For pre-release image publishing and the manual server updater, see [server updates](../docs/server-updates.md).
+
 Start with the [home-server README](../README.md#start-here), [Cloudflare Tunnel](../docs/cloudflare-tunnel.md), [self-hosting](../docs/self-hosting.md), [backup/restore](../docs/backup-restore.md) and
 [native iOS installation](../docs/ios-installation.md). The initializer creates protected secret
 files and a project-owned network, refuses overwrites and prints no credentials.

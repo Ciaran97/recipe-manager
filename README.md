@@ -38,7 +38,7 @@ The commands below target a Linux home server with:
 
 The reference deployment has been validated on a **2-vCPU / 4-GiB Linux VM with SSD-backed storage**. Full cross-client performance qualification is still in progress. Back up onto separate storage; named Docker volumes alone are not a backup.
 
-You do **not** need .NET, Node or Xcode installed on the server: Docker builds the backend and Angular application. Xcode is needed separately to build and sign the iOS app. No public container-registry release is assumed; the examples build from this source tree.
+You do **not** need .NET, Node or Xcode installed on the server: Docker builds the backend and Angular application. Xcode is needed separately to build and sign the iOS app. The first-install examples build from this source tree. Published pre-release images are available through the [GHCR update workflow](docs/server-updates.md).
 
 All commands run from the project root. The setup helper creates a private `deploy/.env`, mounted secrets and an unused project-owned network. **Run it once on a new installation.** It refuses to replace an existing configuration or rotate existing secrets.
 
@@ -200,7 +200,9 @@ The migrator should have exited successfully, PostgreSQL and the app should be h
 
 Use the [paused-write backup and isolated restore procedure](docs/backup-restore.md). Preserve the original volumes during a restore drill and protect backups with restricted access and encryption. **Do not use `docker compose down -v` on a working installation.**
 
-For upgrades, make a verified backup and retain the old image first. Pause application writes, build the intended new version, run the migrator once, and resume only after it succeeds. The [operations guide](docs/self-hosting.md#configuration-operations-and-upgrades) covers the sequence; schema rollback requires the matching backup and application version.
+For a one-command update from a published pre-release, see [server updates](docs/server-updates.md).
+
+For manual upgrades, make a verified backup and retain the old image first. Pause application writes, build the intended new version, run the migrator once, and resume only after it succeeds. The [operations guide](docs/self-hosting.md#configuration-operations-and-upgrades) covers the sequence; schema rollback requires the matching backup and application version.
 
 ## How it fits together
 
