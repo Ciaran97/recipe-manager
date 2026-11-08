@@ -1,7 +1,7 @@
 import { Component, DestroyRef, HostListener, effect, inject, untracked } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PortionInput } from '../planner/portion-input';
 import { HouseholdSync } from '../../core/sync/household-sync';
 import { ShoppingListState } from './shopping-list-state';
@@ -43,7 +43,17 @@ export class ShoppingListPage {
         if (change.domains.includes('shoppingRevision')) void this.state.recoverRemote();
       });
     });
-    void this.state.initialize();
+    const params = inject(ActivatedRoute).snapshot.queryParamMap;
+    void this.state
+      .initialize()
+      .then(() =>
+        this.state.receiveIncoming(
+          params.get('recipe'),
+          params.get('from'),
+          params.get('to'),
+          params.get('servings'),
+        ),
+      );
     void this.state.loadCategories();
   }
   hasUnsavedChanges(): boolean {

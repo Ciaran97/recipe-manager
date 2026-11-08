@@ -9,7 +9,7 @@ Recipe Manager combines a shared recipe library, weekly meal planner, explicit l
 ## What it does
 
 - **Keep your recipes organised.** Create, edit, duplicate, favourite and archive recipes; organise them with shared collections and tags.
-- **Work with real ingredients.** Separate quantities, units, names and preparation notes; household autocomplete and aliases; Australian and US cup/spoon standards; serving previews without changing the recipe.
+- **Work with real ingredients.** Separate quantities, units, names and preparation notes; household autocomplete and aliases; Australian and US cup/spoon standards; serving previews without changing the recipe. [Starter ingredients and kitchen measures](docs/household-starter-data.md) are included.
 - **Import and review.** Enter recipes manually, extract supported recipe websites, or optionally structure pasted text using a configured AI provider. Review imports before saving. The iOS Share Extension captures URLs or text offered by other apps.
 - **Plan cooking and leftovers.** Track portions to prepare separately from portions to eat. Reserve leftovers explicitly, record actual amounts when useful, and resolve allocation conflicts.
 - **Shop together.** Generate lists from meals or selected recipes, consolidate compatible ingredients, keep unspecified amounts visible, and share updates live. Reconciliation preserves manual items and provides choices for edited or purchased requirements.

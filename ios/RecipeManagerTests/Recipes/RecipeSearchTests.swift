@@ -9,6 +9,25 @@ import RecipeManagerAPI
         let selection = ServerSelection(credentials: MemoryCredentials(), persist: { _ in }, makeClient: { APIClient(session: $0, configuration: configuration) })
         await selection.requestChange("https://" + host); await selection.signedIn(ClientUser(id: UUID(), householdId: UUID(), role: .member)); return selection
     }
+    @Test func inlineOrganiserCreationRetainsExistingChoices() async throws {
+        let selection = await selection("inline-organisers.example.test")
+        let id = UUID().uuidString
+        StubURLProtocol.set(host: "inline-organisers.example.test") { request in
+            let body: String
+            if request.url?.path == "/api/v1/auth/csrf" { body = "{\"token\":\"csrf-fixture\"}" }
+            else {
+                #expect(request.httpMethod == "POST")
+                #expect(request.url?.path == "/api/v1/tags")
+                #expect(request.value(forHTTPHeaderField: "Idempotency-Key") != nil)
+                body = "{\"id\":\"\(id)\",\"name\":\"Quick dinner\",\"revision\":\"1\"}"
+            }
+            return (HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!, Data(body.utf8))
+        }
+        let model = RecipeOrganiserOptions(selection: selection)
+        model.tags = [.init(id: "existing", name: "Existing", revision: "1")]
+        let created = await model.create("tags", name: "Quick dinner")
+        #expect(created == id); #expect(model.tags.map(\.id) == ["existing", id]); #expect(model.error == nil)
+    }
     @Test func pagingPreservesAllSelectionsAndChangedFiltersStartAtFirstPage() async throws {
         let host = "recipe-search.example.test", selection = await selection("recipe-search.example.test")
         let paths = SearchRequestLog()

@@ -77332,6 +77332,847 @@ public enum Operations {
             }
         }
     }
+    /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/sources/preview`.
+    /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)`.
+    public enum PreviewShoppingSourceAddition {
+        public static let id: Swift.String = "PreviewShoppingSourceAddition"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/path/id`.
+                public var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id:
+                public init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            public var path: Operations.PreviewShoppingSourceAddition.Input.Path
+            /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                /// Obtain a fresh token from GET /api/v1/auth/csrf for this session.
+                ///
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/header/X-XSRF-TOKEN`.
+                public var X_hyphen_XSRF_hyphen_TOKEN: Swift.String
+                /// The current strong aggregate ETag. Missing: 428; stale: 412.
+                ///
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/header/If-Match`.
+                public var If_hyphen_Match: Swift.String
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.PreviewShoppingSourceAddition.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - X_hyphen_XSRF_hyphen_TOKEN: Obtain a fresh token from GET /api/v1/auth/csrf for this session.
+                ///   - If_hyphen_Match: The current strong aggregate ETag. Missing: 428; stale: 412.
+                ///   - accept:
+                public init(
+                    X_hyphen_XSRF_hyphen_TOKEN: Swift.String,
+                    If_hyphen_Match: Swift.String,
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.PreviewShoppingSourceAddition.AcceptableContentType>] = .defaultValues()
+                ) {
+                    self.X_hyphen_XSRF_hyphen_TOKEN = X_hyphen_XSRF_hyphen_TOKEN
+                    self.If_hyphen_Match = If_hyphen_Match
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.PreviewShoppingSourceAddition.Input.Headers
+            /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.ShoppingPreviewWrite)
+            }
+            public var body: Operations.PreviewShoppingSourceAddition.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            public init(
+                path: Operations.PreviewShoppingSourceAddition.Input.Path,
+                headers: Operations.PreviewShoppingSourceAddition.Input.Headers,
+                body: Operations.PreviewShoppingSourceAddition.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/200/headers`.
+                public struct Headers: Sendable, Hashable {
+                    /// Strong resource revision validator; preserve verbatim.
+                    ///
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/200/headers/ETag`.
+                    public var ETag: Swift.String?
+                    /// Creates a new `Headers`.
+                    ///
+                    /// - Parameters:
+                    ///   - ETag: Strong resource revision validator; preserve verbatim.
+                    public init(ETag: Swift.String? = nil) {
+                        self.ETag = ETag
+                    }
+                }
+                /// Received HTTP response headers
+                public var headers: Operations.PreviewShoppingSourceAddition.Output.Ok.Headers
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.ShoppingPreview)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ShoppingPreview {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - headers: Received HTTP response headers
+                ///   - body: Received HTTP response body
+                public init(
+                    headers: Operations.PreviewShoppingSourceAddition.Output.Ok.Headers = .init(),
+                    body: Operations.PreviewShoppingSourceAddition.Output.Ok.Body
+                ) {
+                    self.headers = headers
+                    self.body = body
+                }
+            }
+            /// OK
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.PreviewShoppingSourceAddition.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.PreviewShoppingSourceAddition.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/400/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/400/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.PreviewShoppingSourceAddition.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            public var badRequest: Operations.PreviewShoppingSourceAddition.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/401/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/401/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.PreviewShoppingSourceAddition.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            public var unauthorized: Operations.PreviewShoppingSourceAddition.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/403/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/403/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.PreviewShoppingSourceAddition.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            public var forbidden: Operations.PreviewShoppingSourceAddition.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/404/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/404/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.PreviewShoppingSourceAddition.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            public var notFound: Operations.PreviewShoppingSourceAddition.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/409/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/409/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.PreviewShoppingSourceAddition.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            public var conflict: Operations.PreviewShoppingSourceAddition.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct Gone: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/410/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/410/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.Gone.Body
+                /// Creates a new `Gone`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.Gone.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/410`.
+            ///
+            /// HTTP response code: `410 gone`.
+            case gone(Operations.PreviewShoppingSourceAddition.Output.Gone)
+            /// The associated value of the enum case if `self` is `.gone`.
+            ///
+            /// - Throws: An error if `self` is not `.gone`.
+            /// - SeeAlso: `.gone`.
+            public var gone: Operations.PreviewShoppingSourceAddition.Output.Gone {
+                get throws {
+                    switch self {
+                    case let .gone(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "gone",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct PreconditionFailed: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/412/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/412/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.PreconditionFailed.Body
+                /// Creates a new `PreconditionFailed`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.PreconditionFailed.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/412`.
+            ///
+            /// HTTP response code: `412 preconditionFailed`.
+            case preconditionFailed(Operations.PreviewShoppingSourceAddition.Output.PreconditionFailed)
+            /// The associated value of the enum case if `self` is `.preconditionFailed`.
+            ///
+            /// - Throws: An error if `self` is not `.preconditionFailed`.
+            /// - SeeAlso: `.preconditionFailed`.
+            public var preconditionFailed: Operations.PreviewShoppingSourceAddition.Output.PreconditionFailed {
+                get throws {
+                    switch self {
+                    case let .preconditionFailed(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "preconditionFailed",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/422/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/422/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.PreviewShoppingSourceAddition.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            public var unprocessableContent: Operations.PreviewShoppingSourceAddition.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct PreconditionRequired: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/428/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/428/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.PreconditionRequired.Body
+                /// Creates a new `PreconditionRequired`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.PreconditionRequired.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/428`.
+            ///
+            /// HTTP response code: `428 preconditionRequired`.
+            case preconditionRequired(Operations.PreviewShoppingSourceAddition.Output.PreconditionRequired)
+            /// The associated value of the enum case if `self` is `.preconditionRequired`.
+            ///
+            /// - Throws: An error if `self` is not `.preconditionRequired`.
+            /// - SeeAlso: `.preconditionRequired`.
+            public var preconditionRequired: Operations.PreviewShoppingSourceAddition.Output.PreconditionRequired {
+                get throws {
+                    switch self {
+                    case let .preconditionRequired(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "preconditionRequired",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/429/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/429/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.PreviewShoppingSourceAddition.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            public var tooManyRequests: Operations.PreviewShoppingSourceAddition.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct InternalServerError: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/500/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/500/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.InternalServerError.Body
+                /// Creates a new `InternalServerError`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.InternalServerError.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/500`.
+            ///
+            /// HTTP response code: `500 internalServerError`.
+            case internalServerError(Operations.PreviewShoppingSourceAddition.Output.InternalServerError)
+            /// The associated value of the enum case if `self` is `.internalServerError`.
+            ///
+            /// - Throws: An error if `self` is not `.internalServerError`.
+            /// - SeeAlso: `.internalServerError`.
+            public var internalServerError: Operations.PreviewShoppingSourceAddition.Output.InternalServerError {
+                get throws {
+                    switch self {
+                    case let .internalServerError(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct BadGateway: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/502/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/502/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.BadGateway.Body
+                /// Creates a new `BadGateway`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.BadGateway.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Operations.PreviewShoppingSourceAddition.Output.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Operations.PreviewShoppingSourceAddition.Output.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct GatewayTimeout: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/504/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/api/v1/shopping-lists/{id}/sources/preview/POST/responses/504/content/application\/problem+json`.
+                    case application_problem_plus_json(Components.Schemas.ApiProblem)
+                    /// The associated value of the enum case if `self` is `.application_problem_plus_json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.application_problem_plus_json`.
+                    /// - SeeAlso: `.application_problem_plus_json`.
+                    public var application_problem_plus_json: Components.Schemas.ApiProblem {
+                        get throws {
+                            switch self {
+                            case let .application_problem_plus_json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.PreviewShoppingSourceAddition.Output.GatewayTimeout.Body
+                /// Creates a new `GatewayTimeout`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.PreviewShoppingSourceAddition.Output.GatewayTimeout.Body) {
+                    self.body = body
+                }
+            }
+            /// Request rejected; inspect code, traceId and field/conflict details.
+            ///
+            /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)/responses/504`.
+            ///
+            /// HTTP response code: `504 gatewayTimeout`.
+            case gatewayTimeout(Operations.PreviewShoppingSourceAddition.Output.GatewayTimeout)
+            /// The associated value of the enum case if `self` is `.gatewayTimeout`.
+            ///
+            /// - Throws: An error if `self` is not `.gatewayTimeout`.
+            /// - SeeAlso: `.gatewayTimeout`.
+            public var gatewayTimeout: Operations.PreviewShoppingSourceAddition.Output.GatewayTimeout {
+                get throws {
+                    switch self {
+                    case let .gatewayTimeout(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "gatewayTimeout",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case application_problem_plus_json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                case "application/problem+json":
+                    self = .application_problem_plus_json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                case .application_problem_plus_json:
+                    return "application/problem+json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json,
+                    .application_problem_plus_json
+                ]
+            }
+        }
+    }
     /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/reconciliation/preview`.
     /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/reconciliation/preview/post(PreviewShoppingReconciliation)`.
     public enum PreviewShoppingReconciliation {

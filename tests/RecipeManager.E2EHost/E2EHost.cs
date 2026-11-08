@@ -60,6 +60,7 @@ internal static class E2EHost
             start.Environment["Kestrel__Certificates__Default__Path"] = certFile;
             start.Environment["Kestrel__Certificates__Default__Password"] = certificatePassword;
             start.Environment["Setup__TokenFile"] = setupFile;
+            start.Environment["StarterData__Enabled"] = "false";
             start.Environment["Images__Directory"] = Path.Combine(directory, "images");
             api = Process.Start(start) ?? throw new InvalidOperationException();
             var output = CopySafeOutput(api.StandardOutput);

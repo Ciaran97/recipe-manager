@@ -3,12 +3,25 @@ import RecipeManagerAPI
 
 struct ShoppingListView: View {
     let selection: ServerSelection
+    let incoming: ShoppingSourceDraft?
+    @State private var choosingDestination = true
     @State private var model: ShoppingListModel
     @State private var discard = false
     @State private var deleting = false
-    init(selection: ServerSelection) { self.selection = selection; _model = State(initialValue: ShoppingListModel(selection: selection)) }
+    init(selection: ServerSelection, incoming: ShoppingSourceDraft? = nil) { self.selection = selection; self.incoming = incoming; _model = State(initialValue: ShoppingListModel(selection: selection)) }
     var body: some View {
         List {
+            if let incoming, choosingDestination {
+                Section("Add ingredients to shopping list") {
+                    Button("Create new list with these ingredients") {
+                        model.begin(.create); model.source = incoming; model.name = "Shopping list"; choosingDestination = false
+                    }.disabled(model.dirty)
+                    ForEach(model.lists.filter { $0.basis == .planned }, id: \.id) { list in
+                        Button("Add to " + list.name) { Task { if await model.addSources(incoming, to: list.id) { choosingDestination = false } } }
+                    }
+                    Text("Existing quantities and purchase states are reviewed before applying changes.").font(.caption)
+                }
+            }
             if let error = model.error { Section { Text(error).foregroundStyle(.red).accessibilityIdentifier("shopping-error") } }
             if let notice = model.notice { Section { Text(notice).accessibilityIdentifier("shopping-notice") } }
             Section {
@@ -121,7 +134,9 @@ private struct ShoppingEditorView: View {
             case .rename:
                 Section { TextField("List name", text: $model.name); Button("Save list name") { Task { await model.rename() } }.disabled(model.name.trimmingCharacters(in: .whitespaces).isEmpty) }
             case .reconcile:
-                ShoppingSourcesView(model: model, allowManual: false, allowActual: true)
+                if model.source.kind == "combined" {
+                    Section { Text("Review the combined recipe and meal requirements. Existing manual items are retained.") }
+                } else { ShoppingSourcesView(model: model, allowManual: false, allowActual: true) }
                 Section {
                     Button("Preview requirements") { Task { await model.previewChanges() } }.accessibilityIdentifier("shopping-preview")
                     if model.outdated { Button("Reload list and keep review choices") { Task { await model.reloadReview() } } }

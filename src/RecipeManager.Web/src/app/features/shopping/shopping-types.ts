@@ -23,6 +23,12 @@ export const shoppingUnits: { value: IngredientUnit; label: string }[] = [
   { value: 'tbsp', label: 'Tablespoons' },
   { value: 'cup', label: 'Cups' },
   { value: 'item', label: 'Whole items' },
+  { value: 'pinch', label: 'Pinch' },
+  { value: 'dash', label: 'Dash' },
+  { value: 'handful', label: 'Handful' },
+  { value: 'bunch', label: 'Bunch' },
+  { value: 'clove', label: 'Clove' },
+  { value: 'slice', label: 'Slice' },
 ];
 
 /** Version comparison only; quantities and consolidation are calculated by the backend. */

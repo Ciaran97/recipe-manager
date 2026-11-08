@@ -15,6 +15,9 @@
   <div>
     <p class="eyebrow">Your household week</p>
     <h1>Meal Planner</h1>
+    <a routerLink="/shopping-lists" [queryParams]="{ from: weekStart(), to: days()[6] }"
+      >Add this week's ingredients to shopping list</a
+    >
     <p>Plan what to cook, what to eat, and when to use leftovers.</p>
   </div>
 </header>

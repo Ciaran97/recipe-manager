@@ -50,6 +50,9 @@ struct MealPlannerView: View {
         List {
             if let error = model.error { Text(error).foregroundStyle(.red).accessibilityIdentifier("planner-error") }
             Section {
+                NavigationLink("Add this week's ingredients to shopping list") {
+                    ShoppingListView(selection: selection, incoming: ShoppingSourceDraft(from: model.week, to: PlannerDates.add(model.week, days: 6)))
+                }
                 HStack {
                     Button { Task { await model.shift(-7) } } label: {
                         Image(systemName: "chevron.left").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())

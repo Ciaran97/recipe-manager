@@ -17,6 +17,19 @@ public sealed class GenerateShoppingList(IShoppingStore store)
     {
         ArgumentNullException.ThrowIfNull(request);
         if (!Enum.IsDefined(request.Kind) || !Enum.IsDefined(basis)) throw new DomainValidationException("selection", "unsupported", "Choose a supported source selection and basis.");
+        if (request.Kind == ShoppingSourceKind.Combined)
+        {
+            if (basis != ShoppingBasis.Planned || request.From is not null || request.To is not null || request.Ranges is null || request.Ranges.Count > 1000)
+                throw new DomainValidationException("selection", "invalid_combined", "Combined lists use planned quantities and explicit meal ranges.");
+            foreach (var range in request.Ranges)
+            {
+                if (range is null) throw new DomainValidationException("selection", "invalid_range", "Choose valid meal ranges.");
+                _ = Selection(new(ShoppingSourceKind.MealRange, range.From, range.To), basis);
+            }
+            var recipes = Selection(new(ShoppingSourceKind.Recipes, Entries: request.Entries ?? []), basis);
+            return request with { Entries = recipes.Entries, Ranges = request.Ranges.Distinct().OrderBy(x => x.From).ThenBy(x => x.To).ToArray() };
+        }
+        if (request.Ranges is not null) throw new DomainValidationException("selection", "invalid_ranges", "Additional ranges require a combined selection.");
         if (request.Kind == ShoppingSourceKind.MealRange)
         {
             if (request.From is null || request.To is null || request.From > request.To || request.To.Value.DayNumber - request.From.Value.DayNumber > 365 || request.Entries is not null)
@@ -29,5 +42,22 @@ public sealed class GenerateShoppingList(IShoppingStore store)
         var entries = request.Entries.GroupBy(x => x.RecipeId).OrderBy(x => x.Key)
             .Select(group => new ShoppingRecipeSelection(group.Key, PortionQuantity.Validate(group.Sum(x => x.Servings)))).ToArray();
         return request with { Entries = entries };
+    }
+
+    public static ShoppingSelection AddSelection(ShoppingSelection? existing, ShoppingSelection addition, ShoppingBasis basis)
+    {
+        if (basis != ShoppingBasis.Planned)
+            throw new DomainValidationException("basis", "planned_required", "Add recipes or meals to a list using planned quantities.");
+        var next = Selection(addition, basis);
+        if (existing is null) return next;
+        var previous = Selection(existing, basis);
+        var entries = new List<ShoppingRecipeSelection>(); var ranges = new List<ShoppingMealRange>();
+        foreach (var selected in new[] { previous, next })
+        {
+            entries.AddRange(selected.Entries ?? []);
+            if (selected.Kind == ShoppingSourceKind.MealRange) ranges.Add(new(selected.From!.Value, selected.To!.Value));
+            ranges.AddRange(selected.Ranges ?? []);
+        }
+        return Selection(new(ShoppingSourceKind.Combined, Entries: entries, Ranges: ranges), basis);
     }
 }

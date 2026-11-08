@@ -2,6 +2,8 @@ import { OrganiserPicker } from './recipe-filters';
 import {
   afterNextRender,
   Component,
+  computed,
+  viewChildren,
   ElementRef,
   HostListener,
   inject,
@@ -113,6 +115,10 @@ type InstructionForm = FormGroup<{ id: FormControl<string>; text: FormControl<st
   `,
 })
 export class RecipeEditor {
+  private readonly organiserPickers = viewChildren(OrganiserPicker);
+  readonly creatingOrganiser = computed(() =>
+    this.organiserPickers().some((picker) => picker.creating()),
+  );
   readonly showOrganisers = signal(false);
   setOrganisers(kind: 'collectionIds' | 'tagIds', ids: string[]): void {
     this.form.controls[kind].setValue(ids);
@@ -147,6 +153,12 @@ export class RecipeEditor {
     { value: 'tbsp', label: 'tablespoon' },
     { value: 'cup', label: 'cup' },
     { value: 'item', label: 'whole item' },
+    { value: 'pinch', label: 'Pinch' },
+    { value: 'dash', label: 'Dash' },
+    { value: 'handful', label: 'Handful' },
+    { value: 'bunch', label: 'Bunch' },
+    { value: 'clove', label: 'Clove' },
+    { value: 'slice', label: 'Slice' },
   ];
   readonly form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(200)]],
@@ -617,7 +629,7 @@ export class RecipeEditor {
     this.form.markAsDirty();
   }
   async save(): Promise<void> {
-    if (this.busy() || this.loading()) return;
+    if (this.busy() || this.loading() || this.creatingOrganiser()) return;
     this.error.set('');
     this.form.markAllAsTouched();
     for (const row of this.ingredients.controls)
@@ -714,7 +726,7 @@ export class RecipeEditor {
     }
   }
   hasUnsavedChanges(): boolean {
-    return this.form.dirty;
+    return this.form.dirty || this.creatingOrganiser();
   }
   @HostListener('window:beforeunload', ['$event']) beforeUnload(event: BeforeUnloadEvent): void {
     if (this.hasUnsavedChanges()) {
@@ -723,8 +735,13 @@ export class RecipeEditor {
     }
   }
   private focus(id: string): void {
+    const previous = document.activeElement;
     afterNextRender(
-      () => this.element.nativeElement.querySelector<HTMLElement>('#' + id)?.focus(),
+      () => {
+        // Do not steal focus if the user has already moved to another field.
+        if (document.activeElement === previous || document.activeElement === document.body)
+          this.element.nativeElement.querySelector<HTMLElement>('#' + id)?.focus();
+      },
       { injector: this.injector },
     );
   }

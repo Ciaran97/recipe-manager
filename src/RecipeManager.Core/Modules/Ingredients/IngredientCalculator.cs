@@ -15,9 +15,15 @@ public enum IngredientUnit
     [JsonStringEnumMemberName("tsp")] Teaspoon,
     [JsonStringEnumMemberName("tbsp")] Tablespoon,
     [JsonStringEnumMemberName("cup")] Cup,
-    [JsonStringEnumMemberName("item")] Item
+    [JsonStringEnumMemberName("item")] Item,
+    [JsonStringEnumMemberName("pinch")] Pinch,
+    [JsonStringEnumMemberName("dash")] Dash,
+    [JsonStringEnumMemberName("handful")] Handful,
+    [JsonStringEnumMemberName("bunch")] Bunch,
+    [JsonStringEnumMemberName("clove")] Clove,
+    [JsonStringEnumMemberName("slice")] Slice
 }
-public enum IngredientDimension { Mass, Volume, Count }
+public enum IngredientDimension { Mass, Volume, Count, Pinch, Dash, Handful, Bunch, Clove, Slice }
 public sealed record CanonicalAmount(ExactAmount Amount, IngredientDimension Dimension);
 public sealed record AmountDisplay(string Text, bool IsApproximate, ExactAmount Exact);
 
@@ -48,6 +54,12 @@ public static class IngredientCalculator
             IngredientUnit.Tablespoon => (IngredientDimension.Volume, standard == MeasurementStandard.AU ? 20m : 14.787m),
             IngredientUnit.Cup => (IngredientDimension.Volume, standard == MeasurementStandard.AU ? 250m : 236.588m),
             IngredientUnit.Item => (IngredientDimension.Count, 1m),
+            IngredientUnit.Pinch => (IngredientDimension.Pinch, 1m),
+            IngredientUnit.Dash => (IngredientDimension.Dash, 1m),
+            IngredientUnit.Handful => (IngredientDimension.Handful, 1m),
+            IngredientUnit.Bunch => (IngredientDimension.Bunch, 1m),
+            IngredientUnit.Clove => (IngredientDimension.Clove, 1m),
+            IngredientUnit.Slice => (IngredientDimension.Slice, 1m),
             _ => throw new DomainValidationException("unit", "unsupported", "Choose a supported ingredient unit.")
         };
         return new CanonicalAmount(amount * ExactAmount.FromDecimal(factor), dimension);
@@ -62,7 +74,13 @@ public static class IngredientCalculator
         "tbsp" => IngredientUnit.Tablespoon,
         "cup" => IngredientUnit.Cup,
         "item" => IngredientUnit.Item,
-        _ => throw new DomainValidationException("unit", "unsupported", "Choose g, kg, ml, l, tsp, tbsp, cup or item.")
+        "pinch" => IngredientUnit.Pinch,
+        "dash" => IngredientUnit.Dash,
+        "handful" => IngredientUnit.Handful,
+        "bunch" => IngredientUnit.Bunch,
+        "clove" => IngredientUnit.Clove,
+        "slice" => IngredientUnit.Slice,
+        _ => throw new DomainValidationException("unit", "unsupported", "Choose g, kg, ml, l, tsp, tbsp, cup, item, pinch, dash, handful, bunch, clove or slice.")
     };
     public static string UnitCode(IngredientUnit value) => value switch
     {
@@ -74,20 +92,32 @@ public static class IngredientCalculator
         IngredientUnit.Tablespoon => "tbsp",
         IngredientUnit.Cup => "cup",
         IngredientUnit.Item => "item",
+        IngredientUnit.Pinch => "pinch",
+        IngredientUnit.Dash => "dash",
+        IngredientUnit.Handful => "handful",
+        IngredientUnit.Bunch => "bunch",
+        IngredientUnit.Clove => "clove",
+        IngredientUnit.Slice => "slice",
         _ => throw new DomainValidationException("unit", "unsupported", "Choose a supported ingredient unit.")
     };
     public static AmountDisplay Display(ExactAmount amount, IngredientDimension dimension)
     {
-        var largeUnit = dimension != IngredientDimension.Count && amount.Numerator >= 1000 * amount.Denominator;
+        var largeUnit = dimension is IngredientDimension.Mass or IngredientDimension.Volume && amount.Numerator >= 1000 * amount.Denominator;
         var displayed = largeUnit ? amount / new ExactAmount(1000, 1) : amount;
         var unit = dimension switch
         {
             IngredientDimension.Mass => largeUnit ? "kg" : "g",
             IngredientDimension.Volume => largeUnit ? "L" : "ml",
             IngredientDimension.Count => "item",
+            IngredientDimension.Pinch => "pinch",
+            IngredientDimension.Dash => "dash",
+            IngredientDimension.Handful => "handful",
+            IngredientDimension.Bunch => "bunch",
+            IngredientDimension.Clove => "clove",
+            IngredientDimension.Slice => "slice",
             _ => throw new DomainValidationException("dimension", "unsupported", "Choose a supported ingredient dimension.")
         };
-        var (text, approximate) = Rounded(displayed, dimension == IngredientDimension.Count ? 6 : 2);
+        var (text, approximate) = Rounded(displayed, dimension is IngredientDimension.Mass or IngredientDimension.Volume ? 2 : 6);
         return new AmountDisplay($"{text} {unit}", approximate, amount);
     }
     public static AmountDisplay OriginalUnitDisplay(ExactAmount amount, IngredientUnit unit)

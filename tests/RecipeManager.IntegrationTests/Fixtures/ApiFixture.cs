@@ -15,7 +15,7 @@ public sealed class ApiFixture(string connectionString, IReadOnlyDictionary<stri
         if (configure is not null) builder.ConfigureServices(configure);
         if (clock is not null) builder.ConfigureServices(services => services.Replace(ServiceDescriptor.Singleton(clock)));
         builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(
-            new Dictionary<string, string?> { ["ConnectionStrings:Database"] = connectionString }
-                .Concat(settings ?? new Dictionary<string, string?>())));
+            new Dictionary<string, string?> { ["StarterData:Enabled"] = "false", ["ConnectionStrings:Database"] = connectionString }
+                .Concat(settings ?? new Dictionary<string, string?>()).GroupBy(x => x.Key, StringComparer.OrdinalIgnoreCase).Select(group => group.Last())));
     }
 }

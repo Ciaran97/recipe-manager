@@ -50,7 +50,7 @@ public sealed class RecipeIngredientConfiguration : IEntityTypeConfiguration<Rec
         entity.ToTable("RecipeIngredients", "recipes", table =>
         {
             table.HasCheckConstraint("CK_RecipeIngredients_Position", "\"Position\" >= 0");
-            table.HasCheckConstraint("CK_RecipeIngredients_Unit", "\"Unit\" IN ('g', 'kg', 'ml', 'l', 'tsp', 'tbsp', 'cup', 'item')");
+            table.HasCheckConstraint("CK_RecipeIngredients_Unit", "\"Unit\" IN ('g', 'kg', 'ml', 'l', 'tsp', 'tbsp', 'cup', 'item', 'pinch', 'dash', 'handful', 'bunch', 'clove', 'slice')");
             table.HasCheckConstraint("CK_RecipeIngredients_Quantity", """
                 ("Kind" = 'Unknown' AND "DecimalValue" IS NULL AND "FractionNumerator" IS NULL AND "FractionDenominator" IS NULL)
                 OR ("Kind" = 'Numeric' AND (
@@ -65,7 +65,7 @@ public sealed class RecipeIngredientConfiguration : IEntityTypeConfiguration<Rec
         entity.Ignore(x => x.Quantity);
         entity.Property(x => x.QuantityText).HasMaxLength(200).IsRequired();
         entity.Property(x => x.Kind).HasConversion<string>().HasMaxLength(16);
-        entity.Property(x => x.Unit).HasConversion(x => IngredientCalculator.UnitCode(x), x => IngredientCalculator.ParseUnit(x)).HasMaxLength(4);
+        entity.Property(x => x.Unit).HasConversion(x => IngredientCalculator.UnitCode(x), x => IngredientCalculator.ParseUnit(x)).HasMaxLength(16);
         entity.Property(x => x.DecimalValue).HasPrecision(18, 6);
         entity.Property(x => x.Preparation).HasMaxLength(20000);
         entity.HasIndex(x => new { x.HouseholdId, x.RecipeId, x.Position }).IsUnique();

@@ -4,6 +4,13 @@ import RecipeManagerAPI
 @testable import RecipeManager
 
 struct ShoppingStateTests {
+    @Test func informalMeasuresAndCombinedSourcesRoundTrip() throws {
+        var quantity = ShoppingQuantityDraft(); quantity.kind = .numeric; quantity.unit = .handful; quantity.text = "1/2"
+        #expect(quantity.write().unit == .handful); #expect(quantity.write().quantityText == "1/2")
+        let source = Components.Schemas.ShoppingSelection(kind: .combined, entries: [], ranges: [.init(from: "2026-11-02", to: "2026-11-08")])
+        let decoded = try APIJSON.decoder().decode(Components.Schemas.ShoppingSelection.self, from: APIJSON.encoder().encode(source))
+        #expect(decoded.kind == .combined); #expect(decoded.ranges?.first?.from == "2026-11-02")
+    }
     @Test func selectedRecipeServingsRemainUnroundedAndGenerationUsesPlans() throws {
         var draft = ShoppingSourceDraft()
         draft.kind = "recipes"; draft.entries = [.init(recipeId: UUID().uuidString, title: "Rice", servings: "2.125")]

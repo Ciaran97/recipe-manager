@@ -18,7 +18,7 @@ public sealed partial class ShoppingStore
         if (selected is not null)
         {
             var selection = GenerateShoppingList.Selection(selected, basis);
-            if (selection.Kind == ShoppingSourceKind.Recipes)
+            if (selection.Entries is not null)
             {
                 foreach (var entry in selection.Entries!)
                 {
@@ -28,18 +28,21 @@ public sealed partial class ShoppingStore
                     versions.Add(new(key, recipe.Revision, recipe.Id, recipe.Revision));
                 }
             }
-            else
+            foreach (var range in selection.Kind == ShoppingSourceKind.MealRange
+                ? new[] { new ShoppingMealRange(selection.From!.Value, selection.To!.Value) }
+                : selection.Ranges ?? [])
             {
                 var events = await (from source in database.CookingEvents.AsNoTracking()
                                     join meal in database.ScheduledMeals.AsNoTracking() on new { source.HouseholdId, Id = source.ScheduledMealId } equals new { meal.HouseholdId, meal.Id }
                                     where source.HouseholdId == actor.HouseholdId && meal.HouseholdId == actor.HouseholdId
-                                        && meal.Type == MealType.Cook && meal.Date >= selection.From!.Value && meal.Date <= selection.To!.Value
+                                        && meal.Type == MealType.Cook && meal.Date >= range.From && meal.Date <= range.To
                                     orderby source.Id
                                     select new { Source = source, meal.Date }).ToArrayAsync(ct);
                 foreach (var entry in events)
                 {
                     var source = entry.Source; var snapshot = RecipeSnapshotFactory.Deserialize(source.RecipeSnapshotJson);
                     var key = $"cook:{source.Id:N}";
+                    if (versions.Any(x => x.Key == key)) continue;
                     inputs.Add(new(key, snapshot.Title + " (" + entry.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + ")", MealType.Cook,
                         snapshot, source.PlannedPrepared, source.ConfirmedAt is null ? null : source.ActualPrepared));
                     versions.Add(new(key, source.Revision, source.RecipeId, source.RecipeRevision));

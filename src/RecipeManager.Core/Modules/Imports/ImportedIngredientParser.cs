@@ -40,10 +40,22 @@ public static class ImportedIngredientParser
         ["cup"] = IngredientUnit.Cup,
         ["cups"] = IngredientUnit.Cup,
         ["item"] = IngredientUnit.Item,
-        ["items"] = IngredientUnit.Item
+        ["items"] = IngredientUnit.Item,
+        ["pinch"] = IngredientUnit.Pinch,
+        ["pinches"] = IngredientUnit.Pinch,
+        ["dash"] = IngredientUnit.Dash,
+        ["dashes"] = IngredientUnit.Dash,
+        ["handful"] = IngredientUnit.Handful,
+        ["handfuls"] = IngredientUnit.Handful,
+        ["bunch"] = IngredientUnit.Bunch,
+        ["bunches"] = IngredientUnit.Bunch,
+        ["clove"] = IngredientUnit.Clove,
+        ["cloves"] = IngredientUnit.Clove,
+        ["slice"] = IngredientUnit.Slice,
+        ["slices"] = IngredientUnit.Slice
     };
     private static readonly HashSet<string> UnsupportedUnits = new(StringComparer.OrdinalIgnoreCase)
-        { "t", "c", "x", "oz", "ounce", "ounces", "lb", "lbs", "pound", "pounds", "pint", "pints", "quart", "quarts", "gallon", "gallons", "pinch", "pinches", "dash", "dashes" };
+        { "t", "c", "x", "oz", "ounce", "ounces", "lb", "lbs", "pound", "pounds", "pint", "pints", "quart", "quarts", "gallon", "gallons" };
     public static ImportedIngredient Parse(string original, string? group = null)
     {
         if (string.IsNullOrWhiteSpace(original) || original.Length > 20000) throw new ImportFailureException("import_invalid_document");

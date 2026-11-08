@@ -369,17 +369,20 @@
         type="button"
         (click)="showOrganisers.set(!showOrganisers())"
         [attr.aria-expanded]="showOrganisers()"
+        [disabled]="creatingOrganiser()"
       >
         Choose collections and tags
       </button>
       @if (showOrganisers()) {
         <app-organiser-picker
           kind="collections"
+          [allowCreate]="true"
           [selected]="form.controls.collectionIds.value"
           (selectedChange)="setOrganisers('collectionIds', $event)"
         />
         <app-organiser-picker
           kind="tags"
+          [allowCreate]="true"
           [selected]="form.controls.tagIds.value"
           (selectedChange)="setOrganisers('tagIds', $event)"
         />
@@ -403,7 +406,8 @@
       /></label>
     </section>
     <div class="actions">
-      <button type="submit" class="primary">{{ busy() ? 'Working…' : 'Save recipe' }}</button
+      <button type="submit" class="primary" [disabled]="creatingOrganiser()">
+        {{ busy() ? 'Working…' : 'Save recipe' }}</button
       ><a [routerLink]="recipeId() ? ['/recipes', recipeId()] : ['/recipes']">Cancel</a>
     </div>
   </fieldset>

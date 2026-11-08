@@ -128,7 +128,17 @@ app.UseMaintenanceBoundary();
 app.UseApiStatusPages();
 app.Use(async (context, next) =>
 {
-    if (context.Request.Path.StartsWithSegments("/api/v1")) context.Response.Headers.CacheControl = "no-store";
+    if (context.Request.Path.StartsWithSegments("/api/v1"))
+    {
+        context.Response.Headers.CacheControl = "no-store";
+        context.Response.OnStarting(() =>
+        {
+            var policy = context.Response.Headers.CacheControl.ToString();
+            if (!policy.Contains("no-transform", StringComparison.OrdinalIgnoreCase))
+                context.Response.Headers.CacheControl = policy + ", no-transform";
+            return Task.CompletedTask;
+        });
+    }
     await next(context);
 });
 app.UseAngularClient();

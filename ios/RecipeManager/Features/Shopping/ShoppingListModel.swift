@@ -9,6 +9,7 @@ import RecipeManagerAPI
     var cursor: String?
     var editor: Editor?
     var source = ShoppingSourceDraft()
+    private var addition: ShoppingSourceDraft?
     var name = ""
     var label = ""
     var categoryId = ""
@@ -97,7 +98,7 @@ import RecipeManagerAPI
         }
         editor = next; initialQuantity = quantity; initial = fingerprint
     }
-    func cancel() { editor = nil; item = nil; preview = nil; choices = [:]; needsReview = false; reviewed = false; retry = nil; error = nil; notice = nil }
+    func cancel() { addition = nil; editor = nil; item = nil; preview = nil; choices = [:]; needsReview = false; reviewed = false; retry = nil; error = nil; notice = nil }
     func sourceEdited() { preview = nil; reviewed = false }
     func receive(_ change: SyncDelta) {
         guard change.sequence > observedSequence else { return }; observedSequence = change.sequence
@@ -180,12 +181,26 @@ import RecipeManagerAPI
             self.lists.removeAll { $0.id == current.id }; self.current = nil; self.cancel()
         }
     }
+    func addSources(_ incoming: ShoppingSourceDraft, to id: String) async -> Bool {
+        guard !dirty else { error = "Finish or cancel your current edit before adding ingredients."; return false }
+        await open(id)
+        guard current?.id == id else { return false }
+        guard current?.basis == .planned else { error = "Add to a list using planned quantities, or create a new list."; return false }
+        begin(.reconcile); addition = incoming; source.kind = "combined"; source.basis = .planned
+        await previewChanges()
+        return true
+    }
     func previewChanges() async {
         guard let current else { return }
         let generation = sourceGeneration
         await perform {
-            let body = Components.Schemas.ShoppingPreviewWrite(selection: try self.copy(self.source.selection()), basis: .init(rawValue: self.source.generationBasis.rawValue))
-            let response = try await self.write("/api/v1/shopping-lists/\(current.id)/reconciliation/preview", body, etag: self.etag)
+            let selected: Components.Schemas.ShoppingPreviewWrite.selectionPayload?
+            if let addition = self.addition { selected = try self.copy(addition.selection()) }
+            else if self.source.kind == "combined" { selected = try current.selection.map { try self.copy($0) } }
+            else { selected = try self.copy(self.source.selection()) }
+            let body = Components.Schemas.ShoppingPreviewWrite(selection: selected, basis: self.addition == nil ? .init(rawValue: self.source.generationBasis.rawValue) : .planned)
+            let endpoint = self.addition == nil ? "reconciliation" : "sources"
+            let response = try await self.write("/api/v1/shopping-lists/\(current.id)/\(endpoint)/preview", body, etag: self.etag)
             let value = try APIJSON.decoder().decode(Components.Schemas.ShoppingPreview.self, from: response.data)
             var choices: [String: Components.Schemas.ShoppingReconciliationChoice] = [:]
             for change in value.changes {

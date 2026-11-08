@@ -980,6 +980,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/shopping-lists/{id}/sources/preview': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['PreviewShoppingSourceAddition'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/shopping-lists/{id}/reconciliation/preview': {
     parameters: {
       query?: never;
@@ -1333,7 +1349,22 @@ export interface components {
       quantityText: string;
       kind: components['schemas']['QuantityKind'];
       /** @enum {null|string} */
-      unit: 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'item' | null;
+      unit:
+        | 'g'
+        | 'kg'
+        | 'ml'
+        | 'l'
+        | 'tsp'
+        | 'tbsp'
+        | 'cup'
+        | 'item'
+        | 'pinch'
+        | 'dash'
+        | 'handful'
+        | 'bunch'
+        | 'clove'
+        | 'slice'
+        | null;
       originalUnit: null | string;
       preparation: null | string;
       group: null | string;
@@ -1444,7 +1475,16 @@ export interface components {
       name: string;
     };
     /** @enum {string} */
-    IngredientDimension: 'Mass' | 'Volume' | 'Count';
+    IngredientDimension:
+      | 'Mass'
+      | 'Volume'
+      | 'Count'
+      | 'Pinch'
+      | 'Dash'
+      | 'Handful'
+      | 'Bunch'
+      | 'Clove'
+      | 'Slice';
     IngredientPage: {
       items: components['schemas']['IngredientRead'][];
       nextCursor?: null | string;
@@ -1460,7 +1500,21 @@ export interface components {
       aliases: components['schemas']['IngredientAliasRead'][];
     };
     /** @enum {string} */
-    IngredientUnit: 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'cup' | 'item';
+    IngredientUnit:
+      | 'g'
+      | 'kg'
+      | 'ml'
+      | 'l'
+      | 'tsp'
+      | 'tbsp'
+      | 'cup'
+      | 'item'
+      | 'pinch'
+      | 'dash'
+      | 'handful'
+      | 'bunch'
+      | 'clove'
+      | 'slice';
     InvitationCreated: {
       /** Format: uuid */
       id: string;
@@ -1948,6 +2002,7 @@ export interface components {
         /** Format: date */
         to?: null | string;
         entries?: null | components['schemas']['ShoppingRecipeSelection'][];
+        ranges?: null | components['schemas']['ShoppingMealRange'][];
       };
       basis: components['schemas']['ShoppingBasis'];
       choices: components['schemas']['ShoppingReconciliationChoice'][];
@@ -1965,7 +2020,17 @@ export interface components {
         categoryId: null | string;
         categoryName: null | string;
         /** @enum {null|string} */
-        dimension: 'Mass' | 'Volume' | 'Count' | null;
+        dimension:
+          | 'Mass'
+          | 'Volume'
+          | 'Count'
+          | 'Pinch'
+          | 'Dash'
+          | 'Handful'
+          | 'Bunch'
+          | 'Clove'
+          | 'Slice'
+          | null;
         exact: null | {
           numerator: string;
           denominator: string;
@@ -1985,7 +2050,17 @@ export interface components {
         categoryId: null | string;
         categoryName: null | string;
         /** @enum {null|string} */
-        dimension: 'Mass' | 'Volume' | 'Count' | null;
+        dimension:
+          | 'Mass'
+          | 'Volume'
+          | 'Count'
+          | 'Pinch'
+          | 'Dash'
+          | 'Handful'
+          | 'Bunch'
+          | 'Clove'
+          | 'Slice'
+          | null;
         exact: null | {
           numerator: string;
           denominator: string;
@@ -2007,7 +2082,17 @@ export interface components {
         categoryId: null | string;
         categoryName: null | string;
         /** @enum {null|string} */
-        dimension: 'Mass' | 'Volume' | 'Count' | null;
+        dimension:
+          | 'Mass'
+          | 'Volume'
+          | 'Count'
+          | 'Pinch'
+          | 'Dash'
+          | 'Handful'
+          | 'Bunch'
+          | 'Clove'
+          | 'Slice'
+          | null;
         baselineExact: null | {
           numerator: string;
           denominator: string;
@@ -2026,7 +2111,17 @@ export interface components {
             denominator: string;
           };
           /** @enum {null|string} */
-          dimension: 'Mass' | 'Volume' | 'Count' | null;
+          dimension:
+            | 'Mass'
+            | 'Volume'
+            | 'Count'
+            | 'Pinch'
+            | 'Dash'
+            | 'Handful'
+            | 'Bunch'
+            | 'Clove'
+            | 'Slice'
+            | null;
           displayText: string;
           isApproximate: boolean;
         };
@@ -2081,7 +2176,17 @@ export interface components {
       categoryId: null | string;
       categoryName: null | string;
       /** @enum {null|string} */
-      dimension: 'Mass' | 'Volume' | 'Count' | null;
+      dimension:
+        | 'Mass'
+        | 'Volume'
+        | 'Count'
+        | 'Pinch'
+        | 'Dash'
+        | 'Handful'
+        | 'Bunch'
+        | 'Clove'
+        | 'Slice'
+        | null;
       baselineExact: null | {
         numerator: string;
         denominator: string;
@@ -2100,7 +2205,17 @@ export interface components {
           denominator: string;
         };
         /** @enum {null|string} */
-        dimension: 'Mass' | 'Volume' | 'Count' | null;
+        dimension:
+          | 'Mass'
+          | 'Volume'
+          | 'Count'
+          | 'Pinch'
+          | 'Dash'
+          | 'Handful'
+          | 'Bunch'
+          | 'Clove'
+          | 'Slice'
+          | null;
         displayText: string;
         isApproximate: boolean;
       };
@@ -2163,6 +2278,7 @@ export interface components {
         /** Format: date */
         to?: null | string;
         entries?: null | components['schemas']['ShoppingRecipeSelection'][];
+        ranges?: null | components['schemas']['ShoppingMealRange'][];
       };
       basis: components['schemas']['ShoppingBasis'];
       /** Format: int32 */
@@ -2185,6 +2301,12 @@ export interface components {
       /** Format: uuid */
       categoryId?: null | string;
     };
+    ShoppingMealRange: {
+      /** Format: date */
+      from: string;
+      /** Format: date */
+      to: string;
+    };
     ShoppingPreview: {
       listRevision: string;
       householdSourceRevision: string;
@@ -2198,6 +2320,7 @@ export interface components {
         /** Format: date */
         to?: null | string;
         entries?: null | components['schemas']['ShoppingRecipeSelection'][];
+        ranges?: null | components['schemas']['ShoppingMealRange'][];
       };
       basis: components['schemas']['ShoppingBasis'];
       changes: components['schemas']['ShoppingChange'][];
@@ -2211,6 +2334,7 @@ export interface components {
         /** Format: date */
         to?: null | string;
         entries?: null | components['schemas']['ShoppingRecipeSelection'][];
+        ranges?: null | components['schemas']['ShoppingMealRange'][];
       };
       /** @enum {null|string} */
       basis?: 'planned' | 'actual' | null;
@@ -2231,7 +2355,17 @@ export interface components {
         denominator: string;
       };
       /** @enum {null|string} */
-      dimension: 'Mass' | 'Volume' | 'Count' | null;
+      dimension:
+        | 'Mass'
+        | 'Volume'
+        | 'Count'
+        | 'Pinch'
+        | 'Dash'
+        | 'Handful'
+        | 'Bunch'
+        | 'Clove'
+        | 'Slice'
+        | null;
       displayText: string;
       isApproximate: boolean;
     };
@@ -2254,7 +2388,17 @@ export interface components {
       categoryId: null | string;
       categoryName: null | string;
       /** @enum {null|string} */
-      dimension: 'Mass' | 'Volume' | 'Count' | null;
+      dimension:
+        | 'Mass'
+        | 'Volume'
+        | 'Count'
+        | 'Pinch'
+        | 'Dash'
+        | 'Handful'
+        | 'Bunch'
+        | 'Clove'
+        | 'Slice'
+        | null;
       exact: null | {
         numerator: string;
         denominator: string;
@@ -2272,9 +2416,10 @@ export interface components {
       /** Format: date */
       to?: null | string;
       entries?: null | components['schemas']['ShoppingRecipeSelection'][];
+      ranges?: null | components['schemas']['ShoppingMealRange'][];
     };
     /** @enum {string} */
-    ShoppingSourceKind: 'mealRange' | 'recipes';
+    ShoppingSourceKind: 'mealRange' | 'recipes' | 'combined';
     ShoppingSourceRevision: {
       key: string;
       revision: string;
@@ -16009,6 +16154,156 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ShoppingListRead'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      410: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      412: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      428: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+      /** @description Request rejected; inspect code, traceId and field/conflict details. */
+      504: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/problem+json': components['schemas']['ApiProblem'];
+        };
+      };
+    };
+  };
+  PreviewShoppingSourceAddition: {
+    parameters: {
+      query?: never;
+      header: {
+        /** @description Obtain a fresh token from GET /api/v1/auth/csrf for this session. */
+        'X-XSRF-TOKEN': string;
+        /** @description The current strong aggregate ETag. Missing: 428; stale: 412. */
+        'If-Match': string;
+      };
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ShoppingPreviewWrite'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          /** @description Strong resource revision validator; preserve verbatim. */
+          ETag?: string;
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ShoppingPreview'];
         };
       };
       /** @description Request rejected; inspect code, traceId and field/conflict details. */
