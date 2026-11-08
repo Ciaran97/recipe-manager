@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC9234900000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9234900000000000000002 /* Assets.xcassets */; };
 		27B815815C9EF353078E4599 /* NativePerformanceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45970E9E3D377E316666734 /* NativePerformanceUITests.swift */; };
 		02E44389B5AC5E03906D58B0 /* RecipeImageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DED393C023492AF607A20FC /* RecipeImageUITests.swift */; };
 		0A550EEF18143237A71B6A29 /* ShoppingListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBC7D5534595EAC087F4DE6 /* ShoppingListModel.swift */; };
@@ -143,6 +144,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC9234900000000000000002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = RecipeManager/Assets.xcassets; sourceTree = "<group>"; };
 		D45970E9E3D377E316666734 /* NativePerformanceUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NativePerformanceUITests.swift; path = RecipeManagerUITests/NativePerformanceUITests.swift; sourceTree = "<group>"; };
 		023584DA5503DFCB45719BD3 /* ShareImportUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShareImportUITests.swift; path = RecipeManagerUITests/ShareImportUITests.swift; sourceTree = "<group>"; };
 		03818012091C217A53DAF8E0 /* ScopedAPI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScopedAPI.swift; path = RecipeManager/Core/ScopedAPI.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				25C30544F0323A10733BE787 /* ImportRetryUITests.swift */,
 				61C25BD9BE336536348E1DBA /* KeychainLifecycleTests.swift */,
 				D716591342937BCCC441B8C5 /* ThirdPartyNotices.txt */,
+				BC9234900000000000000002 /* Assets.xcassets */,
 				E46B7945C29C3BF72DEE08B6 /* NativeAccessibilityUITests.swift */,
 				0BBC2EF653E3945832BD8C05 /* DynamicTypeUITests.swift */,
 				F318CFCEEC972B0DF1351E34 /* CriticalJourneyUITests.swift */,
@@ -644,6 +647,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F393C530852139E0C1FB6E7D /* ThirdPartyNotices.txt in Resources */,
+				BC9234900000000000000001 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,7 +807,6 @@
 			baseConfigurationReference = 614C09B006C5402AF2EB11EF /* Project.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = RecipeManager/RecipeManager.entitlements;
@@ -946,7 +949,6 @@
 			baseConfigurationReference = 614C09B006C5402AF2EB11EF /* Project.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = RecipeManagerUITests/Fixtures/ShareHost/ShareHost.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -970,7 +972,6 @@
 			baseConfigurationReference = 614C09B006C5402AF2EB11EF /* Project.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = RecipeManager/RecipeManager.entitlements;
@@ -1041,7 +1042,6 @@
 			baseConfigurationReference = 614C09B006C5402AF2EB11EF /* Project.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = RecipeManagerUITests/Fixtures/ShareHost/ShareHost.entitlements;
 				CODE_SIGN_STYLE = Automatic;

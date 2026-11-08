@@ -19,6 +19,18 @@ an instruction to reproduce unavailable nutrition scores, calorie counts, drag h
 or total counts. Show only supported actions and authoritative data. Never invent sample recipes
 or images in the production app to make the grid appear populated.
 
+## Product identity
+
+Use the recipe-book-and-leaf mark for the browser favicon, web navigation and native app icon.
+The editable master is `brand/app-icon.svg`: warm ivory on raspberry, with a full opaque square
+background. Keep generous space around the mark and let iOS apply its own corner mask.
+The fixed brand colors work alongside either application theme.
+
+The iOS asset catalog contains the 1024px RGB icon; the web supplies an SVG favicon, a 32px ICO
+fallback and a 180px Apple touch icon. Regenerate committed raster assets from the repository
+root with `node scripts/render-brand-icons.cjs` after installing the browser-test dependencies
+and Playwright Chromium. Update the sidebar's `cookbook` line icon when changing the mark.
+
 ## Themes and preferences
 
 - Offer **System**, **Light** and **Dark** through the always-visible **Appearance** control.
