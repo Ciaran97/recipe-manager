@@ -1,0 +1,11 @@
+{
+    admin off
+    skip_install_trust
+}
+https://{$RECIPE_MANAGER_HOST} {
+    tls internal
+    # Keep opaque API validators unchanged for conditional reads and writes.
+    @compressible not path /api /api/*
+    encode @compressible zstd gzip
+    reverse_proxy app:8080
+}

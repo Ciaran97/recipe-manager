@@ -1,0 +1,160 @@
+.week-toolbar,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+}
+.week-toolbar label {
+  margin: 0;
+}
+.week-toolbar input {
+  min-width: 10rem;
+}
+.add-actions {
+  margin: 1rem 0;
+}
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: start;
+}
+.day {
+  min-width: 0;
+  border: 1px solid #d9dfd3;
+  border-radius: 0.8rem;
+  background: #f5f7f1;
+  padding: 0.6rem;
+}
+.day > h2 {
+  font-size: 1rem;
+  margin: 0.2rem 0 0.8rem;
+}
+.meal-slot {
+  min-height: 9rem;
+  border-top: 1px solid #dce2d7;
+  padding-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.meal-slot > h3 {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+  color: #465d43;
+}
+.scheduled-meal {
+  background: white;
+  padding: 0.65rem;
+  margin: 0.4rem 0 0.6rem;
+  border-radius: 0.65rem;
+  border: 1px solid #d9dfd3;
+  overflow-wrap: anywhere;
+}
+.scheduled-meal h4 {
+  font-size: 1rem;
+  margin: 0 0 0.4rem;
+}
+.scheduled-meal p {
+  margin: 0.5rem 0;
+  font-size: 0.88rem;
+}
+.meal-kind {
+  font-size: 0.75rem;
+  color: #41593d;
+  background: #eaf0e2;
+  border-radius: 2rem;
+  padding: 0.15rem 0.5rem;
+}
+.meal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.meal-actions button {
+  flex: 1 1 40%;
+  font-size: 0.78rem;
+  padding: 0.35rem;
+  min-height: 2.75rem;
+}
+.meal-actions .wide {
+  flex-basis: 100%;
+}
+.add-meal {
+  font-size: 0.85rem;
+  padding: 0.35rem;
+  min-height: 2.75rem;
+}
+.empty-slot {
+  font-size: 0.82rem;
+  color: #65715d;
+  margin: 0.5rem 0;
+}
+dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 0.4rem;
+  font-size: 0.84rem;
+}
+dd {
+  margin: 0;
+}
+.editor {
+  margin-top: 1.5rem;
+  scroll-margin-top: 1rem;
+}
+.editor h2:focus {
+  outline: 2px solid #567548;
+  outline-offset: 0.3rem;
+}
+.inline-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.recipe-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.6rem;
+}
+.recipe-picker label {
+  flex: 1;
+}
+.recipe-picker button {
+  margin-bottom: 1rem;
+}
+.slot-management {
+  margin-top: 1.5rem;
+}
+.slot-management summary {
+  cursor: pointer;
+  font-weight: 650;
+  min-height: 2.75rem;
+}
+@media (max-width: 1100px) {
+  .week-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .meal-slot {
+    min-height: unset;
+  }
+}
+@media (max-width: 650px) {
+  .week-grid,
+  .inline-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .day {
+    padding: 1rem;
+  }
+  .meal-actions button {
+    flex: 0 1 auto;
+    min-width: 4rem;
+  }
+  .meal-actions .wide {
+    flex-basis: auto;
+  }
+  .week-toolbar button {
+    flex: 1;
+  }
+}

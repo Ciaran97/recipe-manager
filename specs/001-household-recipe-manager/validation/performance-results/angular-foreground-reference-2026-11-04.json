@@ -1,0 +1,1076 @@
+{
+  "procedure": "MP-SYNC-01",
+  "clock": "controller-monotonic",
+  "datasetRecipes": 500,
+  "users": 2,
+  "runId": "136d4f1601488d01",
+  "smoke": false,
+  "headed": true,
+  "samplesPerCell": 100,
+  "warmupPerCell": 9,
+  "completedCells": [
+    {
+      "pairing": "angular-angular",
+      "mode": "foreground"
+    }
+  ],
+  "failures": [],
+  "cells": [
+    {
+      "pairing": "angular-angular",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-angular",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-angular",
+      "mode": "foreground",
+      "count": 100,
+      "incomplete": 0,
+      "entitiesCovered": true,
+      "p95Ms": 76.64629199999035,
+      "durationsMs": [
+        34.54454199999964,
+        59.154749999997875,
+        10.465000000000146,
+        6.382957999998325,
+        49.30395800000042,
+        9.658666999999696,
+        9.954624999998487,
+        4.178291999996873,
+        4.3949589999974705,
+        4.551625000000058,
+        13.489000000001397,
+        70.79987499999697,
+        33.983208000005106,
+        5.173541000003752,
+        21.59475000000384,
+        57.830542000003334,
+        7.772165999995195,
+        9.80750000000262,
+        17.747292000000016,
+        44.03479099999822,
+        9.280624999999418,
+        9.993291999999201,
+        58.377541000001656,
+        15.40320800000336,
+        20.50033400000393,
+        20.89454100000148,
+        64.73487499999464,
+        59.904375000012806,
+        66.24908300000243,
+        61.338833000001614,
+        7.369833999997354,
+        60.02495900000213,
+        62.160791999995126,
+        8.93650000001071,
+        82.88445900000806,
+        113.97662499999569,
+        30.831292000002577,
+        26.847624999994878,
+        7.194082999994862,
+        36.44279100000858,
+        124.03783400000248,
+        36.945458999995026,
+        8.530917000010959,
+        96.80516699999862,
+        8.624208000008366,
+        16.43645799999649,
+        14.945750000013504,
+        6.472583000009763,
+        15.417625000001863,
+        11.607875000001513,
+        48.05929200000537,
+        10.341750000006869,
+        44.85479199999827,
+        11.720916999998735,
+        9.171957999991719,
+        7.910667000018293,
+        4.80487500000163,
+        9.746124999976018,
+        6.819541999982903,
+        6.39262499997858,
+        7.683875000016997,
+        11.078417000011541,
+        18.78458400000818,
+        7.53062500001397,
+        8.565375000005588,
+        2.9996249999967404,
+        3.2903339999902528,
+        12.552542000019457,
+        8.188374999997905,
+        9.19450000001234,
+        8.461332999984734,
+        20.003957999986596,
+        12.359415999992052,
+        62.90945800000918,
+        71.00658400001703,
+        40.917416999989655,
+        7.933625000005122,
+        75.65312500001164,
+        26.841583000001265,
+        61.389999999984866,
+        82.12329200000386,
+        76.64629199999035,
+        35.895584000012605,
+        43.27054100000532,
+        10.975874999974621,
+        74.34812499998952,
+        20.84687499998836,
+        37.67695900000399,
+        6.688166999985697,
+        44.06520900002215,
+        57.58158299999195,
+        57.50491700001294,
+        54.183165999973426,
+        9.090249999979278,
+        70.96166599998833,
+        62.15620800000033,
+        46.27625000002445,
+        12.406541999982437,
+        39.568040999991354,
+        58.46370800002478
+      ],
+      "samples": [
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-0",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:89\"",
+          "acknowledged": 20082.966667,
+          "active": 20706.219542,
+          "rendered": 20740.764084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-1",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:87:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 21740.475625,
+          "active": 22325.583125,
+          "rendered": 22384.737875
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-2",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:165:-\"",
+          "acknowledged": 23476.76475,
+          "active": 24109.67175,
+          "rendered": 24120.13675
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-3",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:90\"",
+          "acknowledged": 25181.170084,
+          "active": 25754.666792,
+          "rendered": 25761.04975
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-4",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:88:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 26898.435167,
+          "active": 27537.878709,
+          "rendered": 27587.182667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-5",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:167:-\"",
+          "acknowledged": 28562.968625,
+          "active": 29149.524667,
+          "rendered": 29159.183334
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-6",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:91\"",
+          "acknowledged": 30364.156042,
+          "active": 30976.507042,
+          "rendered": 30986.461667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-7",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:89:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 32086.649417,
+          "active": 32731.594625,
+          "rendered": 32735.772917
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-8",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:169:-\"",
+          "acknowledged": 33797.64675,
+          "active": 34375.004625,
+          "rendered": 34379.399584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-9",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:92\"",
+          "acknowledged": 35495.67775,
+          "active": 36115.591625,
+          "rendered": 36120.14325
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-10",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:90:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 37133.783625,
+          "active": 37762.8945,
+          "rendered": 37776.3835
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-11",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:171:-\"",
+          "acknowledged": 38862.734584,
+          "active": 39433.331209,
+          "rendered": 39504.131084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-12",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:93\"",
+          "acknowledged": 40596.8575,
+          "active": 41188.316167,
+          "rendered": 41222.299375
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-13",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:91:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 42305.972459,
+          "active": 42933.078959,
+          "rendered": 42938.2525
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-14",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:173:-\"",
+          "acknowledged": 43979.999792,
+          "active": 44547.174042,
+          "rendered": 44568.768792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-15",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:94\"",
+          "acknowledged": 45681.750209,
+          "active": 46309.553667,
+          "rendered": 46367.384209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-16",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:92:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 47332.872959,
+          "active": 47903.905959,
+          "rendered": 47911.678125
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-17",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:175:-\"",
+          "acknowledged": 49164.308959,
+          "active": 49730.895542,
+          "rendered": 49740.703042
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-18",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:95\"",
+          "acknowledged": 50848.403875,
+          "active": 51462.60325,
+          "rendered": 51480.350542
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-19",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:93:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 52566.504042,
+          "active": 53196.246334,
+          "rendered": 53240.281125
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-20",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:177:-\"",
+          "acknowledged": 54610.4715,
+          "active": 55228.905084,
+          "rendered": 55238.185709
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-21",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:96\"",
+          "acknowledged": 56396.484792,
+          "active": 57008.756167,
+          "rendered": 57018.749459
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-22",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:94:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 58039.968209,
+          "active": 58676.394959,
+          "rendered": 58734.7725
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-23",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:179:-\"",
+          "acknowledged": 60294.646042,
+          "active": 61072.854042,
+          "rendered": 61088.25725
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-24",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:97\"",
+          "acknowledged": 62808.530459,
+          "active": 63670.00825,
+          "rendered": 63690.508584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-25",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:95:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 65102.076334,
+          "active": 65841.356334,
+          "rendered": 65862.250875
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-26",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:181:-\"",
+          "acknowledged": 67865.806209,
+          "active": 68511.520292,
+          "rendered": 68576.255167
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-27",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:98\"",
+          "acknowledged": 70453.505334,
+          "active": 71103.393334,
+          "rendered": 71163.297709
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-28",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:96:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 72584.391209,
+          "active": 73278.519917,
+          "rendered": 73344.769
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-29",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:183:-\"",
+          "acknowledged": 74956.781209,
+          "active": 75605.869584,
+          "rendered": 75667.208417
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-30",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:99\"",
+          "acknowledged": 77154.425875,
+          "active": 77981.7765,
+          "rendered": 77989.146334
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-31",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:97:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 79749.082459,
+          "active": 80602.369125,
+          "rendered": 80662.394084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-32",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:185:-\"",
+          "acknowledged": 82395.830209,
+          "active": 83171.169875,
+          "rendered": 83233.330667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-33",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:100\"",
+          "acknowledged": 84677.297917,
+          "active": 85463.401959,
+          "rendered": 85472.338459
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-34",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:98:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 86782.024875,
+          "active": 87530.321875,
+          "rendered": 87613.206334
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-35",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:187:-\"",
+          "acknowledged": 89179.686959,
+          "active": 89817.456667,
+          "rendered": 89931.433292
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-36",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:101\"",
+          "acknowledged": 92213.840125,
+          "active": 92971.534625,
+          "rendered": 93002.365917
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-37",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:99:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 94929.0125,
+          "active": 95789.374417,
+          "rendered": 95816.222042
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-38",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:189:-\"",
+          "acknowledged": 97342.025292,
+          "active": 98083.467709,
+          "rendered": 98090.661792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-39",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:102\"",
+          "acknowledged": 100923.502375,
+          "active": 101878.273959,
+          "rendered": 101914.71675
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-40",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:100:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 103544.947,
+          "active": 104217.80425,
+          "rendered": 104341.842084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-41",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:191:-\"",
+          "acknowledged": 105923.374625,
+          "active": 106681.789,
+          "rendered": 106718.734459
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-42",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:103\"",
+          "acknowledged": 108518.972959,
+          "active": 109450.006667,
+          "rendered": 109458.537584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-43",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:101:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 110864.786542,
+          "active": 111515.945875,
+          "rendered": 111612.751042
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-44",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:193:-\"",
+          "acknowledged": 113355.7675,
+          "active": 114077.911459,
+          "rendered": 114086.535667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-45",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:104\"",
+          "acknowledged": 115481.843167,
+          "active": 116221.735792,
+          "rendered": 116238.17225
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-46",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:102:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 117540.257709,
+          "active": 118368.533917,
+          "rendered": 118383.479667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-47",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:195:-\"",
+          "acknowledged": 119821.585459,
+          "active": 120530.669667,
+          "rendered": 120537.14225
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-48",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:105\"",
+          "acknowledged": 122495.438667,
+          "active": 123731.170834,
+          "rendered": 123746.588459
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-49",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:103:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 124925.452834,
+          "active": 125563.486709,
+          "rendered": 125575.094584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-50",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:197:-\"",
+          "acknowledged": 126601.992917,
+          "active": 127174.554917,
+          "rendered": 127222.614209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-51",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:106\"",
+          "acknowledged": 128366.529959,
+          "active": 128998.730459,
+          "rendered": 129009.072209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-52",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:104:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 130002.90525,
+          "active": 130647.441792,
+          "rendered": 130692.296584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-53",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:199:-\"",
+          "acknowledged": 131648.842625,
+          "active": 132213.218375,
+          "rendered": 132224.939292
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-54",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:107\"",
+          "acknowledged": 133336.006084,
+          "active": 133961.309084,
+          "rendered": 133970.481042
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-55",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:105:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 134915.139584,
+          "active": 135479.84475,
+          "rendered": 135487.755417
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-56",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:201:-\"",
+          "acknowledged": 136443.6805,
+          "active": 137002.729375,
+          "rendered": 137007.53425
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-57",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:108\"",
+          "acknowledged": 138008.983167,
+          "active": 138621.922167,
+          "rendered": 138631.668292
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-58",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:106:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 139597.232917,
+          "active": 140173.621542,
+          "rendered": 140180.441084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-59",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:203:-\"",
+          "acknowledged": 141109.565084,
+          "active": 141683.770125,
+          "rendered": 141690.16275
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-60",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:109\"",
+          "acknowledged": 142742.479875,
+          "active": 143313.467292,
+          "rendered": 143321.151167
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-61",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:107:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 144231.266,
+          "active": 144804.26525,
+          "rendered": 144815.343667
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-62",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:205:-\"",
+          "acknowledged": 145792.877542,
+          "active": 146378.878375,
+          "rendered": 146397.662959
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-63",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:110\"",
+          "acknowledged": 147492.489584,
+          "active": 148061.505584,
+          "rendered": 148069.036209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-64",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:108:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 149029.680959,
+          "active": 149611.66425,
+          "rendered": 149620.229625
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-65",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:207:-\"",
+          "acknowledged": 150579.430584,
+          "active": 151154.4955,
+          "rendered": 151157.495125
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-66",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:111\"",
+          "acknowledged": 152191.628959,
+          "active": 152768.614875,
+          "rendered": 152771.905209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-67",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:109:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 153712.192125,
+          "active": 154285.449542,
+          "rendered": 154298.002084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-68",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:209:-\"",
+          "acknowledged": 155277.860125,
+          "active": 155863.1705,
+          "rendered": 155871.358875
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-69",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:112\"",
+          "acknowledged": 156874.713,
+          "active": 157440.620417,
+          "rendered": 157449.814917
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-70",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:110:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 158411.406875,
+          "active": 158979.044667,
+          "rendered": 158987.506
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-71",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:211:-\"",
+          "acknowledged": 160059.852042,
+          "active": 160627.989292,
+          "rendered": 160647.99325
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-72",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:113\"",
+          "acknowledged": 161784.91775,
+          "active": 162414.050834,
+          "rendered": 162426.41025
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-73",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:111:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 163646.973125,
+          "active": 164318.662709,
+          "rendered": 164381.572167
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-74",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:213:-\"",
+          "acknowledged": 165636.76375,
+          "active": 166258.01275,
+          "rendered": 166329.019334
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-75",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:114\"",
+          "acknowledged": 167521.368125,
+          "active": 168167.328375,
+          "rendered": 168208.245792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-76",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:112:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 169243.620417,
+          "active": 169883.016125,
+          "rendered": 169890.94975
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-77",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:215:-\"",
+          "acknowledged": 171068.642167,
+          "active": 171678.300875,
+          "rendered": 171753.954
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-78",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:115\"",
+          "acknowledged": 173556.415917,
+          "active": 174502.782334,
+          "rendered": 174529.623917
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-79",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:113:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 175809.232084,
+          "active": 176471.046292,
+          "rendered": 176532.436292
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-80",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:217:-\"",
+          "acknowledged": 178025.298625,
+          "active": 178622.432625,
+          "rendered": 178704.555917
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-81",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:116\"",
+          "acknowledged": 180253.102625,
+          "active": 181029.8045,
+          "rendered": 181106.450792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-82",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:114:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 182570.435875,
+          "active": 183420.172875,
+          "rendered": 183456.068459
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-83",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:219:-\"",
+          "acknowledged": 184884.181625,
+          "active": 185508.253584,
+          "rendered": 185551.524125
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-84",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:117\"",
+          "acknowledged": 186820.774084,
+          "active": 187456.084334,
+          "rendered": 187467.060209
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-85",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:115:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 188559.127,
+          "active": 189200.893667,
+          "rendered": 189275.241792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-86",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:221:-\"",
+          "acknowledged": 196153.567209,
+          "active": 196914.931542,
+          "rendered": 196935.778417
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-87",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:118\"",
+          "acknowledged": 198136.129209,
+          "active": 198766.223125,
+          "rendered": 198803.900084
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-88",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:116:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 199838.386667,
+          "active": 200488.205625,
+          "rendered": 200494.893792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-89",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:223:-\"",
+          "acknowledged": 201588.423709,
+          "active": 202215.42875,
+          "rendered": 202259.493959
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-90",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:119\"",
+          "acknowledged": 203539.470042,
+          "active": 204165.136917,
+          "rendered": 204222.7185
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-91",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:117:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 205304.146209,
+          "active": 205965.686375,
+          "rendered": 206023.191292
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-92",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:225:-\"",
+          "acknowledged": 207426.285584,
+          "active": 208077.420084,
+          "rendered": 208131.60325
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-93",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:120\"",
+          "acknowledged": 209417.611875,
+          "active": 210049.038334,
+          "rendered": 210058.128584
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-94",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:118:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 211165.24075,
+          "active": 211819.746709,
+          "rendered": 211890.708375
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-95",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:227:-\"",
+          "acknowledged": 213360.709917,
+          "active": 214040.625042,
+          "rendered": 214102.78125
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-96",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:121\"",
+          "acknowledged": 215831.712584,
+          "active": 216491.631542,
+          "rendered": 216537.907792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-97",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:119:9e2959c001074dbfab8e3d0452f3efb8:3\"",
+          "acknowledged": 218334.632,
+          "active": 219085.77825,
+          "rendered": 219098.184792
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-98",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:229:-\"",
+          "acknowledged": 220986.928167,
+          "active": 221790.017834,
+          "rendered": 221829.585875
+        },
+        {
+          "id": "136d4f1601488d01-angular-angular-foreground-99",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:122\"",
+          "acknowledged": 223873.0865,
+          "active": 224923.117167,
+          "rendered": 224981.580875
+        }
+      ],
+      "pass": true
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    }
+  ],
+  "timingPass": false,
+  "additionalGates": {
+    "hardwareAndNetwork": false,
+    "warmedSearchAndCalendar": false,
+    "personalCacheIsolation": false,
+    "dirtyFormsAndConflicts": false
+  },
+  "acceptancePass": false,
+  "environment": {
+    "server": "Ubuntu 26.04.1 ARM64 in local isolated VZ VM",
+    "vcpus": 2,
+    "allocatedMemoryGiB": 4,
+    "guestMemoryBytes": 4086222848,
+    "storage": "private SSD-backed virtual disk",
+    "docker": "29.9.3",
+    "compose": "5.7.0",
+    "client": "Owned visible Chromium processes with Playwright 1.64.1 noDefaults CDP attachment",
+    "transition": "Real window minimization/restoration and genuine DOM visibility events; no forced-focus override",
+    "transport": "HTTPS with fixture CA validation and exact test-leaf SPKI browser pin",
+    "contention": "Native simulator/build validation also running on the physical Mac; diagnostic local distributions, not final uncontended release acceptance",
+    "nativeMeasured": false
+  }
+}

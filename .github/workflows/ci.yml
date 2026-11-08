@@ -1,0 +1,21 @@
+name: Required implementation checks
+"on":
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backend-web:
+    uses: ./.github/workflows/backend-web.yml
+  ios:
+    uses: ./.github/workflows/ios.yml
+  required:
+    if: always()
+    needs: [backend-web, ios]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require backend, web and native success
+        run: |
+          test '${{ needs.backend-web.result }}' = success
+          test '${{ needs.ios.result }}' = success

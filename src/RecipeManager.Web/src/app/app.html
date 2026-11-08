@@ -1,0 +1,15 @@
+<a class="skip-link" href="#content">Skip to content</a>
+<header><h1>Recipe Manager</h1></header>
+@if (auth.state.user()) {
+  <nav aria-label="Main navigation">
+    <a routerLink="/recipes" routerLinkActive="active" ariaCurrentWhenActive="page">Recipes</a>
+    <a routerLink="/meal-planner" routerLinkActive="active" ariaCurrentWhenActive="page"
+      >Meal Planner</a
+    >
+    <a routerLink="/shopping-lists" routerLinkActive="active" ariaCurrentWhenActive="page"
+      >Shopping Lists</a
+    >
+    <a routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page">Settings</a>
+  </nav>
+}
+<main id="content" tabindex="-1"><router-outlet /></main>

@@ -1,0 +1,14 @@
+{
+  "procedure": "MP-SYNC-01 correctness",
+  "client": "Angular",
+  "checks": {
+    "personalCacheIsolation": true,
+    "sameUserCrossDeviceFavourite": true,
+    "dirtyFormPreserved": true,
+    "staleWriteRejected": true,
+    "acceptedStateConvergence": true
+  },
+  "failures": [],
+  "pass": true,
+  "fullAcceptancePass": false
+}

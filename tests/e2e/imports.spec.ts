@@ -1,0 +1,64 @@
+import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
+import { authenticatedHousehold, write } from './fixtures';
+
+test('real provider import reviews unknowns, retains failed text and recovers a lost successful commit without duplicates', async ({ page }) => {
+  await authenticatedHousehold(page);
+  await page.goto('/recipes');
+  await page.getByRole('link', { name: 'Import recipe', exact: true }).click();
+  await page.getByLabel('Import method').selectOption('text');
+  await expect(page.getByRole('button', { name: 'Import for review', exact: true })).toBeDisabled();
+  await expect(page.getByText('AI text importing is not configured.', { exact: false })).toBeVisible();
+  await page.getByLabel('Import method').selectOption('url');
+  await page.getByLabel('Recipe URL', { exact: true }).fill('http://127.0.0.1/private');
+  await page.getByRole('button', { name: 'Import for review', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('public HTTP or HTTPS');
+  await expect(page.getByLabel('Recipe URL', { exact: true })).toHaveValue('http://127.0.0.1/private');
+  await page.getByLabel('Recipe URL', { exact: true }).fill('');
+  const runtime = process.env.RECIPE_MANAGER_E2E_RUNTIME;
+  if (!runtime) throw new Error('The isolated import fixture runtime is required.');
+  const baseUrl = fs.readFileSync(path.join(runtime, 'ai-origin'), 'utf8').trim();
+  const text = fs.readFileSync(path.join(runtime, 'ai-recipe-text'), 'utf8');
+  const settings = await page.request.get('/api/v1/household/settings');
+  const current = await settings.json();
+  expect((await write(page, 'PUT', '/api/v1/household/settings', { name: current.name, timezone: current.timezone, ai: { enabled: true, provider: 'OpenAICompatible', baseUrl, model: 'deterministic-fixture', apiKey: null, clearApiKey: false } }, settings.headers()['etag'])).status()).toBe(200);
+  for (const canonicalName of ['Rice', 'Salt']) expect((await write(page, 'POST', '/api/v1/ingredients', { canonicalName })).status()).toBe(201);
+  await page.reload();
+  await page.getByLabel('Import method').selectOption('text');
+  await page.getByLabel('Recipe text', { exact: true }).fill('FAIL_PROVIDER');
+  await page.getByRole('button', { name: 'Import for review', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('AI provider');
+  await expect(page.getByLabel('Recipe text', { exact: true })).toHaveValue('FAIL_PROVIDER');
+  await page.getByLabel('Recipe text', { exact: true }).fill(text);
+  await page.getByRole('button', { name: 'Import for review', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Review imported recipe', exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/recipes\/import\?draft=/);
+  await expect(page.getByLabel('Default servings', { exact: true })).toHaveValue('2');
+  await expect(page.getByLabel('Cup and spoon standard')).toHaveValue('');
+  await expect(page.getByLabel('Quantity 1', { exact: true })).toHaveValue('1/2');
+  await expect(page.getByLabel('Unit 1', { exact: true })).toHaveValue('cup');
+  await expect(page.getByLabel('Quantity 2', { exact: true })).toHaveValue('to taste');
+  await expect(page.getByLabel('Unit 2', { exact: true })).toHaveValue('');
+  expect((await (await page.request.get('/api/v1/recipes')).json()).items).toHaveLength(0);
+  await page.getByLabel('Title', { exact: true }).fill('Imported rice reviewed');
+  await page.getByLabel('Cup and spoon standard').selectOption('AU');
+  // Unspecified salt saves without forcing a unit selection.
+  await page.getByLabel('Quantity 1', { exact: true }).fill('3/4');
+  await page.getByLabel(/I have reviewed/).check();
+  await page.route('**/api/v1/imports/*/commit', async route => {
+    const response = await route.fetch(); expect(response.status()).toBe(201);
+    await route.abort('failed'); // The real backend committed; its successful response is lost.
+  }, { times: 1 });
+  await page.getByRole('button', { name: 'Save recipe', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Check previous save', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Title', { exact: true })).toBeDisabled();
+  await expect(page.getByLabel('Quantity 1', { exact: true })).toHaveValue('3/4');
+  await page.getByRole('button', { name: 'Check previous save', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Imported rice reviewed', exact: true })).toBeVisible();
+  const recipes = (await (await page.request.get('/api/v1/recipes')).json()).items;
+  expect(recipes).toHaveLength(1); expect(recipes[0].measurementStandard).toBe('AU');
+  expect(recipes[0].ingredients[0].quantityText).toBe('3/4');
+  expect(recipes[0].ingredients[1].kind).toBe('unknown');
+  expect(recipes[0].ingredients[1].quantityText).toBe('to taste');
+});

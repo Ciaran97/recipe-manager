@@ -1,0 +1,194 @@
+@if (remoteChanged()) {
+  <p role="status">
+    Your profile or household settings changed on another device. Entered form values are retained;
+    save or discard them before reloading.
+  </p>
+}
+<h2>Settings</h2>
+<p><a routerLink="/ingredients">Manage ingredient catalogue</a></p>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (notice()) {
+  <p role="status">{{ notice() }}</p>
+}
+@if (loading()) {
+  <p role="status">Loading your household…</p>
+} @else {
+  <div class="settings-grid">
+    <section class="card" aria-labelledby="profile-title">
+      <h3 id="profile-title">Your profile</h3>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <label>Your name<input formControlName="name" autocomplete="name" maxlength="200" /></label>
+        <button class="primary" type="submit" [disabled]="busy()">Save profile</button>
+      </form>
+      <details>
+        <summary>Change password</summary>
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          <label
+            >Current password<input
+              formControlName="currentPassword"
+              type="password"
+              autocomplete="current-password"
+              required
+          /></label>
+          <label
+            >New password<input
+              formControlName="newPassword"
+              type="password"
+              autocomplete="new-password"
+              minlength="12"
+              maxlength="256"
+              required
+          /></label>
+          <label
+            >Confirm new password<input
+              formControlName="confirmation"
+              type="password"
+              autocomplete="new-password"
+              required
+          /></label>
+          <p class="hint">Changing your password signs out all devices.</p>
+          <button type="submit" [disabled]="busy()">Change password</button>
+        </form>
+      </details>
+      <button type="button" class="destructive" (click)="logout()" [disabled]="busy()">
+        Sign out all sessions
+      </button>
+    </section>
+    <section class="card" aria-labelledby="household-title">
+      <h3 id="household-title">Household</h3>
+      @if (auth.state.canManageHousehold()) {
+        <form [formGroup]="householdForm" (ngSubmit)="saveHousehold()">
+          <label
+            >Household name<input
+              formControlName="name"
+              autocomplete="organization"
+              maxlength="200"
+              required
+          /></label>
+          <label>Household time zone<input formControlName="timezone" required /></label>
+          <details>
+            <summary>Optional AI imports</summary>
+            <label class="check"
+              ><input type="checkbox" formControlName="enabled" /> Enable AI text imports</label
+            >
+            <p class="hint">
+              Manual entry and website imports work without AI. Recipe text is sent to your provider
+              when you start an AI import.
+            </p>
+            <p>Provider: OpenAI-compatible API</p>
+            <label
+              >Provider base URL<input
+                formControlName="baseUrl"
+                type="url"
+                autocomplete="off"
+                [required]="householdForm.controls.enabled.value"
+                placeholder="https://your-provider.example/v1"
+            /></label>
+            <label
+              >Model<input
+                formControlName="model"
+                autocomplete="off"
+                maxlength="200"
+                [required]="householdForm.controls.enabled.value"
+            /></label>
+            @if (settings()?.ai.hasApiKey) {
+              <p class="hint">A key is configured. Leave the new key blank to keep it.</p>
+            }
+            <label
+              >New API key (optional)<input
+                formControlName="apiKey"
+                type="password"
+                autocomplete="off"
+                maxlength="4096"
+            /></label>
+            @if (settings()?.ai.hasApiKey) {
+              <label class="check"
+                ><input type="checkbox" formControlName="clearApiKey" /> Clear the saved key</label
+              >
+            }
+          </details>
+          <button class="primary" type="submit" [disabled]="busy()">Save household</button>
+        </form>
+      } @else {
+        <p>{{ settings()?.name }}</p>
+        <p>{{ settings()?.timezone }}</p>
+        <p class="hint">An administrator manages household settings and membership.</p>
+      }
+    </section>
+    <section class="card" aria-labelledby="members-title">
+      <h3 id="members-title">Household members</h3>
+      <ul class="item-list">
+        @for (member of sortedMembers(); track member.id) {
+          <li>
+            <div>
+              <strong>{{ member.name || member.email }}</strong>
+              <div class="hint">{{ member.role }}</div>
+            </div>
+            @if (auth.state.canManageHousehold() && member.role !== 'Administrator') {
+              <button
+                type="button"
+                class="destructive"
+                (click)="remove(member)"
+                [disabled]="busy()"
+                [attr.aria-label]="'Remove access for ' + (member.name || member.email)"
+              >
+                Remove access
+              </button>
+            }
+          </li>
+        }
+      </ul>
+      @if (memberCursor()) {
+        <button type="button" (click)="loadMembers(true)" [disabled]="busy()">
+          Load more members
+        </button>
+      }
+    </section>
+    @if (auth.state.canManageHousehold()) {
+      <section class="card" aria-labelledby="invites-title">
+        <h3 id="invites-title">Invitations</h3>
+        <button class="primary" type="button" (click)="createInvitation()" [disabled]="busy()">
+          Create invitation
+        </button>
+        @if (createdLink()) {
+          <label>Invitation link<input [value]="createdLink()" readonly /></label>
+          <button type="button" (click)="copyInvitation()">Copy invitation link</button>
+        }
+        <ul class="item-list">
+          @for (invitation of invitations(); track invitation.id) {
+            <li>
+              <div>
+                <span>{{
+                  invitation.acceptedAt ? 'Accepted' : invitation.revokedAt ? 'Revoked' : 'Expires'
+                }}</span>
+                <div class="hint">{{ invitation.expiresAt | date: 'medium' }}</div>
+              </div>
+              @if (!invitation.acceptedAt && !invitation.revokedAt) {
+                <button
+                  type="button"
+                  (click)="revoke(invitation)"
+                  [disabled]="busy()"
+                  [attr.aria-label]="
+                    'Revoke invitation expiring ' + (invitation.expiresAt | date: 'medium')
+                  "
+                >
+                  Revoke
+                </button>
+              }
+            </li>
+          }
+        </ul>
+        @if (invitationCursor()) {
+          <button type="button" (click)="loadInvitations(true)" [disabled]="busy()">
+            Load more invitations
+          </button>
+        }
+      </section>
+    }
+  </div>
+  <button type="button" (click)="reload()" [disabled]="busy()">
+    Reload and discard unsaved changes
+  </button>
+}

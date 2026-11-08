@@ -1,0 +1,82 @@
+:host {
+  display: block;
+}
+.source-summary {
+  background: #f0f4e9;
+  border: 1px solid #d4dfc9;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+}
+dd {
+  margin: 0;
+  font-weight: 650;
+}
+.two-fields,
+.refresh-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.record-consumption,
+.recipe-refresh {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #d9dfd3;
+}
+summary {
+  min-height: 2.75rem;
+  cursor: pointer;
+  font-weight: 650;
+}
+.dependent {
+  border: 1px solid #d7dfcf;
+  border-radius: 0.7rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.dependent.conflict {
+  border-color: #ae392e;
+}
+.dependent h4 {
+  margin-top: 0;
+}
+.refresh-comparison section {
+  padding: 0.8rem;
+  border: 1px solid #d7dfcf;
+  border-radius: 0.7rem;
+}
+.check {
+  display: flex;
+  align-items: start;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.check input {
+  width: auto;
+  flex: 0 0 auto;
+  margin-top: 0.3rem;
+}
+@media (max-width: 650px) {
+  .two-fields,
+  .refresh-comparison {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  dd {
+    margin-bottom: 0.5rem;
+  }
+}

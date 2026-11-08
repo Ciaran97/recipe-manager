@@ -1,0 +1,192 @@
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Household ingredients</p>
+    <h1>Ingredient catalogue</h1>
+    <p>Keep names consistent, add helpful aliases and organise your shopping categories.</p>
+  </div>
+  <a routerLink="/recipes">Back to recipes</a>
+</header>
+@if (error()) {
+  <p role="alert" class="error">{{ error() }}</p>
+}
+@if (notice()) {
+  <p role="status" class="notice">{{ notice() }}</p>
+}
+@if (loading()) {
+  <p role="status">Loading your ingredients…</p>
+}
+<div class="catalogue-layout" [attr.aria-busy]="busy() || loading()">
+  <section class="card" aria-labelledby="catalogue-list-heading">
+    <h2 id="catalogue-list-heading">Your ingredients</h2>
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <label for="ingredient-search"
+        >Search names and aliases<input
+          id="ingredient-search"
+          type="search"
+          formControlName="query"
+          maxlength="200"
+      /></label>
+      <button type="submit" [disabled]="busy() || loading()">Search ingredients</button>
+    </form>
+    <button type="button" class="primary" (click)="newIngredient()" [disabled]="busy()">
+      New ingredient
+    </button>
+    <ul class="ingredient-list">
+      @for (ingredient of items(); track ingredient.id) {
+        <li>
+          <button
+            type="button"
+            (click)="choose(ingredient.id)"
+            [disabled]="busy()"
+            [attr.aria-current]="selected()?.id === ingredient.id ? 'true' : null"
+          >
+            {{ ingredient.canonicalName
+            }}<small
+              >{{ ingredient.categoryName || 'Uncategorized' }}
+              @for (alias of ingredient.aliases; track alias.id) {
+                · {{ alias.name }}
+              }
+            </small>
+          </button>
+        </li>
+      } @empty {
+        @if (!loading()) {
+          <li>No matching ingredients. Add a canonical name to get started.</li>
+        }
+      }
+    </ul>
+    @if (nextCursor()) {
+      <button type="button" (click)="search(true)" [disabled]="busy()">
+        Load more ingredients
+      </button>
+    }
+  </section>
+  <section class="card" aria-labelledby="ingredient-details-heading">
+    <h2 id="ingredient-details-heading">
+      {{ selected() ? 'Ingredient details' : 'New ingredient' }}
+    </h2>
+    <form [formGroup]="ingredientForm" (ngSubmit)="saveIngredient()">
+      <fieldset [disabled]="busy() || loading()">
+        <label for="canonical-name"
+          >Canonical ingredient name<input
+            id="canonical-name"
+            formControlName="canonicalName"
+            maxlength="200"
+            required
+        /></label>
+        @if (
+          ingredientForm.controls.canonicalName.touched &&
+          ingredientForm.controls.canonicalName.invalid
+        ) {
+          <p class="error">Enter a name of up to 200 characters.</p>
+        }
+        <label for="ingredient-category"
+          >Shopping category<select id="ingredient-category" formControlName="categoryId">
+            <option value="">Uncategorized</option>
+            @for (category of sortedCategories(); track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
+            }
+          </select></label
+        >
+        @if (selected()) {
+          <label class="check"
+            ><input type="checkbox" formControlName="retainOldNameAsAlias" />Keep the previous name
+            as an alias when renaming</label
+          >
+        }
+        <button type="submit" class="primary" [disabled]="ingredientForm.invalid">
+          Save ingredient
+        </button>
+      </fieldset>
+    </form>
+    @if (selected(); as ingredient) {
+      <div class="actions">
+        <button type="button" (click)="choose(ingredient.id)" [disabled]="busy()">
+          Reload ingredient and discard edits</button
+        ><button
+          type="button"
+          class="destructive"
+          (click)="confirmDeleteIngredient()"
+          [disabled]="busy()"
+        >
+          Delete ingredient
+        </button>
+      </div>
+      <h3>Aliases</h3>
+      <p class="hint">
+        Other names for this same ingredient. Keep genuinely different ingredients separate.
+      </p>
+      @if (detailsDirty()) {
+        <p class="hint">Save or discard ingredient details before changing aliases.</p>
+      }
+      <ul>
+        @for (alias of ingredient.aliases; track alias.id) {
+          <li>
+            {{ alias.name }}
+            <button type="button" (click)="editAlias(alias)" [disabled]="busy() || detailsDirty()">
+              Edit {{ alias.name }}
+            </button>
+            <button
+              type="button"
+              (click)="removeAlias(alias)"
+              [disabled]="busy() || detailsDirty()"
+            >
+              Remove {{ alias.name }}
+            </button>
+          </li>
+        } @empty {
+          <li>No aliases yet.</li>
+        }
+      </ul>
+      <form [formGroup]="aliasForm" (ngSubmit)="saveAlias()">
+        <fieldset [disabled]="busy() || detailsDirty()">
+          <label for="ingredient-alias"
+            >{{ editingAlias() ? 'Edit alias' : 'New alias'
+            }}<input id="ingredient-alias" formControlName="name" maxlength="200" required /></label
+          ><button type="submit" [disabled]="aliasForm.invalid">Save alias</button>
+          @if (editingAlias()) {
+            <button type="button" (click)="clearAlias()">Cancel alias edit</button>
+          }
+        </fieldset>
+      </form>
+    }
+  </section>
+</div>
+<details class="card">
+  <summary>Manage shopping categories</summary>
+  <p>
+    Both household roles can manage ingredient categories. Deleting a category keeps its
+    ingredients.
+  </p>
+  <div class="actions">
+    @for (category of sortedCategories(); track category.id) {
+      <button type="button" (click)="chooseCategory(category.id)" [disabled]="busy()">
+        Edit {{ category.name }} category
+      </button>
+    }
+    <button type="button" (click)="newCategory()" [disabled]="busy()">New category</button>
+  </div>
+  <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+    <fieldset [disabled]="busy() || loading()">
+      <label for="category-name"
+        >Category name<input
+          id="category-name"
+          formControlName="name"
+          maxlength="200"
+          required /></label
+      ><label for="category-order"
+        >Display order<input
+          id="category-order"
+          type="number"
+          formControlName="sortOrder"
+          min="0"
+          step="1" /></label
+      ><button type="submit" [disabled]="categoryForm.invalid">Save category</button>
+      @if (selectedCategory()) {
+        <button type="button" class="destructive" (click)="confirmDeleteCategory()">
+          Delete category
+        </button>
+      }
+    </fieldset>
+  </form>
+</details>

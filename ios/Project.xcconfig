@@ -1,0 +1,6 @@
+RECIPE_MANAGER_BUNDLE_ID = local.recipemanager.app
+RECIPE_MANAGER_APP_GROUP = group.local.recipemanager.shared
+DEVELOPMENT_TEAM =
+SWIFT_VERSION = 6.0
+IPHONEOS_DEPLOYMENT_TARGET = 18.0
+#include? "Local.xcconfig"

@@ -1,0 +1,410 @@
+@if (!embedded()) {
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Recipe library</p>
+      <h1>{{ recipeId() ? 'Edit recipe' : 'New recipe' }}</h1>
+      <p>Keep the original quantities. Serving previews never change your saved recipe.</p>
+    </div>
+    <a [routerLink]="recipeId() ? ['/recipes', recipeId()] : ['/recipes']">Cancel</a>
+  </header>
+}
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (loading()) {
+  <p role="status">Loading recipe…</p>
+}
+<form [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="busy() || loading()">
+  <fieldset [disabled]="busy() || loading() || submissionUncertain()">
+    <section class="card" aria-labelledby="recipe-details-heading">
+      <h2 id="recipe-details-heading">Recipe details</h2>
+      <label for="recipe-title"
+        >Title<input id="recipe-title" formControlName="title" maxlength="200" required
+      /></label>
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <p class="error">Enter a recipe title.</p>
+      }
+      <label for="recipe-description"
+        >Description<textarea
+          id="recipe-description"
+          formControlName="description"
+          maxlength="20000"
+          rows="2"
+        ></textarea>
+      </label>
+      <div class="inline-fields">
+        <label for="recipe-servings"
+          >Default servings<input
+            id="recipe-servings"
+            type="text"
+            inputmode="decimal"
+            formControlName="defaultServings"
+            required /></label
+        ><label for="recipe-prep"
+          >Preparation time (minutes)<input
+            id="recipe-prep"
+            type="number"
+            formControlName="prepMinutes"
+            min="0"
+            step="1" /></label
+        ><label for="recipe-cook"
+          >Cooking time (minutes)<input
+            id="recipe-cook"
+            type="number"
+            formControlName="cookMinutes"
+            min="0"
+            step="1"
+        /></label>
+      </div>
+      <label for="recipe-standard">Cup and spoon standard</label
+      ><select id="recipe-standard" formControlName="measurementStandard">
+        <option value="">Choose source measures</option>
+        <option value="AU">Australian</option>
+        <option value="US">US</option>
+      </select>
+      <p class="hint">Use this recipe's original cup and spoon measures.</p>
+      <label for="recipe-photo"
+        >Recipe photo<input
+          id="recipe-photo"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          (change)="uploadPhoto($event)"
+      /></label>
+      <p class="hint">JPEG, PNG or WebP, up to 10 MiB.</p>
+      @if (form.controls.imageAssetId.value; as image) {
+        <img
+          class="photo"
+          [src]="'/api/v1/images/' + image"
+          [alt]="form.controls.title.value || 'Recipe photo'"
+        /><button type="button" (click)="removePhoto()">Remove photo from recipe</button>
+      }
+    </section>
+    <section class="card" aria-labelledby="recipe-ingredients-heading">
+      <h2 id="recipe-ingredients-heading">Ingredients</h2>
+      <p>Type a name, choose its household match, then enter a decimal or fraction such as 1/2.</p>
+      <a routerLink="/ingredients">Manage household ingredient catalogue</a>
+      <details>
+        <summary>Ingredient groups</summary>
+        <div formArrayName="groups">
+          @for (group of groups.controls; track group.controls.id.value; let i = $index) {
+            <div [formGroupName]="i">
+              <label [for]="'group-' + group.controls.id.value"
+                >Group heading {{ i + 1
+                }}<input
+                  [id]="'group-' + group.controls.id.value"
+                  formControlName="title"
+                  maxlength="200"
+                  required
+              /></label>
+              <div class="actions">
+                <button
+                  type="button"
+                  (click)="moveGroup(i, -1)"
+                  [disabled]="i === 0"
+                  [attr.aria-label]="'Move group ' + (i + 1) + ' up'"
+                >
+                  Move up</button
+                ><button
+                  type="button"
+                  (click)="moveGroup(i, 1)"
+                  [disabled]="i === groups.length - 1"
+                  [attr.aria-label]="'Move group ' + (i + 1) + ' down'"
+                >
+                  Move down</button
+                ><button
+                  type="button"
+                  (click)="removeGroup(i)"
+                  [attr.aria-label]="'Remove group ' + (i + 1)"
+                >
+                  Remove group
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        <button type="button" (click)="addGroup()" [disabled]="groups.length >= 1000">
+          Add ingredient group
+        </button>
+      </details>
+      <div formArrayName="ingredients">
+        @for (row of ingredients.controls; track row.controls.id.value; let i = $index) {
+          <div class="ingredient-entry" [formGroupName]="i">
+            @if (originalLines()[row.controls.id.value]; as original) {
+              <p class="hint">Imported: {{ original }}</p>
+            }
+            <div class="ingredient-fields">
+              <div class="ingredient-search">
+                <label [for]="'ingredient-name-' + row.controls.id.value"
+                  >Ingredient name {{ i + 1 }}</label
+                ><input
+                  [id]="'ingredient-name-' + row.controls.id.value"
+                  formControlName="ingredientName"
+                  autocomplete="off"
+                  role="combobox"
+                  aria-autocomplete="list"
+                  [attr.aria-expanded]="
+                    activeRow() === row.controls.id.value && suggestions().length > 0
+                  "
+                  [attr.aria-controls]="'suggestions-' + row.controls.id.value"
+                  [attr.aria-activedescendant]="
+                    activeRow() === row.controls.id.value && suggestions().length
+                      ? 'suggestion-' + row.controls.id.value + '-' + highlighted()
+                      : null
+                  "
+                  (input)="ingredientNameChanged(i)"
+                  (focus)="suggest(i)"
+                  (keydown)="ingredientKeydown($event, i)"
+                  maxlength="200"
+                  required
+                />
+                @if (activeRow() === row.controls.id.value) {
+                  <div class="suggestions">
+                    <div
+                      role="listbox"
+                      [id]="'suggestions-' + row.controls.id.value"
+                      [attr.aria-label]="'Matches for ingredient ' + (i + 1)"
+                    >
+                      @for (match of suggestions(); track match.id; let option = $index) {
+                        <div
+                          role="option"
+                          tabindex="-1"
+                          [id]="'suggestion-' + row.controls.id.value + '-' + option"
+                          [attr.aria-selected]="highlighted() === option"
+                          (mousedown)="$event.preventDefault()"
+                          (click)="selectIngredient(i, match)"
+                          (keydown.enter)="selectIngredient(i, match); $event.preventDefault()"
+                        >
+                          {{ match.canonicalName }}
+                          @if (match.aliases.length) {
+                            <span class="hint">
+                              ·
+                              @for (alias of match.aliases; track alias.id) {
+                                {{ alias.name }}
+                              }
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    @if (row.controls.ingredientName.value.trim()) {
+                      <button type="button" (click)="createIngredient(i)">
+                        Create “{{ row.controls.ingredientName.value }}” ingredient
+                      </button>
+                    }
+                  </div>
+                }
+                @if (!row.controls.ingredientId.value && row.controls.ingredientName.touched) {
+                  <p class="error">Choose a household match or create this ingredient.</p>
+                }
+              </div>
+              <div>
+                <label [for]="'ingredient-quantity-' + row.controls.id.value"
+                  >Quantity {{ i + 1 }}</label
+                ><input
+                  [id]="'ingredient-quantity-' + row.controls.id.value"
+                  type="text"
+                  formControlName="quantityText"
+                  [placeholder]="
+                    row.controls.kind.value === 'unknown' ? 'e.g. to taste' : 'e.g. 1/2 or 1.5'
+                  "
+                  (keydown.enter)="addIngredient(true); $event.preventDefault()"
+                  maxlength="200"
+                />
+                @if (fieldErrors()['ingredients[' + i + '].quantityText']; as message) {
+                  <p class="error">{{ message }}</p>
+                }
+              </div>
+              <div>
+                <label [for]="'ingredient-unit-' + row.controls.id.value">Unit {{ i + 1 }}</label
+                ><select [id]="'ingredient-unit-' + row.controls.id.value" formControlName="unit">
+                  <option value="">
+                    {{
+                      row.controls.kind.value === 'unknown'
+                        ? 'Not needed for unspecified quantity'
+                        : 'Choose unit'
+                    }}
+                  </option>
+                  @for (unit of units; track unit.value) {
+                    <option [value]="unit.value">{{ unit.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+            <label class="check"
+              ><input
+                type="checkbox"
+                [checked]="row.controls.kind.value === 'unknown'"
+                (change)="setUnknown(i, $event)"
+              />Quantity unspecified for ingredient {{ i + 1 }}</label
+            >
+            <details>
+              <summary>Ingredient notes and group</summary>
+              <label [for]="'ingredient-preparation-' + row.controls.id.value"
+                >Preparation notes {{ i + 1
+                }}<textarea
+                  [id]="'ingredient-preparation-' + row.controls.id.value"
+                  formControlName="preparation"
+                  placeholder="e.g. finely chopped"
+                  maxlength="20000"
+                  rows="2"
+                ></textarea>
+              </label>
+              @if (groups.length) {
+                <label [for]="'ingredient-group-' + row.controls.id.value">Group {{ i + 1 }}</label
+                ><select
+                  [id]="'ingredient-group-' + row.controls.id.value"
+                  formControlName="groupId"
+                >
+                  <option value="">Ungrouped</option>
+                  @for (group of groups.controls; track group.controls.id.value) {
+                    <option [value]="group.controls.id.value">
+                      {{ group.controls.title.value || 'Untitled group' }}
+                    </option>
+                  }
+                </select>
+              }
+              <label class="check"
+                ><input type="checkbox" formControlName="uncertain" />Mark quantity uncertain for
+                ingredient {{ i + 1 }}</label
+              >
+            </details>
+            <div class="actions">
+              <button
+                type="button"
+                (click)="moveIngredient(i, -1)"
+                [disabled]="i === 0"
+                [attr.aria-label]="'Move ingredient ' + (i + 1) + ' up'"
+              >
+                Move up</button
+              ><button
+                type="button"
+                (click)="moveIngredient(i, 1)"
+                [disabled]="i === ingredients.length - 1"
+                [attr.aria-label]="'Move ingredient ' + (i + 1) + ' down'"
+              >
+                Move down</button
+              ><button
+                type="button"
+                (click)="duplicateIngredient(i)"
+                [attr.aria-label]="'Duplicate ingredient ' + (i + 1)"
+              >
+                Duplicate</button
+              ><button
+                type="button"
+                (click)="removeIngredient(i)"
+                [attr.aria-label]="'Remove ingredient ' + (i + 1)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+      <button type="button" (click)="addIngredient(true)" [disabled]="ingredients.length >= 1000">
+        Add ingredient
+      </button>
+      @if (requiresReview()) {
+        <label class="check"
+          ><input type="checkbox" formControlName="acknowledgeUncertainIngredients" />I have
+          reviewed the unresolved or uncertain ingredient quantities</label
+        >
+        <p class="hint">
+          Unspecified quantities remain visible. No quantity is supplied automatically.
+        </p>
+      }
+    </section>
+    <section class="card" aria-labelledby="recipe-instructions-heading">
+      <h2 id="recipe-instructions-heading">Instructions</h2>
+      <div formArrayName="instructions">
+        @for (step of instructions.controls; track step.controls.id.value; let i = $index) {
+          <div [formGroupName]="i">
+            <label [for]="'instruction-' + step.controls.id.value"
+              >Step {{ i + 1
+              }}<textarea
+                [id]="'instruction-' + step.controls.id.value"
+                formControlName="text"
+                maxlength="20000"
+                rows="3"
+                required
+              ></textarea>
+            </label>
+            <div class="actions">
+              <button
+                type="button"
+                (click)="moveInstruction(i, -1)"
+                [disabled]="i === 0"
+                [attr.aria-label]="'Move step ' + (i + 1) + ' up'"
+              >
+                Move up</button
+              ><button
+                type="button"
+                (click)="moveInstruction(i, 1)"
+                [disabled]="i === instructions.length - 1"
+                [attr.aria-label]="'Move step ' + (i + 1) + ' down'"
+              >
+                Move down</button
+              ><button
+                type="button"
+                (click)="duplicateInstruction(i)"
+                [attr.aria-label]="'Duplicate step ' + (i + 1)"
+              >
+                Duplicate</button
+              ><button
+                type="button"
+                (click)="removeInstruction(i)"
+                [attr.aria-label]="'Remove step ' + (i + 1)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+      <button type="button" (click)="addInstruction()" [disabled]="instructions.length >= 1000">
+        Add instruction
+      </button>
+    </section>
+    <section class="card" aria-label="Recipe organisation">
+      <button
+        type="button"
+        (click)="showOrganisers.set(!showOrganisers())"
+        [attr.aria-expanded]="showOrganisers()"
+      >
+        Choose collections and tags
+      </button>
+      @if (showOrganisers()) {
+        <app-organiser-picker
+          kind="collections"
+          [selected]="form.controls.collectionIds.value"
+          (selectedChange)="setOrganisers('collectionIds', $event)"
+        />
+        <app-organiser-picker
+          kind="tags"
+          [selected]="form.controls.tagIds.value"
+          (selectedChange)="setOrganisers('tagIds', $event)"
+        />
+      }
+    </section>
+    <section class="card" aria-labelledby="recipe-notes-heading">
+      <h2 id="recipe-notes-heading">Notes and source</h2>
+      <label for="recipe-notes"
+        >Notes<textarea
+          id="recipe-notes"
+          formControlName="notes"
+          maxlength="20000"
+          rows="3"
+        ></textarea></label
+      ><label for="recipe-source"
+        >Source URL<input
+          id="recipe-source"
+          type="url"
+          formControlName="sourceUrl"
+          maxlength="2048"
+      /></label>
+    </section>
+    <div class="actions">
+      <button type="submit" class="primary">{{ busy() ? 'Working…' : 'Save recipe' }}</button
+      ><a [routerLink]="recipeId() ? ['/recipes', recipeId()] : ['/recipes']">Cancel</a>
+    </div>
+  </fieldset>
+</form>

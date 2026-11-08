@@ -1,0 +1,1881 @@
+{
+  "procedure": "MP-SYNC-01",
+  "clock": "controller-monotonic",
+  "datasetRecipes": 500,
+  "users": 2,
+  "runId": "9858884062a21321",
+  "smoke": false,
+  "headed": false,
+  "samplesPerCell": 100,
+  "warmupPerCell": 9,
+  "completedCells": [
+    {
+      "pairing": "angular-angular",
+      "mode": "connected"
+    },
+    {
+      "pairing": "angular-angular",
+      "mode": "reconnect"
+    }
+  ],
+  "failures": [],
+  "cells": [
+    {
+      "pairing": "angular-angular",
+      "mode": "connected",
+      "count": 100,
+      "incomplete": 0,
+      "entitiesCovered": true,
+      "p95Ms": 97.04229199999918,
+      "durationsMs": [
+        97.04229199999918,
+        38.87016600000061,
+        70.78600000000006,
+        92.03966600000058,
+        36.87633300000016,
+        84.29983300000004,
+        86.65537499999937,
+        67.43366700000024,
+        69.91708300000028,
+        87.5023340000007,
+        56.76416699999936,
+        93.16887499999939,
+        155.34883400000035,
+        36.42191599999933,
+        74.81775000000016,
+        83.9807499999988,
+        51.097999999999956,
+        103.05745899999965,
+        84.63241599999856,
+        77.50870799999939,
+        98.09658399999898,
+        87.36216599999898,
+        71.6552499999998,
+        85.81179100000008,
+        89.6244999999999,
+        82.12470799999937,
+        55.367458000000624,
+        96.60879100000056,
+        57.65766700000131,
+        70.43879200000083,
+        84.7288750000007,
+        75.67433399999936,
+        83.35233299999891,
+        82.11200000000099,
+        47.944250000000466,
+        95.52691600000253,
+        86.92662500000006,
+        54.39287500000137,
+        65.04525000000285,
+        83.33229200000278,
+        73.25758300000234,
+        68.64554099999805,
+        85.95383299999958,
+        93.53570899999977,
+        74.88629199999923,
+        70.33516700000109,
+        77.06716600000073,
+        67.51299999999901,
+        89.83912500000224,
+        62.23224999999729,
+        86.07587499999863,
+        83.19670899999983,
+        69.82108300000255,
+        76.54999999999927,
+        83.0892500000009,
+        32.5850840000021,
+        94.99175000000105,
+        91.97925000000032,
+        79.3003340000032,
+        67.73212500000227,
+        84.12662500000079,
+        62.47579200000109,
+        70.59950000000026,
+        90.98600000000079,
+        85.69133300000249,
+        77.33591700000034,
+        88.16695800000161,
+        167.28349999999773,
+        64.9220830000013,
+        96.68600000000151,
+        78.2053339999984,
+        80.89437499999985,
+        89.05766700000095,
+        66.80412499999875,
+        72.31479200000103,
+        79.14866600000096,
+        43.477624999999534,
+        71.15766699999949,
+        83.62983400000667,
+        61.407208000004175,
+        86.31429200000275,
+        85.19895799999358,
+        81.27370899999369,
+        78.76237499999843,
+        89.69566599999962,
+        75.43704199999775,
+        75.51000000000204,
+        90.86475000000064,
+        56.69120899999689,
+        77.81049999999959,
+        87.95354100000259,
+        96.01870800000324,
+        67.55766600000061,
+        84.72187500000291,
+        78.22950000000128,
+        82.03383299999405,
+        85.2729579999941,
+        87.22258299999521,
+        98.37104099999851,
+        85.99058299999888
+      ],
+      "samples": [
+        {
+          "id": "9858884062a21321-angular-angular-connected-0",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:13\"",
+          "acknowledged": 5009.153417,
+          "rendered": 5106.195709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-1",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:10:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 5406.446709,
+          "rendered": 5445.316875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-2",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:17:-\"",
+          "acknowledged": 5681.913,
+          "rendered": 5752.699
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-3",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:14\"",
+          "acknowledged": 6175.811459,
+          "rendered": 6267.851125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-4",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:11:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 6513.387709,
+          "rendered": 6550.264042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-5",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:19:-\"",
+          "acknowledged": 6747.789917,
+          "rendered": 6832.08975
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-6",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:15\"",
+          "acknowledged": 7185.044834,
+          "rendered": 7271.700209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-7",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:12:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 7482.558625,
+          "rendered": 7549.992292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-8",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:21:-\"",
+          "acknowledged": 7839.813542,
+          "rendered": 7909.730625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-9",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:16\"",
+          "acknowledged": 8266.1125,
+          "rendered": 8353.614834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-10",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:13:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 8579.812292,
+          "rendered": 8636.576459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-11",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:23:-\"",
+          "acknowledged": 8819.873167,
+          "rendered": 8913.042042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-12",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:17\"",
+          "acknowledged": 9315.3035,
+          "rendered": 9470.652334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-13",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:14:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 9711.947834,
+          "rendered": 9748.36975
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-14",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:25:-\"",
+          "acknowledged": 9963.989417,
+          "rendered": 10038.807167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-15",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:18\"",
+          "acknowledged": 10428.17625,
+          "rendered": 10512.157
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-16",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:15:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 10813.4325,
+          "rendered": 10864.5305
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-17",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:27:-\"",
+          "acknowledged": 11046.319,
+          "rendered": 11149.376459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-18",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:19\"",
+          "acknowledged": 11523.125959,
+          "rendered": 11607.758375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-19",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:16:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 11864.306584,
+          "rendered": 11941.815292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-20",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:29:-\"",
+          "acknowledged": 12179.27625,
+          "rendered": 12277.372834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-21",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:20\"",
+          "acknowledged": 12665.882584,
+          "rendered": 12753.24475
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-22",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:17:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 13009.198625,
+          "rendered": 13080.853875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-23",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:31:-\"",
+          "acknowledged": 13284.041084,
+          "rendered": 13369.852875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-24",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:21\"",
+          "acknowledged": 13720.653209,
+          "rendered": 13810.277709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-25",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:18:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 14067.761542,
+          "rendered": 14149.88625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-26",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:33:-\"",
+          "acknowledged": 14405.086167,
+          "rendered": 14460.453625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-27",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:22\"",
+          "acknowledged": 14864.236584,
+          "rendered": 14960.845375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-28",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:19:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 15185.164292,
+          "rendered": 15242.821959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-29",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:35:-\"",
+          "acknowledged": 15478.2025,
+          "rendered": 15548.641292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-30",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:23\"",
+          "acknowledged": 15852.291167,
+          "rendered": 15937.020042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-31",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:20:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 16141.9365,
+          "rendered": 16217.610834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-32",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:37:-\"",
+          "acknowledged": 16451.691584,
+          "rendered": 16535.043917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-33",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:24\"",
+          "acknowledged": 16839.014417,
+          "rendered": 16921.126417
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-34",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:21:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 17163.88475,
+          "rendered": 17211.829
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-35",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:39:-\"",
+          "acknowledged": 17397.043959,
+          "rendered": 17492.570875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-36",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:25\"",
+          "acknowledged": 17845.945,
+          "rendered": 17932.871625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-37",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:22:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 18161.179375,
+          "rendered": 18215.57225
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-38",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:41:-\"",
+          "acknowledged": 18436.910167,
+          "rendered": 18501.955417
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-39",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:26\"",
+          "acknowledged": 18855.846292,
+          "rendered": 18939.178584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-40",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:23:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 19212.251459,
+          "rendered": 19285.509042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-41",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:43:-\"",
+          "acknowledged": 19502.569834,
+          "rendered": 19571.215375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-42",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:27\"",
+          "acknowledged": 19972.242042,
+          "rendered": 20058.195875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-43",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:24:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 20245.893,
+          "rendered": 20339.428709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-44",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:45:-\"",
+          "acknowledged": 20577.54625,
+          "rendered": 20652.432542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-45",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:28\"",
+          "acknowledged": 21204.422542,
+          "rendered": 21274.757709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-46",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:25:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 21476.830459,
+          "rendered": 21553.897625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-47",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:47:-\"",
+          "acknowledged": 21772.831459,
+          "rendered": 21840.344459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-48",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:29\"",
+          "acknowledged": 22244.645167,
+          "rendered": 22334.484292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-49",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:26:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 22608.375584,
+          "rendered": 22670.607834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-50",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:49:-\"",
+          "acknowledged": 22905.760584,
+          "rendered": 22991.836459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-51",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:30\"",
+          "acknowledged": 23393.06625,
+          "rendered": 23476.262959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-52",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:27:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 23686.913167,
+          "rendered": 23756.73425
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-53",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:51:-\"",
+          "acknowledged": 23973.146084,
+          "rendered": 24049.696084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-54",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:31\"",
+          "acknowledged": 24355.473875,
+          "rendered": 24438.563125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-55",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:28:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 24704.00625,
+          "rendered": 24736.591334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-56",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:53:-\"",
+          "acknowledged": 24936.371,
+          "rendered": 25031.36275
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-57",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:32\"",
+          "acknowledged": 25418.497417,
+          "rendered": 25510.476667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-58",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:29:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 25719.109875,
+          "rendered": 25798.410209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-59",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:55:-\"",
+          "acknowledged": 26034.500417,
+          "rendered": 26102.232542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-60",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:33\"",
+          "acknowledged": 26456.451834,
+          "rendered": 26540.578459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-61",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:30:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 26764.610167,
+          "rendered": 26827.085959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-62",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:57:-\"",
+          "acknowledged": 27043.518042,
+          "rendered": 27114.117542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-63",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:34\"",
+          "acknowledged": 27519.988167,
+          "rendered": 27610.974167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-64",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:31:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 27807.992667,
+          "rendered": 27893.684
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-65",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:59:-\"",
+          "acknowledged": 28109.8985,
+          "rendered": 28187.234417
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-66",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:35\"",
+          "acknowledged": 28583.374792,
+          "rendered": 28671.54175
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-67",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:32:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 28965.558709,
+          "rendered": 29132.842209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-68",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:61:-\"",
+          "acknowledged": 29361.617292,
+          "rendered": 29426.539375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-69",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:36\"",
+          "acknowledged": 29831.752417,
+          "rendered": 29928.438417
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-70",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:33:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 30186.84275,
+          "rendered": 30265.048084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-71",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:63:-\"",
+          "acknowledged": 30499.426,
+          "rendered": 30580.320375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-72",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:37\"",
+          "acknowledged": 30932.29225,
+          "rendered": 31021.349917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-73",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:34:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 31256.59275,
+          "rendered": 31323.396875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-74",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:65:-\"",
+          "acknowledged": 31577.884625,
+          "rendered": 31650.199417
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-75",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:38\"",
+          "acknowledged": 31952.284084,
+          "rendered": 32031.43275
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-76",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:35:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 32269.720584,
+          "rendered": 32313.198209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-77",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:67:-\"",
+          "acknowledged": 32532.128625,
+          "rendered": 32603.286292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-78",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:39\"",
+          "acknowledged": 32958.7435,
+          "rendered": 33042.373334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-79",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:36:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 33319.269292,
+          "rendered": 33380.6765
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-80",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:69:-\"",
+          "acknowledged": 33598.571292,
+          "rendered": 33684.885584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-81",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:40\"",
+          "acknowledged": 33988.651167,
+          "rendered": 34073.850125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-82",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:37:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 34280.431125,
+          "rendered": 34361.704834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-83",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:71:-\"",
+          "acknowledged": 34564.574167,
+          "rendered": 34643.336542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-84",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:41\"",
+          "acknowledged": 34993.572334,
+          "rendered": 35083.268
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-85",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:38:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 35290.31775,
+          "rendered": 35365.754792
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-86",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:73:-\"",
+          "acknowledged": 35600.314625,
+          "rendered": 35675.824625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-87",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:42\"",
+          "acknowledged": 36025.603209,
+          "rendered": 36116.467959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-88",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:39:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 36343.719125,
+          "rendered": 36400.410334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-89",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:75:-\"",
+          "acknowledged": 36617.046125,
+          "rendered": 36694.856625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-90",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:43\"",
+          "acknowledged": 36978.936084,
+          "rendered": 37066.889625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-91",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:40:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 37253.531584,
+          "rendered": 37349.550292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-92",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:77:-\"",
+          "acknowledged": 37569.051459,
+          "rendered": 37636.609125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-93",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:44\"",
+          "acknowledged": 37938.044459,
+          "rendered": 38022.766334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-94",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:41:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 38226.553667,
+          "rendered": 38304.783167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-95",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:79:-\"",
+          "acknowledged": 38522.290542,
+          "rendered": 38604.324375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-96",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:45\"",
+          "acknowledged": 38955.018084,
+          "rendered": 39040.291042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-97",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:42:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 39282.705042,
+          "rendered": 39369.927625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-98",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:81:-\"",
+          "acknowledged": 39552.061959,
+          "rendered": 39650.433
+        },
+        {
+          "id": "9858884062a21321-angular-angular-connected-99",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:46\"",
+          "acknowledged": 40005.184584,
+          "rendered": 40091.175167
+        }
+      ],
+      "pass": true
+    },
+    {
+      "pairing": "angular-angular",
+      "mode": "reconnect",
+      "count": 100,
+      "incomplete": 0,
+      "entitiesCovered": true,
+      "p95Ms": 78.22845799999777,
+      "durationsMs": [
+        23.22112499999639,
+        38.17254200000025,
+        78.55774999999994,
+        24.566500000000815,
+        26.498958000003768,
+        26.197541999994428,
+        77.59283300000243,
+        23.967208000001847,
+        25.59124999999767,
+        23.467875000002095,
+        24.638292000003275,
+        78.89095799999632,
+        24.036457999995037,
+        24.824666000000434,
+        27.186666999994486,
+        25.10716699999466,
+        24.32616699999926,
+        23.373625000000175,
+        22.81866699999955,
+        24.708167000004323,
+        25.532124999997905,
+        23.20575000000099,
+        26.147832999995444,
+        24.67854200000147,
+        24.204124999996566,
+        25.27958299999591,
+        24.256790999999794,
+        24.473707999997714,
+        24.420459000000847,
+        25.566875000004075,
+        23.24462499999936,
+        25.727208000003884,
+        24.9120000000039,
+        24.406457999997656,
+        24.82325000000128,
+        26.806209000002127,
+        22.321584000004805,
+        24.619792000004963,
+        24.471541999999317,
+        24.69695900000079,
+        24.909041999999317,
+        78.22845799999777,
+        22.17412499999773,
+        25.78137499999866,
+        25.150916999999026,
+        22.842916999994486,
+        43.57025000000431,
+        24.92500000000291,
+        75.68237499999668,
+        25.816500000000815,
+        77.08766700000706,
+        23.211584000004223,
+        25.863459000000148,
+        26.232875000001513,
+        22.782666999999492,
+        82.60762500000419,
+        77.22983399999794,
+        23.972125000000233,
+        25.104332999995677,
+        26.994874999996682,
+        21.998458000001847,
+        24.439500000000407,
+        26.57366699999693,
+        23.319667000003392,
+        24.76958300000115,
+        27.185250000009546,
+        23.626250000001164,
+        76.28729200000816,
+        78.94100000000617,
+        23.19791700001224,
+        25.323291999986395,
+        84.87662500000442,
+        23.880583000005572,
+        24.15662500000326,
+        26.37850000000617,
+        22.80337499998859,
+        25.934582999994745,
+        26.02537499999744,
+        26.829540999999153,
+        25.025540999995428,
+        25.000958999997238,
+        23.93816700000025,
+        26.520292000001064,
+        26.468957999997656,
+        23.93245900000329,
+        25.871375000002445,
+        25.553874999997788,
+        23.81037499998638,
+        26.42491699999664,
+        25.15929200001119,
+        25.183124999995925,
+        24.573875000001863,
+        25.27395799999067,
+        23.840291000000434,
+        24.340708999996423,
+        25.766208999993978,
+        23.823875000001863,
+        25.809500000003027,
+        24.159791999991285,
+        28.057041000007303
+      ],
+      "samples": [
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-0",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:50\"",
+          "acknowledged": 43187.000042,
+          "active": 43214.935959,
+          "rendered": 43238.157084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-1",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:46:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 43437.619959,
+          "active": 43523.128042,
+          "rendered": 43561.300584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-2",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:89:-\"",
+          "acknowledged": 43816.821709,
+          "active": 43845.015167,
+          "rendered": 43923.572917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-3",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:51\"",
+          "acknowledged": 44310.156834,
+          "active": 44335.82075,
+          "rendered": 44360.38725
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-4",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:47:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 44548.971042,
+          "active": 44628.926209,
+          "rendered": 44655.425167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-5",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:91:-\"",
+          "acknowledged": 44870.997209,
+          "active": 44898.357,
+          "rendered": 44924.554542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-6",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:52\"",
+          "acknowledged": 45230.030167,
+          "active": 45256.846042,
+          "rendered": 45334.438875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-7",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:48:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 45573.548292,
+          "active": 45602.347084,
+          "rendered": 45626.314292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-8",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:93:-\"",
+          "acknowledged": 45878.433209,
+          "active": 45906.376292,
+          "rendered": 45931.967542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-9",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:53\"",
+          "acknowledged": 46331.543125,
+          "active": 46359.352792,
+          "rendered": 46382.820667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-10",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:49:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 46622.600042,
+          "active": 46705.0335,
+          "rendered": 46729.671792
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-11",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:95:-\"",
+          "acknowledged": 46948.479,
+          "active": 46951.560167,
+          "rendered": 47030.451125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-12",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:54\"",
+          "acknowledged": 47381.577792,
+          "active": 47408.248334,
+          "rendered": 47432.284792
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-13",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:50:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 47635.927875,
+          "active": 47663.922959,
+          "rendered": 47688.747625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-14",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:97:-\"",
+          "acknowledged": 47920.602167,
+          "active": 47946.910792,
+          "rendered": 47974.097459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-15",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:55\"",
+          "acknowledged": 48374.434709,
+          "active": 48399.423667,
+          "rendered": 48424.530834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-16",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:51:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 48626.463209,
+          "active": 48655.394042,
+          "rendered": 48679.720209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-17",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:99:-\"",
+          "acknowledged": 48862.170667,
+          "active": 48887.209042,
+          "rendered": 48910.582667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-18",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:56\"",
+          "acknowledged": 49274.835834,
+          "active": 49301.2995,
+          "rendered": 49324.118167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-19",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:52:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 49543.366,
+          "active": 49625.237375,
+          "rendered": 49649.945542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-20",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:101:-\"",
+          "acknowledged": 49984.138875,
+          "active": 50013.694,
+          "rendered": 50039.226125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-21",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:57\"",
+          "acknowledged": 50439.856125,
+          "active": 50466.6375,
+          "rendered": 50489.84325
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-22",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:53:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 50762.128167,
+          "active": 50842.829209,
+          "rendered": 50868.977042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-23",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:103:-\"",
+          "acknowledged": 51092.238709,
+          "active": 51117.641542,
+          "rendered": 51142.320084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-24",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:58\"",
+          "acknowledged": 51495.060167,
+          "active": 51523.37825,
+          "rendered": 51547.582375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-25",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:54:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 51773.57,
+          "active": 51854.881709,
+          "rendered": 51880.161292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-26",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:105:-\"",
+          "acknowledged": 52115.6815,
+          "active": 52119.243959,
+          "rendered": 52143.50075
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-27",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:59\"",
+          "acknowledged": 52441.04375,
+          "active": 52467.856667,
+          "rendered": 52492.330375
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-28",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:55:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 52698.274125,
+          "active": 52785.76575,
+          "rendered": 52810.186209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-29",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:107:-\"",
+          "acknowledged": 53048.208209,
+          "active": 53076.420167,
+          "rendered": 53101.987042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-30",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:60\"",
+          "acknowledged": 53402.608959,
+          "active": 53429.799959,
+          "rendered": 53453.044584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-31",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:56:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 53677.744125,
+          "active": 53708.155667,
+          "rendered": 53733.882875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-32",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:109:-\"",
+          "acknowledged": 53952.931875,
+          "active": 53979.275917,
+          "rendered": 54004.187917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-33",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:61\"",
+          "acknowledged": 54305.795834,
+          "active": 54333.504042,
+          "rendered": 54357.9105
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-34",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:57:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 54652.217834,
+          "active": 54682.731792,
+          "rendered": 54707.555042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-35",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:111:-\"",
+          "acknowledged": 54960.113792,
+          "active": 54987.766875,
+          "rendered": 55014.573084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-36",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:62\"",
+          "acknowledged": 55402.892709,
+          "active": 55427.61175,
+          "rendered": 55449.933334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-37",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:58:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 55691.9035,
+          "active": 55721.6035,
+          "rendered": 55746.223292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-38",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:113:-\"",
+          "acknowledged": 56003.510084,
+          "active": 56009.792625,
+          "rendered": 56034.264167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-39",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:63\"",
+          "acknowledged": 56408.077042,
+          "active": 56435.375125,
+          "rendered": 56460.072084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-40",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:59:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 56688.118667,
+          "active": 56770.788625,
+          "rendered": 56795.697667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-41",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:115:-\"",
+          "acknowledged": 57030.98575,
+          "active": 57058.281209,
+          "rendered": 57136.509667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-42",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:64\"",
+          "acknowledged": 57488.400459,
+          "active": 57514.397167,
+          "rendered": 57536.571292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-43",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:60:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 57739.488167,
+          "active": 57820.001334,
+          "rendered": 57845.782709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-44",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:117:-\"",
+          "acknowledged": 58064.870334,
+          "active": 58069.591667,
+          "rendered": 58094.742584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-45",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:65\"",
+          "acknowledged": 58393.847959,
+          "active": 58420.912125,
+          "rendered": 58443.755042
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-46",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:61:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 58684.000417,
+          "active": 58771.481834,
+          "rendered": 58815.052084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-47",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:119:-\"",
+          "acknowledged": 59078.566084,
+          "active": 59106.384167,
+          "rendered": 59131.309167
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-48",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:66\"",
+          "acknowledged": 59431.256542,
+          "active": 59458.247292,
+          "rendered": 59533.929667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-49",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:62:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 59746.575542,
+          "active": 59775.306959,
+          "rendered": 59801.123459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-50",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:121:-\"",
+          "acknowledged": 60027.98075,
+          "active": 60030.636875,
+          "rendered": 60107.724542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-51",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:67\"",
+          "acknowledged": 60409.25475,
+          "active": 60435.55375,
+          "rendered": 60458.765334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-52",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:63:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 60700.064209,
+          "active": 60728.6345,
+          "rendered": 60754.497959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-53",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:123:-\"",
+          "acknowledged": 60977.971917,
+          "active": 61006.422417,
+          "rendered": 61032.655292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-54",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:68\"",
+          "acknowledged": 61434.955209,
+          "active": 61462.912542,
+          "rendered": 61485.695209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-55",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:64:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 61814.380042,
+          "active": 62002.000292,
+          "rendered": 62084.607917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-56",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:125:-\"",
+          "acknowledged": 62497.879709,
+          "active": 62526.724,
+          "rendered": 62603.953834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-57",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:69\"",
+          "acknowledged": 63004.584542,
+          "active": 63030.051167,
+          "rendered": 63054.023292
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-58",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:65:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 63292.857375,
+          "active": 63371.965792,
+          "rendered": 63397.070125
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-59",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:127:-\"",
+          "acknowledged": 63612.951209,
+          "active": 63617.487459,
+          "rendered": 63644.482334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-60",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:70\"",
+          "acknowledged": 64014.720625,
+          "active": 64041.628459,
+          "rendered": 64063.626917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-61",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:66:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 64302.202,
+          "active": 64384.281209,
+          "rendered": 64408.720709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-62",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:129:-\"",
+          "acknowledged": 64626.559125,
+          "active": 64631.850417,
+          "rendered": 64658.424084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-63",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:71\"",
+          "acknowledged": 64958.742959,
+          "active": 64985.699042,
+          "rendered": 65009.018709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-64",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:67:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 65213.542584,
+          "active": 65295.770292,
+          "rendered": 65320.539875
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-65",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:131:-\"",
+          "acknowledged": 65536.915709,
+          "active": 65563.588584,
+          "rendered": 65590.773834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-66",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:72\"",
+          "acknowledged": 65993.081875,
+          "active": 66019.924959,
+          "rendered": 66043.551209
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-67",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:68:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 66248.028459,
+          "active": 66275.905542,
+          "rendered": 66352.192834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-68",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:133:-\"",
+          "acknowledged": 66570.872667,
+          "active": 66598.684625,
+          "rendered": 66677.625625
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-69",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:73\"",
+          "acknowledged": 66982.500584,
+          "active": 67008.419667,
+          "rendered": 67031.617584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-70",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:69:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 67269.184709,
+          "active": 67350.182792,
+          "rendered": 67375.506084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-71",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:135:-\"",
+          "acknowledged": 67610.037167,
+          "active": 67638.370875,
+          "rendered": 67723.2475
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-72",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:74\"",
+          "acknowledged": 68089.765125,
+          "active": 68117.092334,
+          "rendered": 68140.972917
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-73",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:70:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 68378.581834,
+          "active": 68408.011042,
+          "rendered": 68432.167667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-74",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:137:-\"",
+          "acknowledged": 68684.39825,
+          "active": 68711.944209,
+          "rendered": 68738.322709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-75",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:75\"",
+          "acknowledged": 69164.748792,
+          "active": 69190.182209,
+          "rendered": 69212.985584
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-76",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:71:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 69416.523792,
+          "active": 69495.513959,
+          "rendered": 69521.448542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-77",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:139:-\"",
+          "acknowledged": 69740.000709,
+          "active": 69768.201084,
+          "rendered": 69794.226459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-78",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:76\"",
+          "acknowledged": 70094.308709,
+          "active": 70119.206459,
+          "rendered": 70146.036
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-79",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:72:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 70353.545334,
+          "active": 70436.716959,
+          "rendered": 70461.7425
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-80",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:141:-\"",
+          "acknowledged": 70813.477459,
+          "active": 70839.72275,
+          "rendered": 70864.723709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-81",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:77\"",
+          "acknowledged": 71282.267459,
+          "active": 71311.2815,
+          "rendered": 71335.219667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-82",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:73:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 71626.392875,
+          "active": 71705.6525,
+          "rendered": 71732.172792
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-83",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:143:-\"",
+          "acknowledged": 71966.162834,
+          "active": 71971.296709,
+          "rendered": 71997.765667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-84",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:78\"",
+          "acknowledged": 72296.582834,
+          "active": 72322.7865,
+          "rendered": 72346.718959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-85",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:74:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 72549.731125,
+          "active": 72578.732709,
+          "rendered": 72604.604084
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-86",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:145:-\"",
+          "acknowledged": 72822.120917,
+          "active": 72849.379625,
+          "rendered": 72874.9335
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-87",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:79\"",
+          "acknowledged": 73275.707209,
+          "active": 73302.923334,
+          "rendered": 73326.733709
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-88",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:75:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 73555.564834,
+          "active": 73645.481417,
+          "rendered": 73671.906334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-89",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:147:-\"",
+          "acknowledged": 73942.49925,
+          "active": 73969.496542,
+          "rendered": 73994.655834
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-90",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:80\"",
+          "acknowledged": 74347.516209,
+          "active": 74371.511375,
+          "rendered": 74396.6945
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-91",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:76:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 74598.030042,
+          "active": 74679.556917,
+          "rendered": 74704.130792
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-92",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:149:-\"",
+          "acknowledged": 75023.185334,
+          "active": 75051.590584,
+          "rendered": 75076.864542
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-93",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:81\"",
+          "acknowledged": 75502.908917,
+          "active": 75529.948959,
+          "rendered": 75553.78925
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-94",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:77:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 75758.956459,
+          "active": 75786.829625,
+          "rendered": 75811.170334
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-95",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:151:-\"",
+          "acknowledged": 76047.701959,
+          "active": 76074.83975,
+          "rendered": 76100.605959
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-96",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:82\"",
+          "acknowledged": 76453.901167,
+          "active": 76480.593792,
+          "rendered": 76504.417667
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-97",
+          "entity": "recipe",
+          "revision": "\"004b3e968c234242b31be75495cc4aff:78:9e2959c001074dbfab8e3d0452f3efb8:0\"",
+          "acknowledged": 76796.494667,
+          "active": 76880.49825,
+          "rendered": 76906.30775
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-98",
+          "entity": "meal",
+          "revision": "\"5d039c46590e4f89b8237ac6599ec3f2:153:-\"",
+          "acknowledged": 77140.212875,
+          "active": 77143.179667,
+          "rendered": 77167.339459
+        },
+        {
+          "id": "9858884062a21321-angular-angular-reconnect-99",
+          "entity": "shopping",
+          "revision": "\"9cc1872298e44687906b18673974c212:83\"",
+          "acknowledged": 77583.550375,
+          "active": 77608.131709,
+          "rendered": 77636.18875
+        }
+      ],
+      "pass": true
+    },
+    {
+      "pairing": "angular-angular",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "angular-ios",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-angular",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "connected",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "reconnect",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    },
+    {
+      "pairing": "ios-ios",
+      "mode": "foreground",
+      "count": 0,
+      "incomplete": 0,
+      "entitiesCovered": false,
+      "p95Ms": null,
+      "durationsMs": [],
+      "samples": [],
+      "pass": false
+    }
+  ],
+  "timingPass": false,
+  "additionalGates": {
+    "hardwareAndNetwork": false,
+    "warmedSearchAndCalendar": false,
+    "personalCacheIsolation": false,
+    "dirtyFormsAndConflicts": false
+  },
+  "acceptancePass": false,
+  "environment": {
+    "server": "Ubuntu 26.04.1 ARM64 in local isolated VZ VM",
+    "vcpus": 2,
+    "allocatedMemoryGiB": 4,
+    "guestMemoryBytes": 4086222848,
+    "storage": "private SSD-backed virtual disk",
+    "docker": "29.9.3",
+    "compose": "5.7.0",
+    "client": "Playwright 1.64.1 Chromium on macOS",
+    "transport": "HTTPS with fixture CA validation and exact test-leaf SPKI browser pin",
+    "contention": "Native simulator/build validation also running on the physical Mac; diagnostic local distributions, not final isolated release acceptance",
+    "nativeMeasured": false
+  }
+}

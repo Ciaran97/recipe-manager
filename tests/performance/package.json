@@ -1,0 +1,11 @@
+{
+  "name": "recipe-manager-performance",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test measurement.test.js native-control.test.js",
+    "sync": "node household-workload.js",
+    "search-calendar": "node search-calendar.js",
+    "consistency": "node consistency.js"
+  }
+}

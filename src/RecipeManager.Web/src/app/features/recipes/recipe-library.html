@@ -1,0 +1,251 @@
+@if (remoteChanged()) {
+  <p role="status">
+    Recipes or your favourites changed on another device. Your serving input is retained.
+  </p>
+  <button type="button" (click)="reload()" [disabled]="busy() || loading()">
+    Reload latest recipes
+  </button>
+}
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+  <button type="button" (click)="reload()" [disabled]="busy()">Reload recipes</button>
+}
+@if (loading()) {
+  <p role="status">Loading your recipes…</p>
+}
+@if (selected(); as recipe) {
+  <header class="page-header">
+    <div>
+      <p class="eyebrow"><a routerLink="/recipes">Recipe library</a></p>
+      <h1>{{ recipe.title }}</h1>
+      @if (recipe.archived) {
+        <span class="badge">Archived</span>
+      }
+    </div>
+    <div class="actions">
+      <a [routerLink]="['/recipes', recipe.id, 'edit']">Edit recipe</a
+      ><button
+        type="button"
+        (click)="favourite(recipe)"
+        [disabled]="busy()"
+        [attr.aria-pressed]="recipe.favourite"
+      >
+        {{ recipe.favourite ? 'Remove from favourites' : 'Add to favourites' }}</button
+      ><button type="button" (click)="duplicate()" [disabled]="busy()">Duplicate recipe</button
+      ><button type="button" (click)="archive()" [disabled]="busy()">
+        {{ recipe.archived ? 'Restore recipe' : 'Archive recipe' }}</button
+      ><button type="button" class="destructive" (click)="remove()" [disabled]="busy()">
+        Delete recipe
+      </button>
+    </div>
+  </header>
+  @if (recipe.imageAssetId) {
+    <img
+      class="recipe-photo"
+      [src]="'/api/v1/images/' + recipe.imageAssetId"
+      [alt]="recipe.title"
+    />
+  }
+  @if (recipe.description) {
+    <p class="preserve-lines">{{ recipe.description }}</p>
+  }
+  <p>
+    Serves {{ recipe.defaultServings }}
+    @if (recipe.prepMinutes !== null) {
+      · Prep {{ recipe.prepMinutes }} min
+    }
+    @if (recipe.cookMinutes !== null) {
+      · Cook {{ recipe.cookMinutes }} min
+    }
+    · {{ recipe.measurementStandard === 'AU' ? 'Australian' : 'US' }} cup and spoon measures
+  </p>
+  <section class="card" aria-labelledby="serving-preview-heading">
+    <h2 id="serving-preview-heading">Adjust servings</h2>
+    <form [formGroup]="servings" (ngSubmit)="scaleServings()">
+      <label for="preview-servings"
+        >Preview servings<input
+          id="preview-servings"
+          type="text"
+          inputmode="decimal"
+          formControlName="target"
+          required /></label
+      ><button type="submit" [disabled]="busy() || servings.invalid">Preview quantities</button>
+    </form>
+    <p class="hint">This preview does not change the saved recipe.</p>
+    @if (preview(); as scaled) {
+      <p role="status">
+        Showing quantities for {{ scaled.targetServings }} servings. Original recipe:
+        {{ scaled.defaultServings }} servings.
+      </p>
+    }
+  </section>
+  <section class="card" aria-labelledby="ingredients-heading">
+    <h2 id="ingredients-heading">Ingredients</h2>
+    @for (group of ingredientGroups(recipe); track group.id) {
+      @if (group.title) {
+        <h3>{{ group.title }}</h3>
+      }
+      <ul class="ingredient-lines">
+        @for (line of group.lines; track line.id) {
+          <li>
+            @if (scaledLine(line.id)?.isApproximate) {
+              <span aria-label="approximately">≈ </span>
+            }
+            <strong>{{ quantity(line) }}</strong> {{ line.ingredientName }}
+            @if (line.preparation) {
+              <span> — {{ line.preparation }}</span>
+            }
+            @if (line.kind === 'unknown') {
+              <span class="badge">Unspecified quantity</span>
+            }
+            @if (line.uncertain) {
+              <span class="badge">Uncertain</span>
+            }
+            @if (scaledLine(line.id)?.exact; as exact) {
+              <details>
+                <summary>Exact quantity for {{ line.ingredientName }}</summary>
+                {{ exact.numerator }}/{{ exact.denominator }} {{ line.unit }}
+              </details>
+            }
+          </li>
+        } @empty {
+          <li>No ingredient rows.</li>
+        }
+      </ul>
+    }
+  </section>
+  <section class="card" aria-labelledby="instructions-heading">
+    <h2 id="instructions-heading">Instructions</h2>
+    <ol class="instructions">
+      @for (step of recipe.instructions; track step.id) {
+        <li>{{ step.text }}</li>
+      } @empty {
+        <li>No instructions recorded.</li>
+      }
+    </ol>
+  </section>
+  @if (recipe.notes) {
+    <section class="card">
+      <h2>Notes</h2>
+      <p class="preserve-lines">{{ recipe.notes }}</p>
+    </section>
+  }
+  @if (recipe.sourceUrl) {
+    <p>
+      <a [href]="recipe.sourceUrl" target="_blank" rel="noopener noreferrer"
+        >Original recipe source</a
+      >
+    </p>
+  }
+} @else if (!selectedId()) {
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Your shared kitchen</p>
+      <h1>Recipes</h1>
+      <p>Find a favourite, cook something new and keep the recipes worth repeating.</p>
+    </div>
+    <div class="actions">
+      <a class="button-link" routerLink="/recipes/new">New recipe</a
+      ><a class="button-link" routerLink="/recipes/import">Import recipe</a
+      ><a routerLink="/ingredients">Ingredient catalogue</a>
+    </div>
+  </header>
+  <p><a routerLink="/recipes/organisers">Collections and tags</a></p>
+  <form [formGroup]="filters" (ngSubmit)="search()">
+    <div class="filters">
+      <label for="recipe-search"
+        >Search recipes and ingredients<input
+          id="recipe-search"
+          type="search"
+          formControlName="query"
+          maxlength="200"
+      /></label>
+      <div>
+        <label for="recipe-archive-filter">Archived recipes</label
+        ><select id="recipe-archive-filter" formControlName="archived">
+          <option value="exclude">Hide archived</option>
+          <option value="include">Include archived</option>
+          <option value="only">Archived only</option>
+        </select>
+      </div>
+    </div>
+    <button
+      type="button"
+      (click)="showOrganisers.set(!showOrganisers())"
+      [attr.aria-expanded]="showOrganisers()"
+    >
+      Filter by collections and tags
+    </button>
+    @if (showOrganisers()) {
+      <app-organiser-picker
+        kind="collections"
+        [selected]="filters.controls.collectionIds.value"
+        (selectedChange)="filters.controls.collectionIds.setValue($event)"
+      />
+      <app-organiser-picker
+        kind="tags"
+        [selected]="filters.controls.tagIds.value"
+        (selectedChange)="filters.controls.tagIds.setValue($event)"
+      />
+    }
+    <button type="button" (click)="clearFilters()" [disabled]="busy()">Clear filters</button>
+    <label class="check"
+      ><input type="checkbox" formControlName="favouriteOnly" />Favourites only</label
+    ><button type="submit" [disabled]="busy()">Search recipes</button>
+  </form>
+  <div class="recipe-grid" [attr.aria-busy]="busy()">
+    @for (recipe of items(); track recipe.id) {
+      <article class="card">
+        @if (recipe.imageAssetId) {
+          <img
+            [src]="'/api/v1/images/' + recipe.imageAssetId"
+            [alt]="recipe.title"
+            loading="lazy"
+          />
+        }
+        <h2>
+          <a [routerLink]="['/recipes', recipe.id]">{{ recipe.title }}</a>
+        </h2>
+        @if (recipe.archived) {
+          <span class="badge">Archived</span>
+        }
+        @if (recipe.description) {
+          <p>{{ recipe.description }}</p>
+        }
+        <p>Serves {{ recipe.defaultServings }}</p>
+        <button
+          type="button"
+          (click)="favourite(recipe)"
+          [disabled]="busy()"
+          [attr.aria-pressed]="recipe.favourite"
+          [attr.aria-label]="
+            (recipe.favourite ? 'Remove ' : 'Favourite ') +
+            recipe.title +
+            (recipe.favourite ? ' from favourites' : '')
+          "
+        >
+          {{ recipe.favourite ? '★ Favourited' : '☆ Favourite' }}
+        </button>
+      </article>
+    } @empty {
+      @if (!loading()) {
+        <section class="card">
+          <h2>
+            {{
+              filters.controls.query.value ||
+              filters.controls.favouriteOnly.value ||
+              filters.controls.archived.value === 'only'
+                ? 'No matching recipes'
+                : 'Your recipe library starts here'
+            }}
+          </h2>
+          <p>Create a recipe with structured ingredients and clear instructions.</p>
+          <a routerLink="/recipes/new">Add a recipe</a>
+        </section>
+      }
+    }
+  </div>
+  @if (nextCursor()) {
+    <button type="button" (click)="search(true)" [disabled]="busy()">Load more recipes</button>
+  }
+}

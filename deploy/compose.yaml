@@ -1,0 +1,77 @@
+name: recipe-manager
+services:
+  db:
+    image: postgres:18@sha256:3a4264520e121176619f54ff867d12774bc81e95e7b84db58d63bccdb6144b81
+    environment:
+      POSTGRES_DB: recipe_manager
+      POSTGRES_USER: recipe_manager
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes: [postgres_data:/var/lib/postgresql]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recipe_manager -d recipe_manager"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  migrator:
+    image: ${RECIPE_MANAGER_IMAGE:-recipe-manager:local}
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    command: [migrate]
+    environment:
+      ConnectionStrings__Database: Host=db;Database=recipe_manager;Username=recipe_manager;Timeout=5
+      Database__PasswordFile: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck: {disable: true}
+    read_only: true
+    tmpfs: ["/tmp:mode=1777,size=64m"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: "no"
+  app:
+    image: ${RECIPE_MANAGER_IMAGE:-recipe-manager:local}
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    environment:
+      ConnectionStrings__Database: Host=db;Database=recipe_manager;Username=recipe_manager;Timeout=5
+      Database__PasswordFile: /run/secrets/postgres_password
+      Setup__TokenFile: /run/secrets/setup_token
+      DataProtection__KeysDirectory: /var/lib/recipe-manager/keys
+      DataProtection__CertificateFile: /run/secrets/data_protection_certificate
+      DataProtection__CertificatePasswordFile: /run/secrets/data_protection_password
+      Images__Directory: /var/lib/recipe-manager/images
+      Maintenance__SocketPath: /run/recipe-manager/maintenance.sock
+      Maintenance__SecretFile: /run/secrets/maintenance_secret
+      Server__PublicAddress: http://0.0.0.0:8080
+      Proxy__TrustedAddresses: ${RECIPE_MANAGER_TRUSTED_PROXY_IP:?Run configure-self-hosting.py first}
+      Proxy__PublicOrigin: ${RECIPE_MANAGER_PUBLIC_ORIGIN:?Set the HTTPS public origin}
+    secrets: [postgres_password, setup_token, data_protection_certificate, data_protection_password, maintenance_secret]
+    ports: ["127.0.0.1:${RECIPE_MANAGER_HTTP_PORT:-8080}:8080"]
+    volumes: [images:/var/lib/recipe-manager/images, keys:/var/lib/recipe-manager/keys]
+    tmpfs: ["/tmp:mode=1777,size=64m", "/run/recipe-manager:uid=1654,gid=1654,mode=0700,size=1m"]
+    depends_on:
+      db: {condition: service_healthy}
+      migrator: {condition: service_completed_successfully}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+secrets:
+  postgres_password: {file: "${RECIPE_MANAGER_SECRET_DIR:?Run configure-self-hosting.py first}/postgres-password"}
+  setup_token: {file: "${RECIPE_MANAGER_SECRET_DIR}/setup-token"}
+  data_protection_certificate: {file: "${RECIPE_MANAGER_SECRET_DIR}/data-protection.pfx"}
+  data_protection_password: {file: "${RECIPE_MANAGER_SECRET_DIR}/data-protection-password"}
+  maintenance_secret: {file: "${RECIPE_MANAGER_SECRET_DIR}/maintenance-secret"}
+volumes:
+  postgres_data:
+  images:
+  keys:
+networks:
+  default:
+    external: true
+    name: ${RECIPE_MANAGER_NETWORK:?Run configure-self-hosting.py first}

@@ -1,0 +1,127 @@
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Recipe library</p>
+    <h1>{{ draft() ? 'Review imported recipe' : 'Import recipe' }}</h1>
+    <p>Review and correct every field before saving to your household.</p>
+  </div>
+  <button type="button" (click)="discard()" [disabled]="isBusy()">Discard import</button>
+</header>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (notice()) {
+  <p role="status">{{ notice() }}</p>
+}
+@if (!draft()) {
+  <form [formGroup]="source" (ngSubmit)="start()" class="card" [attr.aria-busy]="busy()">
+    <fieldset [disabled]="busy()">
+      <label for="import-kind"
+        >Import method<select id="import-kind" formControlName="kind">
+          <option value="url">Website URL</option>
+          <option value="text">Pasted recipe text with AI</option>
+        </select></label
+      >
+      @if (source.controls.kind.value === 'url') {
+        <label for="import-url"
+          >Recipe URL<input
+            id="import-url"
+            type="url"
+            formControlName="url"
+            maxlength="2048"
+            placeholder="https://…"
+            required
+        /></label>
+        <p>
+          Public recipe pages with structured recipe data are supported. Images are not downloaded
+          automatically.
+        </p>
+      } @else {
+        <label for="import-text"
+          >Recipe text<textarea
+            id="import-text"
+            formControlName="text"
+            rows="12"
+            required
+          ></textarea>
+        </label>
+        <p>
+          Your text will be sent to the household's configured AI provider. Missing or uncertain
+          quantities will need review. Up to 100 KiB of pasted text.
+        </p>
+        @if (settingsLoaded() && !aiEnabled()) {
+          <p role="status">
+            AI text importing is not configured. Ask your household administrator, use a website URL
+            or <a routerLink="/recipes/new">enter the recipe manually</a>.
+          </p>
+        }
+      }
+      <div class="import-actions">
+        <button
+          class="primary"
+          type="submit"
+          [disabled]="source.controls.kind.value === 'text' && (!settingsLoaded() || !aiEnabled())"
+        >
+          {{ busy() ? 'Importing…' : 'Import for review' }}</button
+        ><a routerLink="/recipes/new">Manual recipe entry</a>
+      </div>
+    </fieldset>
+  </form>
+  @if (busy()) {
+    <p role="status">Extracting recipe details…</p>
+    <button type="button" (click)="cancelExtraction()">Cancel extraction</button>
+  }
+} @else {
+  @if (draft(); as current) {
+    <section class="card" aria-label="Import review information">
+      <details>
+        <summary>Original recipe input</summary>
+        <pre class="import-source">{{ current.originalInput }}</pre>
+      </details>
+      <p>
+        Confirm the source's cup and spoon measures and servings. Select or create household matches
+        for ingredients, and review all quantities.
+      </p>
+      <p class="hint">
+        This private draft expires {{ current.expiresAt | date: 'medium' }}. No recipe is saved
+        until you choose Save recipe.
+      </p>
+      @if ((current.extraction?.recipes?.length ?? 0) > 1) {
+        <fieldset>
+          <legend>Choose a recipe from this page</legend>
+          <div class="candidate-choices">
+            @for (candidate of current.extraction?.recipes; track $index) {
+              <button
+                type="button"
+                [attr.aria-pressed]="selectedIndex() === $index"
+                (click)="chooseCandidate($index)"
+                [disabled]="isBusy() || uncertainSave()"
+              >
+                {{ candidate.title || 'Untitled recipe' }}
+              </button>
+            }
+          </div>
+        </fieldset>
+      }
+      <button type="button" (click)="reload()" [disabled]="isBusy() || uncertainSave()">
+        Reload saved review
+      </button>
+    </section>
+  }
+  @if (uncertainSave()) {
+    <section class="card" role="status">
+      <p>
+        The previous save was not confirmed. Check its result before editing or starting another
+        import.
+      </p>
+      <button type="button" (click)="retrySave()" [disabled]="isBusy()">Check previous save</button>
+    </section>
+  }
+  @if (seed(); as value) {
+    <app-recipe-editor
+      [importSeed]="value"
+      [saveImported]="saveImported"
+      [embedded]="true"
+      [submissionUncertain]="uncertainSave()"
+    />
+  }
+}

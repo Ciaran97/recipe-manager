@@ -1,0 +1,423 @@
+@if (remoteChanged()) {
+  <p role="status">
+    Household recipes or meal plans changed. Your current edit is retained; finish or cancel it,
+    then refresh the week.
+  </p>
+  <button
+    type="button"
+    (click)="loadWeek()"
+    [disabled]="isBusy() || loading() || !!editor() || slotEditor()"
+  >
+    Refresh updated week
+  </button>
+}
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Your household week</p>
+    <h1>Meal Planner</h1>
+    <p>Plan what to cook, what to eat, and when to use leftovers.</p>
+  </div>
+</header>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (notice()) {
+  <p role="status">{{ notice() }}</p>
+}
+<div class="week-toolbar">
+  <button
+    type="button"
+    (click)="shiftWeek(-1)"
+    [disabled]="isBusy() || loading()"
+    aria-label="Previous week"
+  >
+    ← Previous
+  </button>
+  <label for="planner-week"
+    >Week containing
+    <input
+      id="planner-week"
+      type="date"
+      [value]="weekStart()"
+      (change)="goToWeek(inputValue($event))"
+      [disabled]="isBusy() || loading()"
+  /></label>
+  <button
+    type="button"
+    (click)="shiftWeek(1)"
+    [disabled]="isBusy() || loading()"
+    aria-label="Next week"
+  >
+    Next →
+  </button>
+  <button type="button" (click)="today()" [disabled]="isBusy() || loading()">This week</button>
+  <button type="button" (click)="loadWeek()" [disabled]="isBusy() || loading()">
+    Refresh calendar
+  </button>
+</div>
+<p class="hint">Dates follow your household timezone, {{ timezone() }}. Weeks start on Monday.</p>
+<div class="actions add-actions">
+  <button
+    type="button"
+    (click)="openNew('cook')"
+    [disabled]="isBusy() || loading() || !activeSlots().length"
+  >
+    Cook a recipe
+  </button>
+  <button
+    type="button"
+    (click)="openNew('leftovers')"
+    [disabled]="isBusy() || loading() || !activeSlots().length"
+  >
+    Schedule leftovers
+  </button>
+  <button
+    type="button"
+    (click)="openNew('other')"
+    [disabled]="isBusy() || loading() || !activeSlots().length"
+  >
+    Add other meal
+  </button>
+</div>
+@if (loading()) {
+  <p role="status">Loading meal plan…</p>
+}
+@if (calendar()) {
+  <div class="week-grid" aria-label="Weekly meal calendar">
+    @for (date of days(); track date) {
+      <section class="day" [attr.aria-labelledby]="'day-heading-' + date">
+        <h2 [id]="'day-heading-' + date">{{ dayLabel(date) }}</h2>
+        @for (slot of visibleSlots(); track slot.id) {
+          <section class="meal-slot" [attr.aria-labelledby]="'slot-' + date + '-' + slot.id">
+            <h3 [id]="'slot-' + date + '-' + slot.id">
+              {{ slot.name }}
+              @if (slot.archived) {
+                <span class="hint">(archived slot)</span>
+              }
+            </h3>
+            @for (meal of mealsFor(date, slot.id); track meal.id) {
+              <article class="scheduled-meal" [attr.data-meal-id]="meal.id">
+                <h4>{{ title(meal) }}</h4>
+                @if (meal.cookingEvent; as cooking) {
+                  <span class="meal-kind">Cook recipe</span>
+                  <p>
+                    Prepare <strong>{{ cooking.plannedPrepared }}</strong> portions. Eat
+                    <strong>{{ cooking.plannedEaten }}</strong
+                    >.
+                  </p>
+                  @if (cooking.actualPrepared !== null) {
+                    <p class="hint">
+                      Confirmed: {{ cooking.actualPrepared }} prepared,
+                      {{ cooking.actualEaten }} eaten.
+                    </p>
+                  }
+                  <p>
+                    {{ cooking.availabilityBasis === 'actual' ? 'Available' : 'Planned' }}
+                    leftovers: <strong>{{ cooking.availablePortions }}</strong> unreserved.
+                  </p>
+                }
+                @if (meal.leftovers; as leftovers) {
+                  <span class="meal-kind">Eat leftovers</span>
+                  <p>From cooking on {{ dayLabel(leftovers.sourceDate) }}.</p>
+                  <dl>
+                    <dt>Planned</dt>
+                    <dd>{{ leftovers.plannedPortions }}</dd>
+                    <dt>Consumed</dt>
+                    <dd>{{ leftovers.consumedPortions ?? 'Not confirmed' }}</dd>
+                    <dt>Still reserved</dt>
+                    <dd>{{ leftovers.reservedRemainder }}</dd>
+                  </dl>
+                  @if (leftovers.reservedRemainder === '0') {
+                    <p class="hint">No portions are still reserved for this meal.</p>
+                  }
+                }
+                @if (meal.type === 'other') {
+                  <span class="meal-kind">Other meal</span>
+                }
+                <div class="meal-actions">
+                  <button
+                    type="button"
+                    (click)="openEdit(meal.id)"
+                    [disabled]="isBusy()"
+                    [attr.aria-label]="'Edit ' + title(meal) + ' on ' + date"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    (click)="openPosition(meal, false)"
+                    [disabled]="isBusy()"
+                    [attr.aria-label]="'Move ' + title(meal) + ' on ' + date"
+                  >
+                    Move
+                  </button>
+                  <button
+                    type="button"
+                    (click)="openPosition(meal, true)"
+                    [disabled]="isBusy()"
+                    [attr.aria-label]="'Duplicate ' + title(meal) + ' on ' + date"
+                  >
+                    Duplicate
+                  </button>
+                  <button
+                    type="button"
+                    (click)="remove(meal)"
+                    [disabled]="isBusy()"
+                    [attr.aria-label]="'Remove ' + title(meal) + ' on ' + date"
+                  >
+                    Remove
+                  </button>
+                  @if (meal.type !== 'other') {
+                    <button
+                      class="wide"
+                      type="button"
+                      (click)="openSource(meal)"
+                      [disabled]="isBusy()"
+                      [attr.aria-label]="'Cooking and leftovers for ' + title(meal) + ' on ' + date"
+                    >
+                      Cooking &amp; leftovers
+                    </button>
+                  }
+                </div>
+              </article>
+            } @empty {
+              <p class="empty-slot">No meals</p>
+            }
+            @if (!slot.archived) {
+              <button
+                class="add-meal"
+                type="button"
+                (click)="openNew('cook', date, slot.id)"
+                [disabled]="isBusy()"
+                [attr.aria-label]="'Add meal on ' + date + ' at ' + slot.name"
+              >
+                ＋ Add meal
+              </button>
+            }
+          </section>
+        }
+      </section>
+    }
+  </div>
+  @if (!calendar()!.slots.length) {
+    <p>Create a meal slot below to start planning.</p>
+  }
+}
+@if (editor(); as mode) {
+  <section class="card editor" aria-labelledby="meal-editor-heading">
+    <h2 id="meal-editor-heading" tabindex="-1">
+      {{
+        mode === 'source'
+          ? 'Cooking and leftovers'
+          : mode === 'position'
+            ? 'Move meal'
+            : mode === 'duplicate'
+              ? 'Duplicate meal'
+              : selected()
+                ? 'Edit meal'
+                : 'Add meal'
+      }}
+    </h2>
+    @if (mode === 'leftovers' || mode === 'source') {
+      <app-leftovers-panel
+        [mode]="mode === 'source' ? 'source' : 'allocation'"
+        [mealId]="mode === 'leftovers' ? (selected()?.id ?? null) : null"
+        [sourceId]="mode === 'source' ? (selected()?.cookingEvent?.id ?? null) : null"
+        [date]="form.controls.date.value"
+        [slotId]="form.controls.slotId.value"
+        [slots]="calendar()?.slots ?? []"
+        [initialIntent]="intent()"
+        (saved)="saved()"
+        (closed)="cancelEditor()"
+      />
+    } @else {
+      @if (!selected()) {
+        <div class="actions">
+          <button
+            type="button"
+            (click)="openNew('cook', form.controls.date.value, form.controls.slotId.value)"
+            [attr.aria-pressed]="mode === 'cook'"
+          >
+            Cook recipe</button
+          ><button
+            type="button"
+            (click)="openNew('leftovers', form.controls.date.value, form.controls.slotId.value)"
+          >
+            Eat leftovers</button
+          ><button
+            type="button"
+            (click)="openNew('other', form.controls.date.value, form.controls.slotId.value)"
+            [attr.aria-pressed]="mode === 'other'"
+          >
+            Other meal
+          </button>
+        </div>
+      }
+      <form
+        [formGroup]="form"
+        (ngSubmit)="mode === 'position' || mode === 'duplicate' ? savePosition() : saveMeal()"
+      >
+        <fieldset [disabled]="isBusy()">
+          <div class="inline-fields">
+            <label for="meal-date"
+              >Meal date<input id="meal-date" type="date" formControlName="date" required /></label
+            ><label for="meal-slot"
+              >Meal slot<select id="meal-slot" formControlName="slotId" required>
+                @for (slot of calendar()?.slots ?? []; track slot.id) {
+                  @if (!slot.archived || selected()?.slotId === slot.id) {
+                    <option [value]="slot.id">
+                      {{ slot.name }}{{ slot.archived ? ' (archived)' : '' }}
+                    </option>
+                  }
+                }
+              </select></label
+            >
+          </div>
+          @if (mode === 'cook') {
+            <div class="recipe-picker">
+              <label for="planner-recipe-search"
+                >Find recipe<input
+                  id="planner-recipe-search"
+                  type="search"
+                  [value]="recipeQuery()"
+                  (input)="recipeQuery.set(inputValue($event))"
+                  (keydown.enter)="loadRecipes(); $event.preventDefault()" /></label
+              ><button type="button" (click)="loadRecipes()">Search recipes</button>
+            </div>
+            <label for="meal-recipe"
+              >Recipe<select
+                id="meal-recipe"
+                formControlName="recipeId"
+                (change)="chooseRecipe(form.controls.recipeId.value)"
+                required
+              >
+                <option value="">Choose a recipe</option>
+                @if (selected()?.cookingEvent; as current) {
+                  <option [value]="current.sourceRecipeId">
+                    Scheduled: {{ current.recipeSnapshot.title }}
+                  </option>
+                }
+                @for (recipe of recipes(); track recipe.id) {
+                  @if (recipe.id !== selected()?.cookingEvent?.sourceRecipeId) {
+                    <option [value]="recipe.id">{{ recipe.title }}</option>
+                  }
+                }
+              </select></label
+            >
+            @if (recipeNext()) {
+              <button type="button" (click)="loadRecipes(true)">Load more recipes</button>
+            }
+            @if (!recipes().length && !selected()) {
+              <p>
+                No matching recipes. <a routerLink="/recipes/new">Create a recipe</a> or change the
+                search.
+              </p>
+            }
+            <div class="inline-fields">
+              <app-portion-input
+                id="planned-prepared-field"
+                [id]="'planned-prepared'"
+                label="Portions to prepare"
+                [value]="form.controls.plannedPrepared.value"
+                [disabled]="isBusy()"
+                (valueChange)="portion('plannedPrepared', $event)"
+              /><app-portion-input
+                id="planned-eaten-field"
+                [id]="'planned-eaten'"
+                label="Portions to eat at this meal"
+                [allowZero]="true"
+                [value]="form.controls.plannedEaten.value"
+                [disabled]="isBusy()"
+                (valueChange)="portion('plannedEaten', $event)"
+              />
+            </div>
+            <p class="hint">
+              Shopping uses the portions prepared. Remaining portions are available for explicit
+              leftover meals; nothing is scheduled automatically.
+            </p>
+            @if (selected()?.cookingEvent; as cooking) {
+              <details>
+                <summary>Scheduled recipe: {{ cooking.recipeSnapshot.title }}</summary>
+                <p>
+                  Original recipe serves {{ cooking.recipeSnapshot.defaultServings }}. Editing
+                  portions or moving this meal keeps this scheduled version.
+                </p>
+                <app-recipe-content [recipe]="cooking.recipeSnapshot" />
+                <p>
+                  Use Cooking &amp; leftovers to review the latest recipe before explicitly
+                  refreshing this meal.
+                </p>
+              </details>
+            }
+          }
+          @if (mode === 'other') {
+            <label for="other-meal-label"
+              >Meal description<input
+                id="other-meal-label"
+                formControlName="label"
+                maxlength="200"
+                placeholder="e.g. takeaway or eating out"
+                required
+            /></label>
+          }
+          @if (mode === 'duplicate') {
+            <p>
+              The copy keeps planned quantities. Recorded cooking, consumed portions and dependent
+              leftover meals are not copied.
+            </p>
+          }
+          <div class="actions">
+            <button type="submit">
+              {{
+                mode === 'position'
+                  ? 'Move meal'
+                  : mode === 'duplicate'
+                    ? 'Duplicate meal'
+                    : 'Save meal'
+              }}</button
+            ><button type="button" (click)="cancelEditor()">Cancel meal changes</button>
+          </div>
+        </fieldset>
+      </form>
+    }
+  </section>
+}
+<details class="card slot-management">
+  <summary>Manage meal slots</summary>
+  <p>
+    Slots are shared by your household. Used slots are archived when removed so existing meals stay
+    visible.
+  </p>
+  <div class="actions">
+    @for (slot of calendar()?.slots ?? []; track slot.id) {
+      <button type="button" (click)="editSlot(slot)" [disabled]="isBusy()">
+        Edit {{ slot.name }}{{ slot.archived ? ' (archived)' : '' }}
+      </button>
+    }
+    <button type="button" (click)="newSlot()" [disabled]="isBusy()">New meal slot</button>
+  </div>
+  @if (slotEditor()) {
+    <form [formGroup]="slotForm" (ngSubmit)="saveSlot()">
+      <fieldset [disabled]="isBusy()">
+        <label for="slot-name"
+          >Slot name<input id="slot-name" formControlName="name" maxlength="200" required /></label
+        ><label for="slot-position"
+          >Position (first is 0)<input
+            id="slot-position"
+            type="number"
+            formControlName="position"
+            min="0"
+            step="1"
+            required
+        /></label>
+        <div class="actions">
+          <button type="submit">Save meal slot</button>
+          @if (editingSlot()) {
+            <button type="button" (click)="deleteSlot()">Remove meal slot</button>
+          }
+          <button type="button" (click)="cancelSlot()">Cancel slot changes</button>
+        </div>
+      </fieldset>
+    </form>
+  }
+</details>

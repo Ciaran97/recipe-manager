@@ -1,0 +1,51 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+/packages/
+# Web
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+**/playwright-report/
+**/test-results/
+# Swift (keep ios/Packages source)
+**/.build/
+**/DerivedData/
+**/.swiftpm/
+**/xcuserdata/
+*.xcuserstate
+*.mobileprovision
+*.p12
+# Local secrets and caches
+.env*
+!.env.example
+!**/.env.example
+secrets/
+.cache/
+*.log
+*.key
+*.pem
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local native signing overrides
+ios/Local.xcconfig
+*.pfx
+/tests/e2e/.runtime/
+
+# Private development image volume
+/deploy/data/
+
+# Python operator/validation helpers
+**/__pycache__/
+*.py[cod]
+
+# Public local CA exported by the home-server guide
+/recipe-manager-local-root.crt

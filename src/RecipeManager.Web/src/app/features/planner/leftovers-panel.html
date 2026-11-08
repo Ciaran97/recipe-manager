@@ -1,0 +1,603 @@
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (busy()) {
+  <p role="status">Updating cooking and leftover details…</p>
+}
+@if (source(); as current) {
+  <section class="source-summary" aria-labelledby="source-summary-heading">
+    <h3 id="source-summary-heading">{{ current.recipeTitle }} — {{ dayLabel(current.date) }}</h3>
+    <dl>
+      <dt>Planned prepared / eaten</dt>
+      <dd>{{ current.plannedPrepared }} / {{ current.plannedEaten }}</dd>
+      <dt>Actual prepared / eaten</dt>
+      <dd>
+        {{ current.actualPrepared ?? 'Not confirmed' }} /
+        {{ current.actualEaten ?? 'Not confirmed' }}
+      </dd>
+      <dt>{{ current.basis === 'actual' ? 'Available' : 'Planned' }} unreserved portions</dt>
+      <dd>{{ current.availablePortions }}</dd>
+    </dl>
+    <p class="hint">
+      Planned reservations are separate from confirmed consumption. Leftover meals never add
+      shopping ingredients.
+    </p>
+  </section>
+}
+@if (mode() === 'allocation') {
+  <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
+    <fieldset [disabled]="busy()">
+      <h3>{{ meal() ? 'Edit leftover reservation' : 'Schedule leftovers explicitly' }}</h3>
+      <label for="leftover-source-week"
+        >Cooking week<input
+          id="leftover-source-week"
+          type="date"
+          [value]="sourceWeek()"
+          (change)="chooseWeek(inputValue($event))"
+      /></label>
+      <label for="leftover-source"
+        >Source cooking event<select
+          id="leftover-source"
+          formControlName="sourceId"
+          (change)="selectSource(allocationForm.controls.sourceId.value)"
+          required
+        >
+          <option value="">Choose a cooking event</option>
+          @if (source(); as selected) {
+            <option [value]="selected.sourceCookingEventId">
+              Selected: {{ selected.recipeTitle }} — {{ dayLabel(selected.date) }}
+            </option>
+          }
+          @for (choice of sourceChoices(); track choice.id) {
+            @if (choice.cookingEvent?.id !== source()?.sourceCookingEventId) {
+              <option [value]="choice.cookingEvent?.id ?? ''">{{ choiceLabel(choice) }}</option>
+            }
+          }
+        </select></label
+      >
+      @if (!sourceChoices().length) {
+        <p>
+          No cooking events in this week. Choose an earlier cooking week or schedule a recipe to
+          cook first.
+        </p>
+      }
+      <p class="hint">
+        Choose a cooking event before this leftover meal. You can reserve some or all of its
+        unreserved portions.
+      </p>
+      <div class="two-fields">
+        <label for="leftover-date"
+          >Leftover meal date<input
+            id="leftover-date"
+            type="date"
+            formControlName="date"
+            required /></label
+        ><label for="leftover-slot"
+          >Meal slot<select id="leftover-slot" formControlName="slotId" required>
+            @for (slot of slots(); track slot.id) {
+              @if (!slot.archived || meal()?.slotId === slot.id) {
+                <option [value]="slot.id">
+                  {{ slot.name }}{{ slot.archived ? ' (archived)' : '' }}
+                </option>
+              }
+            }
+          </select></label
+        >
+      </div>
+      <app-portion-input
+        id="leftover-plan-field"
+        [id]="'leftover-planned'"
+        label="Planned leftover portions"
+        [value]="allocationForm.controls.plannedPortions.value"
+        [disabled]="busy()"
+        (valueChange)="amount('allocation', 'plannedPortions', $event)"
+      />
+      @if (meal()?.leftovers; as allocation) {
+        <p>
+          Recorded consumed portions:
+          <strong>{{ allocation.consumedPortions ?? 'Not confirmed' }}</strong
+          >. Current commitment: {{ allocation.commitment }}.
+        </p>
+        <app-portion-input
+          id="leftover-reserved-field"
+          [id]="'leftover-reserved'"
+          label="Remaining reservation"
+          [allowZero]="true"
+          [value]="allocationForm.controls.reservedRemainder.value"
+          [disabled]="busy()"
+          (valueChange)="amount('allocation', 'reservedRemainder', $event)"
+        />
+        <button type="button" (click)="releaseReservation()">
+          Set remaining reservation to zero
+        </button>
+        <p class="hint">
+          Changing this reservation keeps recorded consumption and planned portions separate. Save
+          to apply the chosen reservation.
+        </p>
+      }
+      @if (staleAllocation()) {
+        <p class="error">
+          The source changed since this meal was loaded. Reload the meal before saving.
+        </p>
+      }
+      <div class="actions">
+        <button type="submit" [disabled]="staleAllocation()">
+          {{ meal() ? 'Save leftover plan' : 'Schedule leftover meal' }}</button
+        ><button type="button" (click)="reloadAllocation()">Reload meal and discard edits</button
+        ><button type="button" (click)="closed.emit()">Cancel meal changes</button>
+      </div>
+    </fieldset>
+  </form>
+  @if (meal()?.leftovers; as allocation) {
+    <details class="record-consumption">
+      <summary>Confirm or correct leftover consumption</summary>
+      @if (allocationForm.dirty) {
+        <p class="hint">Save or cancel planned meal changes before confirming consumption.</p>
+      }
+      <p>Confirmation is optional. Planning and shopping work without daily cooking records.</p>
+      <form [formGroup]="consumptionForm" (ngSubmit)="confirmConsumption()">
+        <fieldset [disabled]="busy() || staleAllocation() || allocationForm.dirty">
+          <app-portion-input
+            id="leftover-consumed-field"
+            [id]="'leftover-consumed'"
+            label="Total portions consumed at this meal"
+            [allowZero]="true"
+            [value]="consumptionForm.controls.consumed.value"
+            [disabled]="busy()"
+            (valueChange)="amount('consumption', 'consumed', $event)"
+          />
+          <app-portion-input
+            id="consumption-reserved-field"
+            [id]="'consumption-reserved'"
+            label="Portions still reserved after confirmation"
+            [allowZero]="true"
+            [value]="consumptionForm.controls.reserved.value"
+            [disabled]="busy()"
+            (valueChange)="amount('consumption', 'reserved', $event)"
+          />
+          <p class="hint">
+            Enter the absolute consumed total. Choose zero remaining reservation to release unused
+            portions; the original plan remains visible.
+          </p>
+          @if (source()?.basis === 'planned') {
+            <label class="check"
+              ><input type="checkbox" formControlName="confirmSource" />I also confirm the source
+              cooking quantities below</label
+            >
+            <app-portion-input
+              id="source-prepared-consumption-field"
+              [id]="'source-prepared-consumption'"
+              label="Actual portions prepared in the original cooking meal"
+              [value]="consumptionForm.controls.prepared.value"
+              [disabled]="busy()"
+              (valueChange)="amount('consumption', 'prepared', $event)"
+            />
+            <app-portion-input
+              id="source-eaten-consumption-field"
+              [id]="'source-eaten-consumption'"
+              label="Actual portions eaten in the original cooking meal"
+              [allowZero]="true"
+              [value]="consumptionForm.controls.eaten.value"
+              [disabled]="busy()"
+              (valueChange)="amount('consumption', 'eaten', $event)"
+            />
+          }
+          <div class="actions">
+            <button type="submit">Confirm leftover consumption</button>
+            @if (allocation.consumedPortions !== null) {
+              <button type="button" (click)="clearConsumption()">Clear recorded consumption</button>
+            }
+          </div>
+        </fieldset>
+      </form>
+    </details>
+  }
+}
+@if (mode() === 'source' && source()) {
+  @if (!operation()) {
+    <form [formGroup]="actualForm" (ngSubmit)="saveActuals()">
+      <fieldset [disabled]="busy()">
+        <h3>
+          {{
+            source()?.actualPrepared === null
+              ? 'Confirm cooking (optional)'
+              : 'Correct actual cooking quantities'
+          }}
+        </h3>
+        <div class="two-fields">
+          <app-portion-input
+            id="actual-prepared-field"
+            [id]="'actual-prepared'"
+            label="Actual portions prepared"
+            [value]="actualForm.controls.prepared.value"
+            [disabled]="busy()"
+            (valueChange)="amount('actual', 'prepared', $event)"
+          /><app-portion-input
+            id="actual-eaten-field"
+            [id]="'actual-eaten'"
+            label="Actual portions eaten at the cooking meal"
+            [allowZero]="true"
+            [value]="actualForm.controls.eaten.value"
+            [disabled]="busy()"
+            (valueChange)="amount('actual', 'eaten', $event)"
+          />
+        </div>
+        <p class="hint">
+          Values are prefilled for quick confirmation. Shopping lists keep their planned basis
+          unless you explicitly regenerate or reconcile them.
+        </p>
+        <div class="actions">
+          <button type="submit">
+            {{
+              source()?.actualPrepared === null
+                ? 'Confirm cooking quantities'
+                : 'Save actual correction'
+            }}
+          </button>
+          @if (source()?.actualPrepared !== null) {
+            <button type="button" (click)="clearActuals()">Clear cooking confirmation</button>
+          }
+          <button type="button" (click)="closed.emit()">Done</button>
+        </div>
+      </fieldset>
+    </form>
+    @if (needsReview()) {
+      <button type="button" (click)="reloadForReview()" [disabled]="busy()">
+        Reload current balances for review</button
+      ><label class="check"
+        ><input
+          type="checkbox"
+          [checked]="reviewed()"
+          (change)="reviewed.set($any($event.target).checked)"
+        />I reviewed the current source quantities</label
+      >
+    }
+    <section class="recipe-refresh" aria-labelledby="refresh-heading">
+      <h3 id="refresh-heading">Scheduled recipe</h3>
+      <p>This cooking event keeps its scheduled recipe even when the library recipe is edited.</p>
+      <button type="button" (click)="previewRefresh()" [disabled]="busy() || hasUnsavedChanges()">
+        Review latest recipe
+      </button>
+      @if (hasUnsavedChanges()) {
+        <p class="hint">Save or cancel portion changes before reviewing a recipe refresh.</p>
+      }
+      @if (preview(); as comparison) {
+        <div class="refresh-comparison">
+          <section>
+            <h4>Scheduled version</h4>
+            <app-recipe-content [recipe]="comparison.current" />
+          </section>
+          <section>
+            <h4>Latest recipe</h4>
+            <app-recipe-content [recipe]="comparison.proposed" />
+          </section>
+        </div>
+        <p>
+          Refreshing keeps meal portions and leftover allocations. Existing shopping lists need
+          their own explicit review.
+        </p>
+        <div class="actions">
+          <button type="button" (click)="applyRefresh()" [disabled]="busy()">
+            Apply reviewed recipe refresh</button
+          ><button type="button" (click)="discardPreview()" [disabled]="busy()">
+            Keep scheduled version
+          </button>
+        </div>
+      }
+    </section>
+    @if (source()!.allocations.length) {
+      <section>
+        <h3>Dependent leftover meals</h3>
+        <ul>
+          @for (allocation of source()!.allocations; track allocation.mealId) {
+            <li>
+              {{ dayLabel(allocation.date) }} — planned {{ allocation.allocation.plannedPortions }},
+              consumed {{ allocation.allocation.consumedPortions ?? 'not confirmed' }}, still
+              reserved {{ allocation.allocation.reservedRemainder }}.
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  } @else {
+    <section class="resolution" aria-labelledby="resolution-heading">
+      <h3 id="resolution-heading">Review related leftover meals</h3>
+      <p>
+        Choose explicit changes below. Meals set to Keep remain unchanged. All selected changes
+        apply together.
+      </p>
+      @if (operation()?.kind === 'plan' || operation()?.kind === 'move') {
+        <form [formGroup]="planForm">
+          <fieldset [disabled]="busy()">
+            <div class="two-fields">
+              <label for="resolved-source-date"
+                >Cooking date<input
+                  id="resolved-source-date"
+                  type="date"
+                  formControlName="date"
+                  required /></label
+              ><label for="resolved-source-slot"
+                >Cooking slot<select id="resolved-source-slot" formControlName="slotId">
+                  @for (slot of slots(); track slot.id) {
+                    @if (!slot.archived || slot.id === source()?.slotId) {
+                      <option [value]="slot.id">{{ slot.name }}</option>
+                    }
+                  }
+                </select></label
+              >
+            </div>
+            @if (operation()?.kind === 'plan') {
+              <div class="two-fields">
+                <app-portion-input
+                  id="resolved-prepared-field"
+                  [id]="'resolved-prepared'"
+                  label="Planned portions to prepare"
+                  [value]="planForm.controls.prepared.value"
+                  [disabled]="busy()"
+                  (valueChange)="amount('plan', 'prepared', $event)"
+                /><app-portion-input
+                  id="resolved-eaten-field"
+                  [id]="'resolved-eaten'"
+                  label="Planned portions to eat at cooking meal"
+                  [allowZero]="true"
+                  [value]="planForm.controls.eaten.value"
+                  [disabled]="busy()"
+                  (valueChange)="amount('plan', 'eaten', $event)"
+                />
+              </div>
+            }
+          </fieldset>
+        </form>
+      }
+      @if (operation()?.kind === 'actuals') {
+        <form [formGroup]="actualForm">
+          <fieldset [disabled]="busy()">
+            <div class="two-fields">
+              <app-portion-input
+                id="resolved-actual-prepared-field"
+                [id]="'resolved-actual-prepared'"
+                label="Corrected actual prepared portions"
+                [value]="actualForm.controls.prepared.value"
+                [disabled]="busy()"
+                (valueChange)="amount('actual', 'prepared', $event)"
+              /><app-portion-input
+                id="resolved-actual-eaten-field"
+                [id]="'resolved-actual-eaten'"
+                label="Corrected actual eaten portions"
+                [allowZero]="true"
+                [value]="actualForm.controls.eaten.value"
+                [disabled]="busy()"
+                (valueChange)="amount('actual', 'eaten', $event)"
+              />
+            </div>
+          </fieldset>
+        </form>
+      }
+      @if (operation()?.kind === 'clearActuals') {
+        <p>
+          Proposed change: clear source actuals and return to its planned basis. Explicitly clear or
+          resolve any dependent recorded consumption.
+        </p>
+      }
+      @if (operation()?.kind === 'delete') {
+        <label class="check"
+          ><input
+            type="checkbox"
+            [checked]="confirmDelete()"
+            (change)="confirmDelete.set($any($event.target).checked)"
+          />Delete this cooking event after the dependent meals are explicitly removed or
+          reassigned</label
+        >
+      }
+      @if (proposedRecipe(); as recipe) {
+        <details>
+          <summary>Selected replacement recipe: {{ recipe.title }}</summary>
+          <ul>
+            @for (line of recipe.ingredients; track line.id) {
+              <li>{{ line.quantityText || 'Quantity unspecified' }} {{ line.ingredientName }}</li>
+            }
+          </ul>
+          <ol>
+            @for (step of recipe.instructions; track step.id) {
+              <li>{{ step.text }}</li>
+            }
+          </ol>
+        </details>
+        @if (recipeReviewNeeded()) {
+          <label class="check"
+            ><input
+              type="checkbox"
+              [checked]="recipeReviewed()"
+              (change)="recipeReviewed.set($any($event.target).checked)"
+            />I reviewed the selected recipe’s latest changes</label
+          >
+        }
+      }
+      <label for="resolution-source-week"
+        >Week for alternative cooking sources<input
+          id="resolution-source-week"
+          type="date"
+          [value]="sourceWeek()"
+          (change)="chooseWeek(inputValue($event))" /></label
+      ><button type="button" (click)="loadChoices()" [disabled]="busy()">
+        Load alternative cooking sources
+      </button>
+      <form [formGroup]="resolutionForm">
+        <fieldset [disabled]="busy()">
+          <div formArrayName="rows">
+            @for (row of rows.controls; track row.controls.mealId.value; let i = $index) {
+              <section
+                class="dependent"
+                [class.conflict]="conflicts().includes(row.controls.mealId.value)"
+                [formGroupName]="i"
+                [attr.aria-labelledby]="'dependent-' + row.controls.mealId.value"
+              >
+                <h4 [id]="'dependent-' + row.controls.mealId.value">
+                  Leftover meal {{ dayLabel(source()!.allocations[i].date) }}
+                </h4>
+                <p>
+                  Current: planned {{ source()!.allocations[i].allocation.plannedPortions }},
+                  consumed
+                  {{ source()!.allocations[i].allocation.consumedPortions ?? 'not confirmed' }},
+                  still reserved {{ source()!.allocations[i].allocation.reservedRemainder }}.
+                </p>
+                <label [for]="'resolution-action-' + row.controls.mealId.value"
+                  >Change for this meal<select
+                    [id]="'resolution-action-' + row.controls.mealId.value"
+                    formControlName="action"
+                  >
+                    <option value="keep">Keep unchanged</option>
+                    <option value="release">Release some or all remaining reservation</option>
+                    <option value="edit">Correct portions or consumption</option>
+                    <option value="move">Move leftover meal</option>
+                    <option value="reassign">Use another cooking source</option>
+                    <option value="delete">Delete this leftover meal</option>
+                  </select></label
+                >
+                @if (
+                  row.controls.action.value === 'release' ||
+                  row.controls.action.value === 'edit' ||
+                  row.controls.action.value === 'reassign'
+                ) {
+                  <label [for]="'resolution-reserved-' + row.controls.mealId.value"
+                    >Reservation to keep<input
+                      [id]="'resolution-reserved-' + row.controls.mealId.value"
+                      type="number"
+                      inputmode="decimal"
+                      min="0"
+                      step="0.5"
+                      [value]="row.controls.reserved.value"
+                      (input)="
+                        row.controls.reserved.setValue(inputValue($event));
+                        row.controls.reserved.markAsDirty()
+                      "
+                  /></label>
+                  <p class="hint">
+                    Use zero to release all remaining reservation. Recorded consumed portions stay
+                    separate.
+                  </p>
+                }
+                @if (
+                  row.controls.action.value === 'edit' || row.controls.action.value === 'reassign'
+                ) {
+                  <label [for]="'resolution-planned-' + row.controls.mealId.value"
+                    >Planned portions<input
+                      [id]="'resolution-planned-' + row.controls.mealId.value"
+                      type="number"
+                      inputmode="decimal"
+                      min="0"
+                      step="0.5"
+                      [value]="row.controls.planned.value"
+                      (input)="
+                        row.controls.planned.setValue(inputValue($event));
+                        row.controls.planned.markAsDirty()
+                      "
+                  /></label>
+                  <label [for]="'resolution-consumption-mode-' + row.controls.mealId.value"
+                    >Recorded consumption<select
+                      [id]="'resolution-consumption-mode-' + row.controls.mealId.value"
+                      formControlName="consumption"
+                    >
+                      <option value="keep">Keep recorded value</option>
+                      <option value="replace">Replace with an explicit total</option>
+                      <option value="clear">Explicitly clear recorded consumption</option>
+                    </select></label
+                  >
+                  @if (row.controls.consumption.value === 'replace') {
+                    <label [for]="'resolution-consumed-' + row.controls.mealId.value"
+                      >Absolute consumed total<input
+                        [id]="'resolution-consumed-' + row.controls.mealId.value"
+                        type="number"
+                        inputmode="decimal"
+                        min="0"
+                        step="0.5"
+                        [value]="row.controls.consumed.value"
+                        (input)="
+                          row.controls.consumed.setValue(inputValue($event));
+                          row.controls.consumed.markAsDirty()
+                        "
+                    /></label>
+                  }
+                }
+                @if (
+                  row.controls.action.value === 'move' || row.controls.action.value === 'reassign'
+                ) {
+                  <div class="two-fields">
+                    <label [for]="'resolution-date-' + row.controls.mealId.value"
+                      >New meal date<input
+                        [id]="'resolution-date-' + row.controls.mealId.value"
+                        type="date"
+                        formControlName="date" /></label
+                    ><label [for]="'resolution-slot-' + row.controls.mealId.value"
+                      >New meal slot<select
+                        [id]="'resolution-slot-' + row.controls.mealId.value"
+                        formControlName="slotId"
+                      >
+                        @for (slot of slots(); track slot.id) {
+                          @if (!slot.archived || source()!.allocations[i].slotId === slot.id) {
+                            <option [value]="slot.id">{{ slot.name }}</option>
+                          }
+                        }
+                      </select></label
+                    >
+                  </div>
+                }
+                @if (row.controls.action.value === 'reassign') {
+                  <label [for]="'resolution-target-' + row.controls.mealId.value"
+                    >New cooking source<select
+                      [id]="'resolution-target-' + row.controls.mealId.value"
+                      formControlName="targetId"
+                      (change)="selectTarget(i, row.controls.targetId.value)"
+                    >
+                      <option value="">Choose a cooking event</option>
+                      @for (choice of sourceChoices(); track choice.id) {
+                        @if (choice.cookingEvent?.id !== source()?.sourceCookingEventId) {
+                          <option [value]="choice.cookingEvent?.id ?? ''">
+                            {{ choiceLabel(choice) }}
+                          </option>
+                        }
+                      }
+                    </select></label
+                  >
+                  @if (targets().get(row.controls.targetId.value); as target) {
+                    <p>
+                      {{ target.recipeTitle }}: {{ target.availablePortions }}
+                      {{ target.basis }} unreserved portions.
+                    </p>
+                  }
+                }
+                @if (
+                  row.controls.action.value === 'delete' &&
+                  source()!.allocations[i].allocation.consumedPortions !== null
+                ) {
+                  <label class="check"
+                    ><input type="checkbox" formControlName="confirmDelete" />I explicitly confirm
+                    removing this meal’s recorded consumption and reservation</label
+                  >
+                }
+              </section>
+            }
+          </div>
+        </fieldset>
+      </form>
+      @if (needsReview()) {
+        <label class="check"
+          ><input
+            type="checkbox"
+            [checked]="reviewed()"
+            (change)="reviewed.set($any($event.target).checked)"
+          />I reviewed the current source quantities and dependent meals</label
+        >
+      }
+      <div class="actions">
+        <button type="button" (click)="applyResolution()" [disabled]="busy()">
+          Apply all reviewed changes</button
+        ><button type="button" (click)="reloadForReview()" [disabled]="busy()">
+          Reload current balances for review</button
+        ><button type="button" (click)="closed.emit()" [disabled]="busy()">
+          Cancel meal changes
+        </button>
+      </div>
+    </section>
+  }
+}

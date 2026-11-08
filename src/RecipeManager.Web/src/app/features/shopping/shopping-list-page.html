@@ -1,0 +1,590 @@
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Shop together</p>
+    <h1>Shopping Lists</h1>
+    <p>Shared, editable snapshots of what your household needs.</p>
+  </div>
+  <button
+    class="primary"
+    type="button"
+    (click)="create()"
+    [disabled]="state.busy() || state.initializing()"
+  >
+    New shopping list
+  </button>
+</header>
+@if (state.error()) {
+  <p role="alert" class="error">{{ state.error() }}</p>
+}
+@if (state.notice()) {
+  <p role="status" class="notice">{{ state.notice() }}</p>
+}
+<div class="shopping-layout">
+  <aside aria-label="Saved shopping lists">
+    <div class="actions">
+      <h2>Saved lists</h2>
+      <button type="button" (click)="state.loadIndex()" [disabled]="state.busy()">
+        Refresh lists
+      </button>
+    </div>
+    @for (list of state.lists(); track list.id) {
+      <button
+        class="list-link"
+        type="button"
+        (click)="state.open(list.id)"
+        [disabled]="state.busy()"
+        [attr.aria-current]="state.current()?.id === list.id ? 'true' : null"
+      >
+        <strong>{{ list.name }}</strong
+        ><span
+          >{{ list.summary.knownItemCount }} known · {{ list.summary.unresolvedCount }} unresolved ·
+          {{ list.summary.purchasedCount }} purchased</span
+        >
+      </button>
+    } @empty {
+      <p>No shopping lists yet. Generate one from your plans or recipes, or start an empty list.</p>
+    }
+    @if (state.nextCursor()) {
+      <button type="button" (click)="state.loadIndex(true)" [disabled]="state.busy()">
+        More shopping lists
+      </button>
+    }
+  </aside>
+  <section class="shopping-content" aria-label="Shopping list">
+    @if (state.current(); as list) {
+      <header class="list-header">
+        <h2>{{ list.name }}</h2>
+        <div class="actions">
+          <button
+            type="button"
+            (click)="manual()"
+            [disabled]="state.busy() || state.deletedRemotely()"
+          >
+            Add manual item
+          </button>
+          <button
+            type="button"
+            (click)="rename()"
+            [disabled]="state.busy() || state.deletedRemotely()"
+          >
+            Rename list
+          </button>
+          <button type="button" (click)="state.refresh()" [disabled]="state.busy()">
+            Refresh list
+          </button>
+          @if (list.selection) {
+            <button
+              type="button"
+              (click)="reconcile()"
+              [disabled]="state.busy() || state.deletedRemotely()"
+            >
+              Review updated requirements
+            </button>
+          }
+          <button
+            type="button"
+            class="destructive"
+            (click)="state.deleteList()"
+            [disabled]="state.busy()"
+          >
+            Delete list
+          </button>
+        </div>
+      </header>
+      <p>
+        {{ list.summary.knownItemCount }} known requirements ·
+        {{ list.summary.unresolvedCount }} unresolved amounts ·
+        {{ list.summary.purchasedCount }} purchased
+      </p>
+      <p class="hint">
+        {{
+          list.basis === 'actual'
+            ? 'Uses explicitly reviewed actual preparation.'
+            : 'Uses planned portions to prepare.'
+        }}
+        Recipes and plans never silently replace this list's edits.
+      </p>
+      @if (state.deletedRemotely()) {
+        <p class="warning" role="status">
+          This list was removed by another member. Your entered text is retained; copy anything you
+          need before leaving.
+        </p>
+      } @else if (state.outdated()) {
+        <p class="warning" role="status">
+          This list changed on another device. Your draft is retained. Reload before saving or
+          applying a review.
+        </p>
+      }
+      @if (state.sourcesChanged()) {
+        <p class="warning" role="status">
+          Recipe or meal requirements may have changed. Review them before reconciling; this saved
+          list is unchanged.
+        </p>
+      }
+    }
+
+    @if (state.editor(); as editor) {
+      <section class="editor" aria-labelledby="shopping-editor-heading">
+        <div class="actions">
+          <h2 id="shopping-editor-heading" tabindex="-1">
+            {{
+              editor === 'create'
+                ? 'Create shopping list'
+                : editor === 'manual'
+                  ? 'Add manual item'
+                  : editor === 'item'
+                    ? 'Edit shopping item'
+                    : editor === 'rename'
+                      ? 'Rename shopping list'
+                      : 'Review updated requirements'
+            }}
+          </h2>
+          <button type="button" (click)="cancel()" [disabled]="state.busy()">Cancel editing</button>
+        </div>
+        @if (editor === 'create') {
+          <form [formGroup]="state.creationForm" (ngSubmit)="state.create()">
+            <label>List name<input formControlName="name" maxlength="200" required /></label>
+            <ng-container [ngTemplateOutlet]="sources" />
+            <button
+              class="primary"
+              type="submit"
+              [disabled]="state.busy() || state.creationForm.invalid"
+            >
+              Create shopping list
+            </button>
+          </form>
+        }
+        @if (editor === 'manual') {
+          <form [formGroup]="state.manualForm" (ngSubmit)="state.saveManual()">
+            <label>Item name<input formControlName="label" maxlength="200" required /></label>
+            <div class="fields">
+              <label
+                >Amount type<select formControlName="kind">
+                  <option value="unknown">Text / amount not specified</option>
+                  <option value="numeric">Known quantity</option>
+                </select></label
+              >
+              <label
+                >Manual item quantity<input
+                  formControlName="quantityText"
+                  maxlength="200"
+                  placeholder="For example 2 or as needed"
+              /></label>
+              @if (state.manualForm.controls.kind.value === 'numeric') {
+                <label
+                  >Manual item unit<select formControlName="unit">
+                    @for (unit of units; track unit.value) {
+                      <option [value]="unit.value">{{ unit.label }}</option>
+                    }
+                  </select></label
+                ><label
+                  >Measurement standard<select formControlName="measurementStandard">
+                    <option value="AU">Australian</option>
+                    <option value="US">US</option>
+                  </select></label
+                >
+              }
+            </div>
+            <label
+              >Shopping category<select formControlName="categoryId">
+                <option value="">Other</option>
+                @for (category of state.categories(); track category.id) {
+                  <option [value]="category.id">{{ category.name }}</option>
+                }
+              </select></label
+            >
+            <p class="hint">
+              A blank or text amount remains visible as unresolved. Manual items keep their own
+              identity.
+            </p>
+            <button
+              class="primary"
+              type="submit"
+              [disabled]="state.busy() || state.manualForm.invalid || state.deletedRemotely()"
+            >
+              Save manual item
+            </button>
+          </form>
+        }
+        @if (editor === 'item' && state.editingItem(); as item) {
+          <form [formGroup]="state.itemForm" (ngSubmit)="state.saveItem()">
+            @if (item.manual) {
+              <label>Item name<input formControlName="label" maxlength="200" required /></label>
+            } @else {
+              <h3>{{ item.label }}</h3>
+              <p class="hint">
+                Correct ingredient names in the
+                <a routerLink="/ingredients">household catalogue</a>. This list retains its saved
+                ingredient name until reconciliation.
+              </p>
+            }
+            <label
+              >Quantity type<select formControlName="kind">
+                <option value="numeric">Known quantity</option>
+                <option value="unknown">Text / unresolved amount</option>
+              </select></label
+            >
+            <label>Shopping quantity<input formControlName="quantityText" maxlength="200" /></label>
+            @if (state.itemForm.controls.kind.value === 'numeric') {
+              <div class="fields">
+                <label
+                  >Shopping unit<select formControlName="unit">
+                    @for (unit of units; track unit.value) {
+                      <option [value]="unit.value">{{ unit.label }}</option>
+                    }
+                  </select></label
+                ><label
+                  >Measurement standard<select formControlName="measurementStandard">
+                    <option value="AU">Australian</option>
+                    <option value="US">US</option>
+                  </select></label
+                >
+              </div>
+            }
+            <p class="hint">
+              Decimals and fractions are accepted. Your override does not change the source recipe
+              or another unresolved requirement.
+            </p>
+            <button
+              class="primary"
+              type="submit"
+              [disabled]="state.busy() || state.itemForm.invalid || state.deletedRemotely()"
+            >
+              Save item changes
+            </button>
+            @if (item.hasOverride) {
+              <button type="button" (click)="state.clearOverride(item)" [disabled]="state.busy()">
+                Use generated quantity
+              </button>
+            }
+          </form>
+        }
+        @if (editor === 'rename') {
+          <form [formGroup]="state.renameForm" (ngSubmit)="state.rename()">
+            <label>List name<input formControlName="name" maxlength="200" required /></label
+            ><button
+              class="primary"
+              type="submit"
+              [disabled]="state.busy() || state.renameForm.invalid"
+            >
+              Save list name
+            </button>
+          </form>
+        }
+        @if (editor === 'reconcile') {
+          <form [formGroup]="state.creationForm" (ngSubmit)="state.previewChanges()">
+            <ng-container [ngTemplateOutlet]="sources" /><button
+              type="submit"
+              [disabled]="state.busy() || state.deletedRemotely()"
+            >
+              Preview requirements
+            </button>
+          </form>
+          @if (state.outdated()) {
+            <button type="button" (click)="state.reloadReview()" [disabled]="state.busy()">
+              Reload list for a new review; keep choices
+            </button>
+          }
+          @if (state.preview(); as preview) {
+            <p>
+              {{ preview.changes.length }} changed requirements.
+              {{ preview.manualItems.length }} manual items remain unchanged.
+            </p>
+            @for (change of preview.changes; track change.key) {
+              <article
+                class="change"
+                [class.conflict]="change.conflict"
+                [attr.data-review-key]="change.key"
+              >
+                <h3>{{ change.newBaseline?.label ?? change.oldBaseline?.label }}</h3>
+                <div class="comparison">
+                  <p>
+                    <strong>Saved requirement</strong><br />{{
+                      change.oldBaseline?.displayText ?? 'Not present'
+                    }}
+                  </p>
+                  <p>
+                    <strong>Updated requirement</strong><br />{{
+                      change.newBaseline?.displayText ?? 'No longer required'
+                    }}
+                  </p>
+                  <p>
+                    <strong>Your item</strong><br />{{
+                      change.userState?.displayText ?? 'Not present'
+                    }}
+                    @if (change.userState?.removed) {
+                      <span> · Removed</span>
+                    }
+                    @if (change.userState?.purchased) {
+                      <span> · Purchased</span>
+                    }
+                  </p>
+                </div>
+                @if (change.conflict) {
+                  <p class="warning">
+                    This affects an edit, removal or purchased requirement. Choose explicitly.
+                  </p>
+                }
+                <label
+                  >Requirement decision<select
+                    (change)="choice(change.key, $event)"
+                    [disabled]="state.busy()"
+                  >
+                    @for (value of change.allowedChoices; track value) {
+                      <option
+                        [value]="value"
+                        [selected]="value === state.choices()[change.key].choice"
+                      >
+                        {{ choiceLabel(value) }}
+                      </option>
+                    }
+                  </select></label
+                >
+                @if (
+                  change.purchaseDecisionRequired &&
+                  state.choices()[change.key].choice === 'acceptNew'
+                ) {
+                  <label
+                    >Purchase state for increased requirement<select
+                      [value]="
+                        state.choices()[change.key].purchased === undefined
+                          ? ''
+                          : state.choices()[change.key].purchased
+                            ? 'true'
+                            : 'false'
+                      "
+                      (change)="purchaseChoice(change.key, $event)"
+                      [disabled]="state.busy()"
+                    >
+                      <option value="">Choose purchase state</option>
+                      <option value="true">Already purchased, including the increase</option>
+                      <option value="false">Still needs purchasing</option>
+                    </select></label
+                  >
+                }
+              </article>
+            } @empty {
+              <p>
+                Requirements are unchanged. Existing manual items and purchase states are retained.
+              </p>
+            }
+            @if (state.reviewRequired()) {
+              <label class="check"
+                ><input
+                  type="checkbox"
+                  [checked]="state.reviewed()"
+                  (change)="state.reviewed.set(!state.reviewed())"
+                />I reviewed the latest requirements and choices</label
+              >
+            }
+            <button
+              class="primary"
+              type="button"
+              (click)="state.applyChanges()"
+              [disabled]="
+                state.busy() ||
+                (state.reviewRequired() && !state.reviewed()) ||
+                state.deletedRemotely()
+              "
+            >
+              Apply reviewed requirements
+            </button>
+          }
+        }
+      </section>
+    }
+
+    @if (state.current(); as list) {
+      <label class="check"
+        ><input
+          type="checkbox"
+          [checked]="state.showRemoved()"
+          (change)="state.showRemoved.set(!state.showRemoved())"
+        />Show removed generated items</label
+      >
+      @if (state.hasUnsavedChanges()) {
+        <p class="hint">Finish or cancel your current edit before checking off other items.</p>
+      }
+      @for (group of state.groups(); track group.name) {
+        <section class="category">
+          <h2>{{ group.name }}</h2>
+          @for (item of group.items; track item.id) {
+            <article
+              class="shopping-item"
+              [class.purchased]="item.purchased"
+              [class.removed]="item.removed"
+              [attr.data-shopping-item]="item.id"
+            >
+              <div class="item-main">
+                <label class="check"
+                  ><input
+                    type="checkbox"
+                    [checked]="item.purchased"
+                    [disabled]="
+                      state.busy() ||
+                      state.hasUnsavedChanges() ||
+                      state.deletedRemotely() ||
+                      item.removed
+                    "
+                    (change)="purchased(item, $event)"
+                    [attr.aria-label]="'Purchased ' + item.label + ' — ' + item.displayText"
+                  /><strong>{{ item.label }}</strong></label
+                >
+                <p>
+                  {{ item.displayText }}
+                  @if (item.isApproximate) {
+                    <span class="hint"> (rounded for display)</span>
+                  }
+                </p>
+                @if (item.unresolved) {
+                  <span class="badge warning">Amount unresolved</span>
+                }
+                @if (item.additionalAmountUnresolved) {
+                  <span class="badge warning">Additional amount unresolved</span>
+                }
+                @if (item.manual) {
+                  <span class="badge">Manual item</span>
+                }
+                @if (item.hasOverride) {
+                  <span class="badge">Your quantity</span>
+                }
+                @if (item.removed) {
+                  <span class="badge">Removed</span>
+                }
+              </div>
+              <div class="actions">
+                @if (item.removed) {
+                  <button
+                    type="button"
+                    (click)="state.restore(item)"
+                    [disabled]="state.busy() || state.hasUnsavedChanges()"
+                  >
+                    Restore item
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    (click)="edit(item)"
+                    [disabled]="state.busy() || state.deletedRemotely()"
+                    [attr.aria-label]="'Edit ' + item.label + ' — ' + item.displayText"
+                  >
+                    Edit</button
+                  ><button
+                    type="button"
+                    (click)="state.remove(item)"
+                    [disabled]="state.busy() || state.deletedRemotely()"
+                    [attr.aria-label]="'Remove ' + item.label + ' — ' + item.displayText"
+                  >
+                    Remove
+                  </button>
+                }
+              </div>
+              @if (item.contributions.length) {
+                <details>
+                  <summary>Contributing recipes and quantities</summary>
+                  <ul>
+                    @for (
+                      source of item.contributions;
+                      track source.sourceKey + source.ingredientRowId
+                    ) {
+                      <li>
+                        {{ source.sourceLabel }}: {{ source.quantityText }} {{ source.unit }} ·
+                        {{ source.servings }} prepared servings
+                        @if (source.preparation) {
+                          <span> · {{ source.preparation }}</span>
+                        }
+                        @if (source.uncertain) {
+                          <span> · Requires quantity review</span>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </details>
+              }
+            </article>
+          }
+        </section>
+      } @empty {
+        <p>This list has no visible items. Add a manual item or review updated requirements.</p>
+      }
+    } @else if (!state.editor()) {
+      <p>Select a saved list or create one from meal plans, selected recipes or manual items.</p>
+    }
+  </section>
+</div>
+
+<ng-template #sources>
+  <section class="source-fields" [formGroup]="state.creationForm">
+    <label
+      >Requirement source<select
+        [value]="state.sourceKind()"
+        (change)="sourceKind($event)"
+        [disabled]="state.busy()"
+      >
+        <option value="mealRange">Meal plan date range</option>
+        <option value="recipes">Selected recipes and servings</option>
+        @if (state.editor() === 'create') {
+          <option value="manual">Empty list for manual items</option>
+        }
+      </select></label
+    >
+    @if (state.sourceKind() === 'mealRange') {
+      <div class="fields">
+        <label>From date<input type="date" formControlName="from" required /></label
+        ><label>Through date<input type="date" formControlName="to" required /></label>
+      </div>
+      @if (state.editor() === 'reconcile') {
+        <label
+          >Preparation basis<select formControlName="basis">
+            <option value="planned">Planned portions prepared</option>
+            <option value="actual">Confirmed actual portions prepared</option>
+          </select></label
+        >
+        <p class="hint">Actual quantities require confirmation for every selected cooking event.</p>
+      } @else {
+        <p class="hint">
+          Only cooking events contribute, using planned portions prepared. Leftovers never add
+          ingredients.
+        </p>
+      }
+    }
+    @if (state.sourceKind() === 'recipes') {
+      <div class="recipe-picker">
+        <label>Find recipes<input [formControl]="state.recipeQuery" /></label
+        ><button type="button" (click)="state.searchRecipes()">Search recipes</button>
+        @for (recipe of state.recipes(); track recipe.id) {
+          <button
+            type="button"
+            (click)="state.addRecipe(recipe)"
+            [disabled]="alreadyAdded(recipe.id) || state.busy()"
+          >
+            Add {{ recipe.title }}
+          </button>
+        }
+        @if (state.moreRecipes()) {
+          <button type="button" (click)="state.searchRecipes(true)">More recipes</button>
+        }
+      </div>
+      @for (entry of state.recipeEntries(); track entry.recipeId) {
+        <div class="selected-recipe">
+          <h3>{{ entry.title }}</h3>
+          <app-portion-input
+            [id]="'shopping-servings-' + entry.recipeId"
+            [label]="'Servings for ' + entry.title"
+            [value]="entry.servings"
+            [disabled]="state.busy()"
+            (valueChange)="state.setServings(entry.recipeId, $event)"
+          /><button
+            type="button"
+            (click)="state.removeRecipe(entry.recipeId)"
+            [disabled]="state.busy()"
+          >
+            Remove recipe {{ entry.title }}
+          </button>
+        </div>
+      } @empty {
+        <p>Select recipes and enter the servings to prepare.</p>
+      }
+    }
+  </section>
+</ng-template>

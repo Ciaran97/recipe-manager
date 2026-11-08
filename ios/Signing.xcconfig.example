@@ -1,0 +1,4 @@
+// Copy to Local.xcconfig (ignored). Register the same App Group for both signed targets.
+DEVELOPMENT_TEAM = YOUR_APPLE_TEAM_ID
+RECIPE_MANAGER_BUNDLE_ID = com.example.recipemanager
+RECIPE_MANAGER_APP_GROUP = group.com.example.recipemanager.shared
