@@ -32,14 +32,71 @@ import { apiMessage } from '../auth/auth-session';
       >
     }
     @if (!loading() && !options().length) {
-      <p>No {{ kind() }} yet. Create them from Collections and tags.</p>
+      <p>No {{ kind() }} yet.</p>
     }
-    <button type="button" (click)="load()" [disabled]="loading()">Reload {{ kind() }}</button>
+    @if (allowCreate()) {
+      <label
+        >{{ kind() === 'collections' ? 'New collection name' : 'New tag name' }}
+        <input
+          [value]="newName()"
+          (input)="newName.set($any($event.target).value)"
+          maxlength="200"
+          [disabled]="creating()"
+        />
+      </label>
+      <button
+        type="button"
+        (click)="create()"
+        [disabled]="creating() || loading() || !newName().trim()"
+      >
+        {{ kind() === 'collections' ? 'Create collection' : 'Create tag' }}
+      </button>
+    }
+    <button type="button" (click)="load()" [disabled]="loading() || creating()">
+      Reload {{ kind() }}
+    </button>
   </fieldset>`,
 })
 export class OrganiserPicker implements OnInit {
   readonly kind = input.required<'collections' | 'tags'>();
   readonly selected = model<string[]>([]);
+  readonly allowCreate = input(false);
+  readonly newName = signal('');
+  readonly creating = signal(false);
+  private retryName = '';
+  private retryKey = '';
+  async create(): Promise<void> {
+    const name = this.newName().trim();
+    if (!this.allowCreate() || !name || this.creating() || this.loading()) return;
+    this.creating.set(true);
+    this.error.set('');
+    if (name !== this.retryName) {
+      this.retryName = name;
+      this.retryKey = crypto.randomUUID();
+    }
+    try {
+      const response = await firstValueFrom(
+        this.api.write<components['schemas']['OrganiserRead']>(
+          'POST',
+          `/api/v1/${this.kind()}`,
+          { name },
+          undefined,
+          this.retryKey,
+        ),
+      );
+      if (!response.body) throw new Error('The new organiser could not be loaded.');
+      const item = response.body;
+      this.options.update((items) => [...items.filter((x) => x.id !== item.id), item]);
+      this.selected.update((ids) => (ids.includes(item.id) ? ids : [...ids, item.id]));
+      this.newName.set('');
+      this.retryName = '';
+      this.retryKey = '';
+    } catch (error) {
+      this.error.set(apiMessage(error));
+    } finally {
+      this.creating.set(false);
+    }
+  }
   readonly options = signal<components['schemas']['OrganiserRead'][]>([]);
   readonly missing = computed(() =>
     this.selected().filter((id) => !this.options().some((x) => x.id === id)),

@@ -26,7 +26,8 @@ public sealed class MigrationTests(PostgresFixture postgres) : IClassFixture<Pos
         db.BindHouseholdScope(home.Id);
         Assert.Equal("Retained recipe", (await db.Recipes.SingleAsync()).Title);
         db.Collections.Add(new Collection(Guid.NewGuid(), home.Id, "After upgrade")); await db.SaveChangesAsync();
-        Assert.Single(await db.Collections.ToArrayAsync());
+        Assert.Single(await db.Collections.Where(x => x.Name == "After upgrade").ToArrayAsync());
+        Assert.Equal(StarterCatalogueV1.Collections.Length + 1, await db.Collections.CountAsync());
         await db.Database.MigrateAsync(); // The operator's one-shot migrator is safe to rerun.
         Assert.Single(await db.Recipes.ToArrayAsync());
     }

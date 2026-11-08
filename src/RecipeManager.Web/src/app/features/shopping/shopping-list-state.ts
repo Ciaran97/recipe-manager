@@ -27,6 +27,8 @@ export class ShoppingListState {
   private destroyed = false;
   private generation = 0;
   private tag = '';
+  private addition: ShoppingSelection | null = null;
+  readonly incoming = signal<{ selection: ShoppingSelection; label: string } | null>(null);
   private retry?: string;
   private recipeCursor?: string;
   private recipesGeneration = 0;
@@ -46,7 +48,7 @@ export class ShoppingListState {
   readonly sourcesChanged = signal(false);
   readonly editor = signal<'create' | 'manual' | 'item' | 'rename' | 'reconcile' | null>(null);
   readonly editingItem = signal<ShoppingItem | null>(null);
-  readonly sourceKind = signal<'mealRange' | 'recipes' | 'manual'>('mealRange');
+  readonly sourceKind = signal<'mealRange' | 'recipes' | 'manual' | 'combined'>('mealRange');
   readonly recipeEntries = signal<RecipeEntry[]>([]);
   readonly recipes = signal<components['schemas']['RecipeRead'][]>([]);
   readonly moreRecipes = signal(false);
@@ -225,7 +227,81 @@ export class ShoppingListState {
         this.error.set(apiMessage(error));
     }
   }
+  async receiveIncoming(
+    recipeId: string | null,
+    from: string | null,
+    to: string | null,
+    servings: string | null,
+  ): Promise<void> {
+    if (recipeId) {
+      await this.perform(async () => {
+        const response = await firstValueFrom(
+          this.api.read<components['schemas']['RecipeRead']>(
+            `/api/v1/recipes/${encodeURIComponent(recipeId)}`,
+          ),
+        );
+        if (response.body)
+          this.incoming.set({
+            label: response.body.title,
+            selection: {
+              kind: 'recipes',
+              entries: [
+                { recipeId: response.body.id, servings: servings || response.body.defaultServings },
+              ],
+            },
+          });
+      });
+    } else if (from && to && /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to)) {
+      this.incoming.set({
+        label: `Meals from ${from} to ${to}`,
+        selection: { kind: 'mealRange', from, to },
+      });
+    }
+  }
+  createFromIncoming(): void {
+    const incoming = this.incoming();
+    if (!incoming || this.busy()) return;
+    if (this.hasUnsavedChanges()) {
+      this.error.set('Finish or cancel your current edit before adding ingredients.');
+      return;
+    }
+    this.beginCreate();
+    this.sourceKind.set(incoming.selection.kind);
+    this.recipeEntries.set(
+      (incoming.selection.entries ?? []).map((entry) => ({ ...entry, title: incoming.label })),
+    );
+    this.creationForm.patchValue({
+      name: `Shopping: ${incoming.label}`.slice(0, 200),
+      from: incoming.selection.from ?? '',
+      to: incoming.selection.to ?? '',
+      basis: 'planned',
+    });
+    this.incoming.set(null);
+  }
+  async addIncoming(id: string): Promise<void> {
+    const incoming = this.incoming();
+    if (!incoming || this.busy()) return;
+    if (this.hasUnsavedChanges()) {
+      this.error.set('Finish or cancel your current edit before adding ingredients.');
+      return;
+    }
+    await this.open(id);
+    if (this.current()?.id !== id) return;
+    if (this.current()?.basis !== 'planned') {
+      this.error.set('Add ingredients to a list using planned quantities, or create a new list.');
+      return;
+    }
+    this.addition = incoming.selection;
+    this.sourceKind.set('combined');
+    this.editor.set('reconcile');
+    this.creationForm.patchValue({ basis: 'planned' }, { emitEvent: false });
+    this.incoming.set(null);
+    await this.previewChanges();
+  }
   private selection(): ShoppingSelection {
+    if (this.addition) return this.addition;
+    if (this.sourceKind() === 'combined' && this.current()?.selection)
+      return this.current()!.selection!;
     if (this.sourceKind() === 'recipes')
       return {
         kind: 'recipes',
@@ -340,7 +416,13 @@ export class ShoppingListState {
       kind: item.unresolved ? 'unknown' : 'numeric',
       unit:
         quantity?.unit ??
-        (item.dimension === 'Mass' ? 'g' : item.dimension === 'Volume' ? 'ml' : 'item'),
+        (item.dimension === 'Mass'
+          ? 'g'
+          : item.dimension === 'Volume'
+            ? 'ml'
+            : item.dimension === 'Count' || !item.dimension
+              ? 'item'
+              : (item.dimension.toLowerCase() as IngredientUnit)),
       measurementStandard: quantity?.measurementStandard ?? 'AU',
     });
     this.editInitial = JSON.stringify(this.itemForm.getRawValue());
@@ -517,7 +599,7 @@ export class ShoppingListState {
       const response = await firstValueFrom(
         this.api.write<ShoppingPreview>(
           'POST',
-          `/api/v1/shopping-lists/${current.id}/reconciliation/preview`,
+          `/api/v1/shopping-lists/${current.id}/${this.addition ? 'sources' : 'reconciliation'}/preview`,
           body,
           this.tag,
         ),
@@ -657,6 +739,7 @@ export class ShoppingListState {
     this.reviewed.set(false);
   }
   private resetEditor(): void {
+    this.addition = null;
     this.editor.set(null);
     this.editingItem.set(null);
     this.preview.set(null);

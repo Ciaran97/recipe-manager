@@ -215,6 +215,36 @@ public sealed class ShoppingContractTests(PostgresFixture postgres) : IClassFixt
         Assert.Equal(HttpStatusCode.NotFound, (await HouseholdContractTests.Write(outsider, HttpMethod.Post, $"/api/v1/shopping-lists/{id}/items", new { label = "Foreign item" }, results[0].Headers.ETag!.ToString())).StatusCode);
     }
 
+    [Fact]
+    public async Task Adding_recipe_sources_preserves_meals_and_manual_items_and_rejects_stale_apply()
+    {
+        await using var scenario = await MealScenario.Create(postgres);
+        await scenario.Cook();
+        var list = await Generate(scenario.Admin, "Combined groceries", MealRange());
+        var path = "/api/v1/shopping-lists/" + list.GetProperty("id").GetGuid();
+        var (_, tag) = await MealScenario.Read(scenario.Admin, path);
+        var manual = await HouseholdContractTests.Write(scenario.Admin, HttpMethod.Post, path + "/items", new { label = "Soap" }, tag, Guid.NewGuid());
+        Assert.Equal(HttpStatusCode.Created, manual.StatusCode);
+        var previewResponse = await HouseholdContractTests.Write(scenario.Admin, HttpMethod.Post, path + "/sources/preview",
+            new { selection = new { kind = "recipes", entries = new[] { new { recipeId = scenario.RecipeId, servings = "3" } } } }, manual.Headers.ETag!.ToString());
+        Assert.Equal(HttpStatusCode.OK, previewResponse.StatusCode);
+        var preview = await previewResponse.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal("combined", preview.GetProperty("selection").GetProperty("kind").GetString());
+        Assert.Single(preview.GetProperty("manualItems").EnumerateArray());
+        var applied = await HouseholdContractTests.Write(scenario.Admin, HttpMethod.Post, path + "/reconciliation/apply", Apply(preview), previewResponse.Headers.ETag!.ToString());
+        Assert.Equal(HttpStatusCode.OK, applied.StatusCode);
+        var result = await applied.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal(2, result.GetProperty("items").GetArrayLength());
+        var generated = result.GetProperty("items").EnumerateArray().Single(x => !x.GetProperty("manual").GetBoolean());
+        Assert.Equal("7", generated.GetProperty("baselineExact").GetProperty("numerator").GetString());
+        Assert.Equal("9", generated.GetProperty("baselineExact").GetProperty("denominator").GetString());
+        Assert.Equal(2, generated.GetProperty("contributions").GetArrayLength());
+        Assert.Equal(HttpStatusCode.PreconditionFailed, (await HouseholdContractTests.Write(scenario.Admin, HttpMethod.Post, path + "/reconciliation/apply", Apply(preview), previewResponse.Headers.ETag!.ToString())).StatusCode);
+        // The combined source snapshot remains reviewable after the initial add operation.
+        var refreshed = await Preview(scenario.Admin, path, applied.Headers.ETag!.ToString());
+        Assert.Equal("combined", refreshed.GetProperty("selection").GetProperty("kind").GetString());
+    }
+
     private static object MealRange() => new { kind = "mealRange", from = "2026-11-02", to = "2026-11-04" };
     private static async Task<JsonElement> Generate(HttpClient client, string name, object selection)
     {

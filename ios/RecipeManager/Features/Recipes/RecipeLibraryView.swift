@@ -191,6 +191,9 @@ struct RecipeDetailView: View {
                     if let source = recipe.sourceUrl, let url = URL(string: source) { Section { Link("Original recipe", destination: url) } }
                     Section {
                         Button(recipe.favourite ? "Remove favourite" : "Favourite recipe", systemImage: recipe.favourite ? "heart.fill" : "heart") { Task { await model.favourite() } }
+                        NavigationLink("Add ingredients to shopping list") {
+                            ShoppingListView(selection: selection, incoming: ShoppingSourceDraft(kind: "recipes", entries: [.init(recipeId: recipe.id, title: recipe.title, servings: model.preview?.targetServings ?? recipe.defaultServings)]))
+                        }
                         Button("Edit recipe", systemImage: "pencil") { editing = true }
                         Button("Duplicate recipe", systemImage: "doc.on.doc") { Task { await model.duplicate() } }
                         Button(recipe.archived ? "Restore recipe" : "Archive recipe", systemImage: "archivebox") { Task { await model.archive() } }

@@ -44,3 +44,30 @@ describe('Recipe organiser selection', () => {
     expect(fixture.componentInstance.options().length).toBe(2);
   });
 });
+
+it('creates an organiser inline and selects it without losing the existing selection', async () => {
+  TestBed.configureTestingModule({
+    imports: [OrganiserPicker],
+    providers: [provideHttpClient(withNoXsrfProtection()), provideHttpClientTesting()],
+  });
+  const http = TestBed.inject(HttpTestingController);
+  const fixture = TestBed.createComponent(OrganiserPicker);
+  fixture.componentRef.setInput('kind', 'tags');
+  fixture.componentRef.setInput('allowCreate', true);
+  fixture.componentRef.setInput('selected', ['existing']);
+  fixture.detectChanges();
+  http
+    .expectOne('/api/v1/tags?limit=100')
+    .flush({ items: [{ id: 'existing', name: 'Existing', revision: '1' }], nextCursor: null });
+  await fixture.whenStable();
+  fixture.componentInstance.newName.set('Quick dinner');
+  const creating = fixture.componentInstance.create();
+  http.expectOne('/api/v1/auth/csrf').flush({ token: 'csrf' });
+  const request = http.expectOne('/api/v1/tags');
+  expect(request.request.body).toEqual({ name: 'Quick dinner' });
+  request.flush({ id: 'created', name: 'Quick dinner', revision: '1' });
+  await creating;
+  expect(fixture.componentInstance.selected()).toEqual(['existing', 'created']);
+  expect(fixture.componentInstance.newName()).toBe('');
+  http.verify();
+});

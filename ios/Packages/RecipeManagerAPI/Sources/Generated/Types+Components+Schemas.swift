@@ -2298,6 +2298,12 @@ extension Components {
                 case tbsp = "tbsp"
                 case cup = "cup"
                 case item = "item"
+                case pinch = "pinch"
+                case dash = "dash"
+                case handful = "handful"
+                case bunch = "bunch"
+                case clove = "clove"
+                case slice = "slice"
                 case _empty = ""
             }
             /// - Remark: Generated from `#/components/schemas/ImportedIngredient/unit`.
@@ -3298,6 +3304,12 @@ extension Components {
             case Mass = "Mass"
             case Volume = "Volume"
             case Count = "Count"
+            case Pinch = "Pinch"
+            case Dash = "Dash"
+            case Handful = "Handful"
+            case Bunch = "Bunch"
+            case Clove = "Clove"
+            case Slice = "Slice"
         }
         /// - Remark: Generated from `#/components/schemas/IngredientPage`.
         public struct IngredientPage: Codable, Hashable, Sendable {
@@ -3429,6 +3441,12 @@ extension Components {
             case tbsp = "tbsp"
             case cup = "cup"
             case item = "item"
+            case pinch = "pinch"
+            case dash = "dash"
+            case handful = "handful"
+            case bunch = "bunch"
+            case clove = "clove"
+            case slice = "slice"
         }
         /// - Remark: Generated from `#/components/schemas/InvitationCreated`.
         public struct InvitationCreated: Codable, Hashable, Sendable {
@@ -7353,6 +7371,8 @@ extension Components {
                 public var to: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/ShoppingApplyWrite/selection/entries`.
                 public var entries: [Components.Schemas.ShoppingRecipeSelection]?
+                /// - Remark: Generated from `#/components/schemas/ShoppingApplyWrite/selection/ranges`.
+                public var ranges: [Components.Schemas.ShoppingMealRange]?
                 /// Creates a new `selectionPayload`.
                 ///
                 /// - Parameters:
@@ -7360,22 +7380,26 @@ extension Components {
                 ///   - from:
                 ///   - to:
                 ///   - entries:
+                ///   - ranges:
                 public init(
                     kind: Components.Schemas.ShoppingSourceKind,
                     from: Swift.String? = nil,
                     to: Swift.String? = nil,
-                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil
+                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil,
+                    ranges: [Components.Schemas.ShoppingMealRange]? = nil
                 ) {
                     self.kind = kind
                     self.from = from
                     self.to = to
                     self.entries = entries
+                    self.ranges = ranges
                 }
                 public enum CodingKeys: String, CodingKey {
                     case kind
                     case from
                     case to
                     case entries
+                    case ranges
                 }
                 public init(from decoder: any Swift.Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -7395,11 +7419,16 @@ extension Components {
                         [Components.Schemas.ShoppingRecipeSelection].self,
                         forKey: .entries
                     )
+                    self.ranges = try container.decodeIfPresent(
+                        [Components.Schemas.ShoppingMealRange].self,
+                        forKey: .ranges
+                    )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
                         "kind",
                         "from",
                         "to",
-                        "entries"
+                        "entries",
+                        "ranges"
                     ])
                 }
             }
@@ -7512,6 +7541,12 @@ extension Components {
                     case Mass = "Mass"
                     case Volume = "Volume"
                     case Count = "Count"
+                    case Pinch = "Pinch"
+                    case Dash = "Dash"
+                    case Handful = "Handful"
+                    case Bunch = "Bunch"
+                    case Clove = "Clove"
+                    case Slice = "Slice"
                     case _empty = ""
                 }
                 /// - Remark: Generated from `#/components/schemas/ShoppingChange/oldBaseline/dimension`.
@@ -7707,6 +7742,12 @@ extension Components {
                     case Mass = "Mass"
                     case Volume = "Volume"
                     case Count = "Count"
+                    case Pinch = "Pinch"
+                    case Dash = "Dash"
+                    case Handful = "Handful"
+                    case Bunch = "Bunch"
+                    case Clove = "Clove"
+                    case Slice = "Slice"
                     case _empty = ""
                 }
                 /// - Remark: Generated from `#/components/schemas/ShoppingChange/newBaseline/dimension`.
@@ -7904,6 +7945,12 @@ extension Components {
                     case Mass = "Mass"
                     case Volume = "Volume"
                     case Count = "Count"
+                    case Pinch = "Pinch"
+                    case Dash = "Dash"
+                    case Handful = "Handful"
+                    case Bunch = "Bunch"
+                    case Clove = "Clove"
+                    case Slice = "Slice"
                     case _empty = ""
                 }
                 /// - Remark: Generated from `#/components/schemas/ShoppingChange/userState/dimension`.
@@ -8043,6 +8090,12 @@ extension Components {
                         case Mass = "Mass"
                         case Volume = "Volume"
                         case Count = "Count"
+                        case Pinch = "Pinch"
+                        case Dash = "Dash"
+                        case Handful = "Handful"
+                        case Bunch = "Bunch"
+                        case Clove = "Clove"
+                        case Slice = "Slice"
                         case _empty = ""
                     }
                     /// - Remark: Generated from `#/components/schemas/ShoppingChange/userState/quantityOverride/dimension`.
@@ -8692,6 +8745,12 @@ extension Components {
                 case Mass = "Mass"
                 case Volume = "Volume"
                 case Count = "Count"
+                case Pinch = "Pinch"
+                case Dash = "Dash"
+                case Handful = "Handful"
+                case Bunch = "Bunch"
+                case Clove = "Clove"
+                case Slice = "Slice"
                 case _empty = ""
             }
             /// - Remark: Generated from `#/components/schemas/ShoppingItemRead/dimension`.
@@ -8831,6 +8890,12 @@ extension Components {
                     case Mass = "Mass"
                     case Volume = "Volume"
                     case Count = "Count"
+                    case Pinch = "Pinch"
+                    case Dash = "Dash"
+                    case Handful = "Handful"
+                    case Bunch = "Bunch"
+                    case Clove = "Clove"
+                    case Slice = "Slice"
                     case _empty = ""
                 }
                 /// - Remark: Generated from `#/components/schemas/ShoppingItemRead/quantityOverride/dimension`.
@@ -9481,6 +9546,8 @@ extension Components {
                 public var to: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/ShoppingListRead/selection/entries`.
                 public var entries: [Components.Schemas.ShoppingRecipeSelection]?
+                /// - Remark: Generated from `#/components/schemas/ShoppingListRead/selection/ranges`.
+                public var ranges: [Components.Schemas.ShoppingMealRange]?
                 /// Creates a new `selectionPayload`.
                 ///
                 /// - Parameters:
@@ -9488,22 +9555,26 @@ extension Components {
                 ///   - from:
                 ///   - to:
                 ///   - entries:
+                ///   - ranges:
                 public init(
                     kind: Components.Schemas.ShoppingSourceKind,
                     from: Swift.String? = nil,
                     to: Swift.String? = nil,
-                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil
+                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil,
+                    ranges: [Components.Schemas.ShoppingMealRange]? = nil
                 ) {
                     self.kind = kind
                     self.from = from
                     self.to = to
                     self.entries = entries
+                    self.ranges = ranges
                 }
                 public enum CodingKeys: String, CodingKey {
                     case kind
                     case from
                     case to
                     case entries
+                    case ranges
                 }
                 public init(from decoder: any Swift.Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -9523,11 +9594,16 @@ extension Components {
                         [Components.Schemas.ShoppingRecipeSelection].self,
                         forKey: .entries
                     )
+                    self.ranges = try container.decodeIfPresent(
+                        [Components.Schemas.ShoppingMealRange].self,
+                        forKey: .ranges
+                    )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
                         "kind",
                         "from",
                         "to",
-                        "entries"
+                        "entries",
+                        "ranges"
                     ])
                 }
             }
@@ -9756,6 +9832,44 @@ extension Components {
                 ])
             }
         }
+        /// - Remark: Generated from `#/components/schemas/ShoppingMealRange`.
+        public struct ShoppingMealRange: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ShoppingMealRange/from`.
+            public var from: Swift.String
+            /// - Remark: Generated from `#/components/schemas/ShoppingMealRange/to`.
+            public var to: Swift.String
+            /// Creates a new `ShoppingMealRange`.
+            ///
+            /// - Parameters:
+            ///   - from:
+            ///   - to:
+            public init(
+                from: Swift.String,
+                to: Swift.String
+            ) {
+                self.from = from
+                self.to = to
+            }
+            public enum CodingKeys: String, CodingKey {
+                case from
+                case to
+            }
+            public init(from decoder: any Swift.Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.from = try container.decode(
+                    Swift.String.self,
+                    forKey: .from
+                )
+                self.to = try container.decode(
+                    Swift.String.self,
+                    forKey: .to
+                )
+                try decoder.ensureNoAdditionalProperties(knownKeys: [
+                    "from",
+                    "to"
+                ])
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/ShoppingPreview`.
         public struct ShoppingPreview: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ShoppingPreview/listRevision`.
@@ -9776,6 +9890,8 @@ extension Components {
                 public var to: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/ShoppingPreview/selection/entries`.
                 public var entries: [Components.Schemas.ShoppingRecipeSelection]?
+                /// - Remark: Generated from `#/components/schemas/ShoppingPreview/selection/ranges`.
+                public var ranges: [Components.Schemas.ShoppingMealRange]?
                 /// Creates a new `selectionPayload`.
                 ///
                 /// - Parameters:
@@ -9783,22 +9899,26 @@ extension Components {
                 ///   - from:
                 ///   - to:
                 ///   - entries:
+                ///   - ranges:
                 public init(
                     kind: Components.Schemas.ShoppingSourceKind,
                     from: Swift.String? = nil,
                     to: Swift.String? = nil,
-                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil
+                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil,
+                    ranges: [Components.Schemas.ShoppingMealRange]? = nil
                 ) {
                     self.kind = kind
                     self.from = from
                     self.to = to
                     self.entries = entries
+                    self.ranges = ranges
                 }
                 public enum CodingKeys: String, CodingKey {
                     case kind
                     case from
                     case to
                     case entries
+                    case ranges
                 }
                 public init(from decoder: any Swift.Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -9818,11 +9938,16 @@ extension Components {
                         [Components.Schemas.ShoppingRecipeSelection].self,
                         forKey: .entries
                     )
+                    self.ranges = try container.decodeIfPresent(
+                        [Components.Schemas.ShoppingMealRange].self,
+                        forKey: .ranges
+                    )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
                         "kind",
                         "from",
                         "to",
-                        "entries"
+                        "entries",
+                        "ranges"
                     ])
                 }
             }
@@ -9932,6 +10057,8 @@ extension Components {
                 public var to: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/ShoppingPreviewWrite/selection/entries`.
                 public var entries: [Components.Schemas.ShoppingRecipeSelection]?
+                /// - Remark: Generated from `#/components/schemas/ShoppingPreviewWrite/selection/ranges`.
+                public var ranges: [Components.Schemas.ShoppingMealRange]?
                 /// Creates a new `selectionPayload`.
                 ///
                 /// - Parameters:
@@ -9939,22 +10066,26 @@ extension Components {
                 ///   - from:
                 ///   - to:
                 ///   - entries:
+                ///   - ranges:
                 public init(
                     kind: Components.Schemas.ShoppingSourceKind,
                     from: Swift.String? = nil,
                     to: Swift.String? = nil,
-                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil
+                    entries: [Components.Schemas.ShoppingRecipeSelection]? = nil,
+                    ranges: [Components.Schemas.ShoppingMealRange]? = nil
                 ) {
                     self.kind = kind
                     self.from = from
                     self.to = to
                     self.entries = entries
+                    self.ranges = ranges
                 }
                 public enum CodingKeys: String, CodingKey {
                     case kind
                     case from
                     case to
                     case entries
+                    case ranges
                 }
                 public init(from decoder: any Swift.Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -9974,11 +10105,16 @@ extension Components {
                         [Components.Schemas.ShoppingRecipeSelection].self,
                         forKey: .entries
                     )
+                    self.ranges = try container.decodeIfPresent(
+                        [Components.Schemas.ShoppingMealRange].self,
+                        forKey: .ranges
+                    )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
                         "kind",
                         "from",
                         "to",
-                        "entries"
+                        "entries",
+                        "ranges"
                     ])
                 }
             }
@@ -10139,6 +10275,12 @@ extension Components {
                 case Mass = "Mass"
                 case Volume = "Volume"
                 case Count = "Count"
+                case Pinch = "Pinch"
+                case Dash = "Dash"
+                case Handful = "Handful"
+                case Bunch = "Bunch"
+                case Clove = "Clove"
+                case Slice = "Slice"
                 case _empty = ""
             }
             /// - Remark: Generated from `#/components/schemas/ShoppingQuantityValue/dimension`.
@@ -10337,6 +10479,12 @@ extension Components {
                 case Mass = "Mass"
                 case Volume = "Volume"
                 case Count = "Count"
+                case Pinch = "Pinch"
+                case Dash = "Dash"
+                case Handful = "Handful"
+                case Bunch = "Bunch"
+                case Clove = "Clove"
+                case Slice = "Slice"
                 case _empty = ""
             }
             /// - Remark: Generated from `#/components/schemas/ShoppingRequirement/dimension`.
@@ -10523,6 +10671,8 @@ extension Components {
             public var to: Swift.String?
             /// - Remark: Generated from `#/components/schemas/ShoppingSelection/entries`.
             public var entries: [Components.Schemas.ShoppingRecipeSelection]?
+            /// - Remark: Generated from `#/components/schemas/ShoppingSelection/ranges`.
+            public var ranges: [Components.Schemas.ShoppingMealRange]?
             /// Creates a new `ShoppingSelection`.
             ///
             /// - Parameters:
@@ -10530,22 +10680,26 @@ extension Components {
             ///   - from:
             ///   - to:
             ///   - entries:
+            ///   - ranges:
             public init(
                 kind: Components.Schemas.ShoppingSourceKind,
                 from: Swift.String? = nil,
                 to: Swift.String? = nil,
-                entries: [Components.Schemas.ShoppingRecipeSelection]? = nil
+                entries: [Components.Schemas.ShoppingRecipeSelection]? = nil,
+                ranges: [Components.Schemas.ShoppingMealRange]? = nil
             ) {
                 self.kind = kind
                 self.from = from
                 self.to = to
                 self.entries = entries
+                self.ranges = ranges
             }
             public enum CodingKeys: String, CodingKey {
                 case kind
                 case from
                 case to
                 case entries
+                case ranges
             }
             public init(from decoder: any Swift.Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -10565,11 +10719,16 @@ extension Components {
                     [Components.Schemas.ShoppingRecipeSelection].self,
                     forKey: .entries
                 )
+                self.ranges = try container.decodeIfPresent(
+                    [Components.Schemas.ShoppingMealRange].self,
+                    forKey: .ranges
+                )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "kind",
                     "from",
                     "to",
-                    "entries"
+                    "entries",
+                    "ranges"
                 ])
             }
         }
@@ -10577,6 +10736,7 @@ extension Components {
         @frozen public enum ShoppingSourceKind: String, Codable, Hashable, Sendable, CaseIterable {
             case mealRange = "mealRange"
             case recipes = "recipes"
+            case combined = "combined"
         }
         /// - Remark: Generated from `#/components/schemas/ShoppingSourceRevision`.
         public struct ShoppingSourceRevision: Codable, Hashable, Sendable {

@@ -280,7 +280,7 @@ struct RecipeEditor: View {
             catch { model.error = "Could not load that photo. Choose another image." }
         }
         .sheet(isPresented: $showingOrganisers) { NavigationStack {
-            RecipeFiltersView(selection: selection, collectionIds: $model.draft.collectionIds, tagIds: $model.draft.tagIds)
+            RecipeFiltersView(selection: selection, collectionIds: $model.draft.collectionIds, tagIds: $model.draft.tagIds, allowCreate: true)
         } }
         .onDisappear { model.cancelSearch() }
         .onChange(of: model.savedRecipe?.id) { _, _ in if let recipe = model.savedRecipe { onSaved(recipe) } }
@@ -408,7 +408,7 @@ private struct RecipeRowActions: View {
 
 extension Components.Schemas.IngredientUnit {
     var displayName: String {
-        switch self { case .g: "g"; case .kg: "kg"; case .ml: "ml"; case .l: "L"; case .tsp: "Teaspoon"; case .tbsp: "Tablespoon"; case .cup: "Cup"; case .item: "Whole item" }
+        switch self { case .g: "g"; case .kg: "kg"; case .ml: "ml"; case .l: "L"; case .tsp: "Teaspoon"; case .tbsp: "Tablespoon"; case .cup: "Cup"; case .item: "Whole item"; case .pinch: "Pinch"; case .dash: "Dash"; case .handful: "Handful"; case .bunch: "Bunch"; case .clove: "Clove"; case .slice: "Slice" }
     }
 }
 

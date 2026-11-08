@@ -125,6 +125,12 @@ public sealed class ShoppingItem
             IngredientDimension.Mass => IngredientUnit.Gram,
             IngredientDimension.Volume => IngredientUnit.Millilitre,
             IngredientDimension.Count => IngredientUnit.Item,
+            IngredientDimension.Pinch => IngredientUnit.Pinch,
+            IngredientDimension.Dash => IngredientUnit.Dash,
+            IngredientDimension.Handful => IngredientUnit.Handful,
+            IngredientDimension.Bunch => IngredientUnit.Bunch,
+            IngredientDimension.Clove => IngredientUnit.Clove,
+            IngredientDimension.Slice => IngredientUnit.Slice,
             _ => throw new InvalidOperationException("An exact shopping baseline needs a dimension.")
         };
         OverrideJson = ShoppingJson.Encode(new ShoppingQuantityValue(exact.Numerator + "/" + exact.Denominator, QuantityKind.Numeric,

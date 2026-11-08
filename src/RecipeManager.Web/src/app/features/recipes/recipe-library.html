@@ -23,6 +23,14 @@
       }
     </div>
     <div class="actions">
+      <a
+        routerLink="/shopping-lists"
+        [queryParams]="{
+          recipe: recipe.id,
+          servings: preview()?.targetServings || recipe.defaultServings,
+        }"
+        >Add ingredients to shopping list</a
+      >
       <a [routerLink]="['/recipes', recipe.id, 'edit']">Edit recipe</a
       ><button
         type="button"

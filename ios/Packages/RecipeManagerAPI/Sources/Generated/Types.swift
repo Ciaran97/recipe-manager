@@ -296,6 +296,9 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `DELETE /api/v1/shopping-lists/{id}/items/{itemId}`.
     /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/items/{itemId}/delete(RemoveShoppingItem)`.
     func RemoveShoppingItem(_ input: Operations.RemoveShoppingItem.Input) async throws -> Operations.RemoveShoppingItem.Output
+    /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/sources/preview`.
+    /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)`.
+    func PreviewShoppingSourceAddition(_ input: Operations.PreviewShoppingSourceAddition.Input) async throws -> Operations.PreviewShoppingSourceAddition.Output
     /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/reconciliation/preview`.
     /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/reconciliation/preview/post(PreviewShoppingReconciliation)`.
     func PreviewShoppingReconciliation(_ input: Operations.PreviewShoppingReconciliation.Input) async throws -> Operations.PreviewShoppingReconciliation.Output
@@ -1336,6 +1339,19 @@ extension APIProtocol {
         try await RemoveShoppingItem(Operations.RemoveShoppingItem.Input(
             path: path,
             headers: headers
+        ))
+    }
+    /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/sources/preview`.
+    /// - Remark: Generated from `#/paths//api/v1/shopping-lists/{id}/sources/preview/post(PreviewShoppingSourceAddition)`.
+    public func PreviewShoppingSourceAddition(
+        path: Operations.PreviewShoppingSourceAddition.Input.Path,
+        headers: Operations.PreviewShoppingSourceAddition.Input.Headers,
+        body: Operations.PreviewShoppingSourceAddition.Input.Body
+    ) async throws -> Operations.PreviewShoppingSourceAddition.Output {
+        try await PreviewShoppingSourceAddition(Operations.PreviewShoppingSourceAddition.Input(
+            path: path,
+            headers: headers,
+            body: body
         ))
     }
     /// - Remark: HTTP `POST /api/v1/shopping-lists/{id}/reconciliation/preview`.

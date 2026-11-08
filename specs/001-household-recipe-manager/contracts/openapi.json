@@ -17624,6 +17624,208 @@
         ]
       }
     },
+    "/api/v1/shopping-lists/{id}/sources/preview": {
+      "post": {
+        "tags": [
+          "Shopping Lists"
+        ],
+        "operationId": "PreviewShoppingSourceAddition",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-XSRF-TOKEN",
+            "in": "header",
+            "description": "Obtain a fresh token from GET /api/v1/auth/csrf for this session.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The current strong aggregate ETag. Missing: 428; stale: 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShoppingPreviewWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "ETag": {
+                "description": "Strong resource revision validator; preserve verbatim.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Request rejected; inspect code, traceId and field/conflict details.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [ ]
+          }
+        ]
+      }
+    },
     "/api/v1/shopping-lists/{id}/reconciliation/preview": {
       "post": {
         "tags": [
@@ -19732,6 +19934,12 @@
               "tbsp",
               "cup",
               "item",
+              "pinch",
+              "dash",
+              "handful",
+              "bunch",
+              "clove",
+              "slice",
               null
             ],
             "type": [
@@ -20247,7 +20455,13 @@
         "enum": [
           "Mass",
           "Volume",
-          "Count"
+          "Count",
+          "Pinch",
+          "Dash",
+          "Handful",
+          "Bunch",
+          "Clove",
+          "Slice"
         ],
         "type": "string"
       },
@@ -20325,7 +20539,13 @@
           "tsp",
           "tbsp",
           "cup",
-          "item"
+          "item",
+          "pinch",
+          "dash",
+          "handful",
+          "bunch",
+          "clove",
+          "slice"
         ],
         "type": "string"
       },
@@ -22321,6 +22541,15 @@
                 "items": {
                   "$ref": "#/components/schemas/ShoppingRecipeSelection"
                 }
+              },
+              "ranges": {
+                "type": [
+                  "null",
+                  "array"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/ShoppingMealRange"
+                }
               }
             },
             "additionalProperties": false
@@ -22408,6 +22637,12 @@
                   "Mass",
                   "Volume",
                   "Count",
+                  "Pinch",
+                  "Dash",
+                  "Handful",
+                  "Bunch",
+                  "Clove",
+                  "Slice",
                   null
                 ],
                 "type": [
@@ -22503,6 +22738,12 @@
                   "Mass",
                   "Volume",
                   "Count",
+                  "Pinch",
+                  "Dash",
+                  "Handful",
+                  "Bunch",
+                  "Clove",
+                  "Slice",
                   null
                 ],
                 "type": [
@@ -22616,6 +22857,12 @@
                   "Mass",
                   "Volume",
                   "Count",
+                  "Pinch",
+                  "Dash",
+                  "Handful",
+                  "Bunch",
+                  "Clove",
+                  "Slice",
                   null
                 ],
                 "type": [
@@ -22713,6 +22960,12 @@
                       "Mass",
                       "Volume",
                       "Count",
+                      "Pinch",
+                      "Dash",
+                      "Handful",
+                      "Bunch",
+                      "Clove",
+                      "Slice",
                       null
                     ],
                     "type": [
@@ -22941,6 +23194,12 @@
               "Mass",
               "Volume",
               "Count",
+              "Pinch",
+              "Dash",
+              "Handful",
+              "Bunch",
+              "Clove",
+              "Slice",
               null
             ],
             "type": [
@@ -23038,6 +23297,12 @@
                   "Mass",
                   "Volume",
                   "Count",
+                  "Pinch",
+                  "Dash",
+                  "Handful",
+                  "Bunch",
+                  "Clove",
+                  "Slice",
                   null
                 ],
                 "type": [
@@ -23294,6 +23559,15 @@
                 "items": {
                   "$ref": "#/components/schemas/ShoppingRecipeSelection"
                 }
+              },
+              "ranges": {
+                "type": [
+                  "null",
+                  "array"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/ShoppingMealRange"
+                }
               }
             },
             "additionalProperties": false
@@ -23371,6 +23645,24 @@
         },
         "additionalProperties": false
       },
+      "ShoppingMealRange": {
+        "required": [
+          "from",
+          "to"
+        ],
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date"
+          },
+          "to": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
       "ShoppingPreview": {
         "required": [
           "listRevision",
@@ -23436,6 +23728,15 @@
                 "items": {
                   "$ref": "#/components/schemas/ShoppingRecipeSelection"
                 }
+              },
+              "ranges": {
+                "type": [
+                  "null",
+                  "array"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/ShoppingMealRange"
+                }
               }
             },
             "additionalProperties": false
@@ -23494,6 +23795,15 @@
                 ],
                 "items": {
                   "$ref": "#/components/schemas/ShoppingRecipeSelection"
+                }
+              },
+              "ranges": {
+                "type": [
+                  "null",
+                  "array"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/ShoppingMealRange"
                 }
               }
             },
@@ -23585,6 +23895,12 @@
               "Mass",
               "Volume",
               "Count",
+              "Pinch",
+              "Dash",
+              "Handful",
+              "Bunch",
+              "Clove",
+              "Slice",
               null
             ],
             "type": [
@@ -23686,6 +24002,12 @@
               "Mass",
               "Volume",
               "Count",
+              "Pinch",
+              "Dash",
+              "Handful",
+              "Bunch",
+              "Clove",
+              "Slice",
               null
             ],
             "type": [
@@ -23764,6 +24086,15 @@
             "items": {
               "$ref": "#/components/schemas/ShoppingRecipeSelection"
             }
+          },
+          "ranges": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/ShoppingMealRange"
+            }
           }
         },
         "additionalProperties": false
@@ -23771,7 +24102,8 @@
       "ShoppingSourceKind": {
         "enum": [
           "mealRange",
-          "recipes"
+          "recipes",
+          "combined"
         ],
         "type": "string"
       },

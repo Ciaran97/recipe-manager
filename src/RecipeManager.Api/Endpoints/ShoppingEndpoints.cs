@@ -59,6 +59,15 @@ public static class ShoppingEndpoints
             var actor = await Actor(membership, ct); var expected = await Expected(context, actor, id, store, ct);
             return Updated(context, await edit.RemoveAsync(actor, id, itemId, expected, ct));
         }).WithName("RemoveShoppingItem").WithMetadata(new AggregateContract(RequiresIfMatch: true, ReturnsETag: true)).Produces<ShoppingListRead>();
+        api.MapPost("/{id:guid}/sources/preview", async (Guid id, ShoppingPreviewWrite request, HttpContext context, CurrentMembership membership, IShoppingStore store, CancellationToken ct) =>
+        {
+            var actor = await Actor(membership, ct); var expected = await Expected(context, actor, id, store, ct);
+            var list = await store.ReadAsync(actor, id, ct);
+            if (request.Selection is null) throw new DomainValidationException("selection", "required", "Choose recipes or meals to add.");
+            var selection = GenerateShoppingList.AddSelection(list.Selection, request.Selection, list.Basis);
+            var result = await store.PreviewAsync(actor, id, expected, new(selection, list.Basis), ct);
+            context.Response.Headers.ETag = TransportConventions.ETag(id, result.ListRevision); return Results.Ok(result);
+        }).WithName("PreviewShoppingSourceAddition").WithMetadata(new AggregateContract(RequiresIfMatch: true, ReturnsETag: true)).Produces<ShoppingPreview>();
         api.MapPost("/{id:guid}/reconciliation/preview", async (Guid id, ShoppingPreviewWrite request, HttpContext context, CurrentMembership membership, IShoppingStore store, ReconcileShoppingList reconcile, CancellationToken ct) =>
         {
             var actor = await Actor(membership, ct); var expected = await Expected(context, actor, id, store, ct);

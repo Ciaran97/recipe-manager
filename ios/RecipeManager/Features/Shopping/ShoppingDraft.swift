@@ -31,7 +31,7 @@ struct ShoppingQuantityDraft: Equatable {
         } else if let exact = row.effectiveExact {
             text = exact.denominator == "1" ? exact.numerator : "\(exact.numerator)/\(exact.denominator)"
             kind = .numeric
-            unit = row.dimension?.rawValue == "Mass" ? .g : row.dimension?.rawValue == "Volume" ? .ml : .item
+            unit = row.dimension?.rawValue == "Mass" ? .g : row.dimension?.rawValue == "Volume" ? .ml : Components.Schemas.IngredientUnit(rawValue: row.dimension?.rawValue.lowercased() ?? "") ?? .item
         } else { text = row.contributions.first?.quantityText ?? row.displayText }
     }
     func write() -> Components.Schemas.ShoppingQuantityInput { .init(quantityText: text, kind: kind, unit: unit, measurementStandard: standard) }

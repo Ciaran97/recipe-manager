@@ -1,3 +1,30 @@
+@if (state.incoming(); as incoming) {
+  <section class="card" aria-label="Add ingredients to shopping list">
+    <h2>Add {{ incoming.label }} to a shopping list</h2>
+    <p>
+      Choose a list using planned quantities and review the ingredient changes, or create a new
+      list.
+    </p>
+    <button type="button" (click)="state.createFromIncoming()" [disabled]="state.busy()">
+      Create new list with these ingredients
+    </button>
+    @for (list of state.lists(); track list.id) {
+      <button
+        type="button"
+        (click)="state.addIncoming(list.id)"
+        [disabled]="state.busy() || list.basis !== 'planned'"
+      >
+        Add to {{ list.name }}
+      </button>
+    }
+    @if (state.nextCursor()) {
+      <button type="button" (click)="state.loadIndex(true)" [disabled]="state.busy()">
+        More lists
+      </button>
+    }
+    <button type="button" (click)="state.incoming.set(null)">Cancel adding ingredients</button>
+  </section>
+}
 <header class="page-header">
   <div>
     <p class="eyebrow">Shop together</p>
@@ -514,77 +541,86 @@
 </div>
 
 <ng-template #sources>
-  <section class="source-fields" [formGroup]="state.creationForm">
-    <label
-      >Requirement source<select
-        [value]="state.sourceKind()"
-        (change)="sourceKind($event)"
-        [disabled]="state.busy()"
-      >
-        <option value="mealRange">Meal plan date range</option>
-        <option value="recipes">Selected recipes and servings</option>
-        @if (state.editor() === 'create') {
-          <option value="manual">Empty list for manual items</option>
-        }
-      </select></label
-    >
-    @if (state.sourceKind() === 'mealRange') {
-      <div class="fields">
-        <label>From date<input type="date" formControlName="from" required /></label
-        ><label>Through date<input type="date" formControlName="to" required /></label>
-      </div>
-      @if (state.editor() === 'reconcile') {
-        <label
-          >Preparation basis<select formControlName="basis">
-            <option value="planned">Planned portions prepared</option>
-            <option value="actual">Confirmed actual portions prepared</option>
-          </select></label
+  @if (state.sourceKind() === 'combined') {
+    <p>
+      Review the combined recipe and meal requirements below. Existing manual items and your
+      quantity choices are retained.
+    </p>
+  } @else {
+    <section class="source-fields" [formGroup]="state.creationForm">
+      <label
+        >Requirement source<select
+          [value]="state.sourceKind()"
+          (change)="sourceKind($event)"
+          [disabled]="state.busy()"
         >
-        <p class="hint">Actual quantities require confirmation for every selected cooking event.</p>
-      } @else {
-        <p class="hint">
-          Only cooking events contribute, using planned portions prepared. Leftovers never add
-          ingredients.
-        </p>
-      }
-    }
-    @if (state.sourceKind() === 'recipes') {
-      <div class="recipe-picker">
-        <label>Find recipes<input [formControl]="state.recipeQuery" /></label
-        ><button type="button" (click)="state.searchRecipes()">Search recipes</button>
-        @for (recipe of state.recipes(); track recipe.id) {
-          <button
-            type="button"
-            (click)="state.addRecipe(recipe)"
-            [disabled]="alreadyAdded(recipe.id) || state.busy()"
-          >
-            Add {{ recipe.title }}
-          </button>
-        }
-        @if (state.moreRecipes()) {
-          <button type="button" (click)="state.searchRecipes(true)">More recipes</button>
-        }
-      </div>
-      @for (entry of state.recipeEntries(); track entry.recipeId) {
-        <div class="selected-recipe">
-          <h3>{{ entry.title }}</h3>
-          <app-portion-input
-            [id]="'shopping-servings-' + entry.recipeId"
-            [label]="'Servings for ' + entry.title"
-            [value]="entry.servings"
-            [disabled]="state.busy()"
-            (valueChange)="state.setServings(entry.recipeId, $event)"
-          /><button
-            type="button"
-            (click)="state.removeRecipe(entry.recipeId)"
-            [disabled]="state.busy()"
-          >
-            Remove recipe {{ entry.title }}
-          </button>
+          <option value="mealRange">Meal plan date range</option>
+          <option value="recipes">Selected recipes and servings</option>
+          @if (state.editor() === 'create') {
+            <option value="manual">Empty list for manual items</option>
+          }
+        </select></label
+      >
+      @if (state.sourceKind() === 'mealRange') {
+        <div class="fields">
+          <label>From date<input type="date" formControlName="from" required /></label
+          ><label>Through date<input type="date" formControlName="to" required /></label>
         </div>
-      } @empty {
-        <p>Select recipes and enter the servings to prepare.</p>
+        @if (state.editor() === 'reconcile') {
+          <label
+            >Preparation basis<select formControlName="basis">
+              <option value="planned">Planned portions prepared</option>
+              <option value="actual">Confirmed actual portions prepared</option>
+            </select></label
+          >
+          <p class="hint">
+            Actual quantities require confirmation for every selected cooking event.
+          </p>
+        } @else {
+          <p class="hint">
+            Only cooking events contribute, using planned portions prepared. Leftovers never add
+            ingredients.
+          </p>
+        }
       }
-    }
-  </section>
+      @if (state.sourceKind() === 'recipes') {
+        <div class="recipe-picker">
+          <label>Find recipes<input [formControl]="state.recipeQuery" /></label
+          ><button type="button" (click)="state.searchRecipes()">Search recipes</button>
+          @for (recipe of state.recipes(); track recipe.id) {
+            <button
+              type="button"
+              (click)="state.addRecipe(recipe)"
+              [disabled]="alreadyAdded(recipe.id) || state.busy()"
+            >
+              Add {{ recipe.title }}
+            </button>
+          }
+          @if (state.moreRecipes()) {
+            <button type="button" (click)="state.searchRecipes(true)">More recipes</button>
+          }
+        </div>
+        @for (entry of state.recipeEntries(); track entry.recipeId) {
+          <div class="selected-recipe">
+            <h3>{{ entry.title }}</h3>
+            <app-portion-input
+              [id]="'shopping-servings-' + entry.recipeId"
+              [label]="'Servings for ' + entry.title"
+              [value]="entry.servings"
+              [disabled]="state.busy()"
+              (valueChange)="state.setServings(entry.recipeId, $event)"
+            /><button
+              type="button"
+              (click)="state.removeRecipe(entry.recipeId)"
+              [disabled]="state.busy()"
+            >
+              Remove recipe {{ entry.title }}
+            </button>
+          </div>
+        } @empty {
+          <p>Select recipes and enter the servings to prepare.</p>
+        }
+      }
+    </section>
+  }
 </ng-template>
