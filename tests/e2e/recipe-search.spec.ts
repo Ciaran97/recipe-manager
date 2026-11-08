@@ -14,6 +14,10 @@ test('shared organisers, multiple assignments, alias filters and safe organiser 
   await page.getByLabel('Name', { exact: true }).fill('Weekend'); await page.getByRole('button', { name: 'Create', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Rename Weekend', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Tags', exact: true }).click();
+  // The tab switches asynchronously and resets the shared form before loading tags.
+  // Wait for that render before filling the reused input.
+  await expect(page.getByRole('heading', { name: 'Create tag', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Name', { exact: true })).toBeEnabled();
   for (const name of ['Comfort', 'Fresh']) {
     await page.getByLabel('Name', { exact: true }).fill(name); await page.getByRole('button', { name: 'Create', exact: true }).click();
     await expect(page.getByRole('button', { name: `Rename ${name}`, exact: true })).toBeVisible();

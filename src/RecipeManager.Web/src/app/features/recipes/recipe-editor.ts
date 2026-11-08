@@ -59,7 +59,7 @@ type InstructionForm = FormGroup<{ id: FormControl<string>; text: FormControl<st
   templateUrl: './recipe-editor.html',
   styles: `
     .ingredient-entry {
-      border: 1px solid #d5ddd5;
+      border: 1px solid var(--border);
       border-radius: 0.6rem;
       padding: 1rem;
       margin: 0.75rem 0;
@@ -74,8 +74,8 @@ type InstructionForm = FormGroup<{ id: FormControl<string>; text: FormControl<st
       position: relative;
     }
     .suggestions {
-      border: 1px solid #7e9185;
-      background: white;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
       border-radius: 0.4rem;
       padding: 0.25rem;
     }
@@ -85,8 +85,8 @@ type InstructionForm = FormGroup<{ id: FormControl<string>; text: FormControl<st
       cursor: pointer;
     }
     .suggestions [aria-selected='true'] {
-      background: #e3eee4;
-      outline: 2px solid #154a35;
+      background: var(--surface-raised);
+      outline: 2px solid var(--accent);
     }
     .actions {
       display: flex;

@@ -1,13 +1,15 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, convertToParamMap } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { firstValueFrom } from 'rxjs';
+import { combineLatest, distinctUntilChanged, firstValueFrom, map, of } from 'rxjs';
 import { HouseholdSync } from '../../core/sync/household-sync';
 import { ApiClient } from '../../core/api/api-client';
 import type { components } from '../../core/api/generated/schema';
 import { apiMessage } from '../auth/auth-session';
 
+import { Icon } from '../../core/ui/icon';
+import { LibraryNavigation } from '../../core/session/library-navigation';
 import { OrganiserPicker } from './recipe-filters';
 
 type Recipe = components['schemas']['RecipeRead'];
@@ -16,66 +18,9 @@ type Preview = components['schemas']['RecipeServingPreview'];
 
 @Component({
   selector: 'app-recipe-library',
-  imports: [ReactiveFormsModule, RouterLink, OrganiserPicker],
+  imports: [ReactiveFormsModule, RouterLink, OrganiserPicker, Icon],
   templateUrl: './recipe-library.html',
-  styles: `
-    .recipe-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-      gap: 1rem;
-    }
-    .recipe-grid article {
-      margin: 0;
-    }
-    .recipe-grid img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      border-radius: 0.6rem;
-    }
-    .recipe-photo {
-      max-width: 100%;
-      max-height: 28rem;
-      object-fit: contain;
-      border-radius: 0.9rem;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      align-items: center;
-    }
-    .filters {
-      display: grid;
-      grid-template-columns: minmax(12rem, 2fr) minmax(8rem, 1fr);
-      gap: 1rem;
-    }
-    .ingredient-lines {
-      padding-left: 1.25rem;
-    }
-    .ingredient-lines li {
-      margin-bottom: 0.75rem;
-    }
-    .instructions li {
-      padding: 0.5rem 0;
-      white-space: pre-wrap;
-    }
-    .badge {
-      display: inline-block;
-      border-radius: 2rem;
-      padding: 0.15rem 0.6rem;
-      background: #edf1e8;
-      font-size: 0.85rem;
-    }
-    .preserve-lines {
-      white-space: pre-wrap;
-    }
-    @media (max-width: 600px) {
-      .filters {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-  `,
+  styleUrl: './recipe-library.scss',
 })
 export class RecipeLibrary {
   private readonly api = inject(ApiClient);
@@ -92,6 +37,12 @@ export class RecipeLibrary {
   readonly nextCursor = signal<string | null>(null);
   readonly preview = signal<Preview | null>(null);
   readonly showOrganisers = signal(false);
+  private readonly navigation = inject(LibraryNavigation);
+  readonly activeCollection = signal<string | null>(null);
+  readonly collectionTitle = computed(
+    () => this.navigation.collections().find((item) => item.id === this.activeCollection())?.name,
+  );
+  readonly browseTitle = signal('All recipes');
   private listSelection = '';
   readonly filters = this.fb.nonNullable.group({
     query: ['', Validators.maxLength(200)],
@@ -118,12 +69,37 @@ export class RecipeLibrary {
         else void this.reload();
       });
     });
-    this.route.paramMap.pipe(takeUntilDestroyed()).subscribe((parameters) => {
-      this.selectedId.set(parameters.get('id'));
-      this.preview.set(null);
-      this.error.set('');
-      void this.reload();
-    });
+    combineLatest([this.route.paramMap, this.route.queryParamMap ?? of(convertToParamMap({}))])
+      .pipe(
+        map(([parameters, query]) => ({
+          id: parameters.get('id'),
+          query: query.get('q') ?? '',
+          favourite: query.get('favouriteOnly') === 'true',
+          collection: query.get('collection'),
+        })),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntilDestroyed(),
+      )
+      .subscribe((parameters) => {
+        this.selectedId.set(parameters.id);
+        this.activeCollection.set(parameters.collection);
+        this.filters.patchValue({
+          query: parameters.query,
+          favouriteOnly: parameters.favourite,
+          collectionIds: parameters.collection ? [parameters.collection] : [],
+          tagIds: [],
+        });
+        this.browseTitle.set(
+          parameters.favourite
+            ? 'Favourites'
+            : parameters.collection
+              ? 'Collection recipes'
+              : 'All recipes',
+        );
+        this.preview.set(null);
+        this.error.set('');
+        void this.reload();
+      });
   }
   async reload(): Promise<void> {
     this.remoteChanged.set(false);
@@ -173,6 +149,8 @@ export class RecipeLibrary {
     this.listSelection = selection;
   }
   clearFilters(): void {
+    this.activeCollection.set(null);
+    this.browseTitle.set('All recipes');
     this.filters.reset({
       query: '',
       archived: 'exclude',

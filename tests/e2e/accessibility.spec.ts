@@ -6,6 +6,7 @@ import { authenticatedHousehold, manualRecipe, write } from "./fixtures";
 test("core screens support 320px and desktop layouts, labelled controls and keyboard entry", async ({
   page,
 }, testInfo) => {
+  test.setTimeout(240_000);
   await authenticatedHousehold(page);
   page.on("dialog", (dialog) => dialog.accept());
   const ingredient = await write(page, "POST", "/api/v1/ingredients", {
@@ -66,51 +67,63 @@ test("core screens support 320px and desktop layouts, labelled controls and keyb
     "/shopping-lists",
     "/settings",
   ];
-  for (const width of [320, 1280]) {
-    await page.setViewportSize({ width, height: 960 });
-    for (const screen of screens) {
-      await page.goto(screen);
-      await expect(page.locator("main")).toBeVisible();
-      if (screen === "/shopping-lists")
-        await page
-          .getByRole("button", { name: /^Accessibility shopping/ })
-          .click();
-      if (screen === "/meal-planner") {
-        await page
-          .getByLabel("Week containing", { exact: true })
-          .fill("2026-11-02");
-        await page.getByLabel("Week containing", { exact: true }).press("Tab");
+  for (const theme of ["light", "dark"]) {
+    await page.goto("/recipes");
+    await page
+      .getByRole("combobox", { name: "Appearance", exact: true })
+      .selectOption(theme);
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 960 });
+      for (const screen of screens) {
+        await page.goto(screen);
+        await expect(page.locator("main")).toBeVisible();
+        if (screen === "/shopping-lists")
+          await page
+            .getByRole("button", { name: /^Accessibility shopping/ })
+            .click();
+        if (screen === "/meal-planner") {
+          await page
+            .getByLabel("Week containing", { exact: true })
+            .fill("2026-11-02");
+          await page
+            .getByLabel("Week containing", { exact: true })
+            .press("Tab");
+        }
+        await expect(
+          page.getByText("Loading your household…", { exact: true }),
+        ).toHaveCount(0);
+        await expect(
+          page.locator("main").getByRole("heading").first(),
+        ).toBeVisible();
+        if (screen === "/recipes/organisers")
+          await expect(
+            page.getByRole("button", { name: "Create", exact: true }),
+          ).toBeVisible();
+        const results = await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze();
+        expect(
+          results.violations.map((x) => ({
+            id: x.id,
+            impact: x.impact,
+            nodes: x.nodes.map((n) => n.target),
+          })),
+          `${screen} ${theme} at ${width}px`,
+        ).toEqual([]);
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth + 1,
+          ),
+          `${screen} ${theme} horizontal overflow at ${width}px`,
+        ).toBe(true);
+        fs.mkdirSync(testInfo.outputDir, { recursive: true, mode: 0o700 });
+        fs.chmodSync(testInfo.outputDir, 0o700);
+        const screenshot = testInfo.outputPath(
+          screen.replaceAll("/", "_") + "-" + theme + "-" + width + ".png",
+        );
+        await page.screenshot({ path: screenshot, fullPage: true });
+        fs.chmodSync(screenshot, 0o600);
       }
-      await expect(
-        page.getByText("Loading your household…", { exact: true }),
-      ).toHaveCount(0);
-      await expect(page.locator("main").getByRole("heading").first()).toBeVisible();
-      if (screen === "/recipes/organisers")
-        await expect(page.getByRole("button", { name: "Create", exact: true })).toBeVisible();
-      const results = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
-        .analyze();
-      expect(
-        results.violations.map((x) => ({
-          id: x.id,
-          impact: x.impact,
-          nodes: x.nodes.map((n) => n.target),
-        })),
-        `${screen} at ${width}px`,
-      ).toEqual([]);
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= window.innerWidth + 1,
-        ),
-        `${screen} horizontal overflow at ${width}px`,
-      ).toBe(true);
-      fs.mkdirSync(testInfo.outputDir, { recursive: true, mode: 0o700 });
-      fs.chmodSync(testInfo.outputDir, 0o700);
-      const screenshot = testInfo.outputPath(
-        screen.replaceAll("/", "_") + "-" + width + ".png",
-      );
-      await page.screenshot({ path: screenshot, fullPage: true });
-      fs.chmodSync(screenshot, 0o600);
     }
   }
   await page.goto("/recipes");

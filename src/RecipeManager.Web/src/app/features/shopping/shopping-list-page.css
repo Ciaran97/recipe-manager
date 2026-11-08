@@ -11,7 +11,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.8rem;
-  color: #526b5a;
+  color: var(--muted);
 }
 .shopping-layout {
   display: grid;
@@ -20,10 +20,10 @@
   align-items: start;
 }
 .shopping-layout > aside {
-  border: 1px solid #d6ded4;
+  border: 1px solid var(--border);
   border-radius: 0.8rem;
   padding: 1rem;
-  background: #f7f8f3;
+  background: var(--field);
 }
 .list-link {
   display: grid;
@@ -36,15 +36,15 @@
   font-weight: 400;
 }
 .list-link[aria-current='true'] {
-  border: 2px solid #154a35;
-  background: #e8f1e8;
+  border: 2px solid var(--accent);
+  background: var(--surface-raised);
 }
 .shopping-content {
   min-width: 0;
 }
 .editor {
-  background: #f4f7ef;
-  border: 1px solid #bdcdb9;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
   padding: 1rem;
   border-radius: 0.8rem;
   margin: 1rem 0;
@@ -70,7 +70,7 @@
   padding: 0.3rem;
 }
 .selected-recipe {
-  border: 1px solid #d3ddcf;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 1rem;
 }
@@ -78,8 +78,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.6rem 1rem;
-  border: 1px solid #d9dfd3;
-  background: white;
+  border: 1px solid var(--border);
+  background: var(--surface);
   padding: 1rem;
   border-radius: 0.7rem;
   margin: 0.7rem 0;
@@ -96,19 +96,19 @@
 }
 .shopping-item.removed {
   opacity: 0.8;
-  background: #f4f4ef;
+  background: var(--field);
 }
 .badge {
   display: inline-block;
   border-radius: 0.35rem;
   padding: 0.2rem 0.45rem;
-  background: #e9eee5;
+  background: var(--surface-raised);
   font-size: 0.85rem;
   margin: 0.2rem 0.3rem 0.2rem 0;
 }
 .warning {
-  background: #fff1d5;
-  color: #68480b;
+  background: var(--warning-bg);
+  color: var(--warning);
   padding: 0.7rem;
   border-radius: 0.4rem;
 }
@@ -117,17 +117,17 @@
 }
 .change {
   padding: 1rem;
-  border: 1px solid #cad6c5;
+  border: 1px solid var(--border);
   border-radius: 0.6rem;
   margin: 1rem 0;
-  background: white;
+  background: var(--surface);
 }
 .change.conflict {
-  border: 2px solid #be7a20;
+  border: 2px solid var(--warning);
 }
 .category > h2 {
   font-size: 1.2rem;
-  border-bottom: 1px solid #c9d7c6;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 0.4rem;
 }
 summary {
@@ -140,13 +140,13 @@ summary {
   flex-shrink: 0;
 }
 .notice {
-  background: #e6f2e3;
+  background: var(--success-bg);
   padding: 0.8rem;
   border-radius: 0.5rem;
 }
 .error {
-  color: #8d261e;
-  background: #fff0ed;
+  color: var(--danger);
+  background: var(--danger-bg);
   padding: 1rem;
   border-radius: 0.5rem;
 }

@@ -1,15 +1,135 @@
 <a class="skip-link" href="#content">Skip to content</a>
-<header><h1>Recipe Manager</h1></header>
-@if (auth.state.user()) {
-  <nav aria-label="Main navigation">
-    <a routerLink="/recipes" routerLinkActive="active" ariaCurrentWhenActive="page">Recipes</a>
-    <a routerLink="/meal-planner" routerLinkActive="active" ariaCurrentWhenActive="page"
-      >Meal Planner</a
+<div class="app-layout" [class.authenticated]="!!auth.state.user()">
+  @if (auth.state.user()) {
+    @if (navigationOpen()) {
+      <button
+        type="button"
+        class="nav-backdrop"
+        aria-label="Close navigation"
+        tabindex="-1"
+        (click)="closeNavigation()"
+      ></button>
+    }
+    <aside
+      id="main-sidebar"
+      class="sidebar"
+      [class.is-open]="navigationOpen()"
+      [attr.role]="navigationOpen() ? 'dialog' : null"
+      [attr.aria-modal]="navigationOpen() ? 'true' : null"
+      aria-label="Navigation"
     >
-    <a routerLink="/shopping-lists" routerLinkActive="active" ariaCurrentWhenActive="page"
-      >Shopping Lists</a
-    >
-    <a routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page">Settings</a>
-  </nav>
-}
-<main id="content" tabindex="-1"><router-outlet /></main>
+      <button
+        class="sidebar-close"
+        type="button"
+        aria-label="Close navigation"
+        (click)="closeNavigation()"
+      >
+        <app-icon name="close" />
+      </button>
+      <a class="brand" routerLink="/recipes" aria-label="Recipe Manager home"
+        ><span class="brand-mark" aria-hidden="true"><app-icon name="cookbook" /></span
+        ><span>Recipe Manager</span></a
+      >
+      <form
+        class="sidebar-search"
+        (submit)="searchRecipes(globalSearch.value); $event.preventDefault()"
+      >
+        <label class="sr-only" for="global-recipe-search">Search all recipes</label>
+        <input
+          #globalSearch
+          id="global-recipe-search"
+          [value]="globalQuery()"
+          type="search"
+          placeholder="Search all recipes…"
+          maxlength="200"
+        />
+      </form>
+      <nav aria-label="Main navigation">
+        <a
+          routerLink="/recipes"
+          [class.active]="allRecipes()"
+          [attr.aria-current]="allRecipes() ? 'page' : null"
+          ><span class="nav-symbol" aria-hidden="true"><app-icon name="book" /></span>Recipes</a
+        >
+        <a
+          routerLink="/recipes"
+          [queryParams]="{ favouriteOnly: true }"
+          [class.active]="favourites()"
+          [attr.aria-current]="favourites() ? 'page' : null"
+          ><span class="nav-symbol favourite-symbol" aria-hidden="true"
+            ><app-icon name="heart" /></span
+          >Favourites</a
+        >
+        <p class="nav-heading">Your collections</p>
+        @for (collection of library.collections(); track collection.id; let index = $index) {
+          <a
+            routerLink="/recipes"
+            [queryParams]="{ collection: collection.id }"
+            [class.active]="selectedCollection() === collection.id"
+            [attr.aria-current]="selectedCollection() === collection.id ? 'page' : null"
+            ><span class="collection-chip" [attr.data-color]="index % 6" aria-hidden="true"></span
+            ><span>{{ collection.name }}</span></a
+          >
+        }
+        @if (library.unavailable()) {
+          <p class="sidebar-hint">Collections could not be loaded.</p>
+        }
+        <p class="nav-heading">Plan & shop</p>
+        <a routerLink="/meal-planner" routerLinkActive="active" ariaCurrentWhenActive="page"
+          ><span class="nav-symbol" aria-hidden="true"><app-icon name="calendar" /></span>Meal
+          Planner</a
+        >
+        <a routerLink="/shopping-lists" routerLinkActive="active" ariaCurrentWhenActive="page"
+          ><span class="nav-symbol" aria-hidden="true"><app-icon name="list" /></span>Shopping
+          Lists</a
+        >
+        <a routerLink="/ingredients" routerLinkActive="active" ariaCurrentWhenActive="page"
+          ><span class="nav-symbol" aria-hidden="true"><app-icon name="leaf" /></span>Ingredients</a
+        >
+        <a routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page"
+          ><span class="nav-symbol" aria-hidden="true"><app-icon name="settings" /></span
+          >Settings</a
+        >
+      </nav>
+      <a class="sidebar-footer" routerLink="/recipes/organisers"
+        ><span aria-hidden="true"><app-icon name="plus" /></span>Manage collections & tags</a
+      >
+    </aside>
+  }
+  <div class="workspace" [inert]="navigationOpen()">
+    <header class="topbar">
+      <div class="topbar-context">
+        @if (auth.state.user()) {
+          <button
+            id="navigation-toggle"
+            class="menu-toggle icon-button"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-controls="main-sidebar"
+            [attr.aria-expanded]="navigationOpen()"
+            (click)="toggleNavigation()"
+          >
+            <span aria-hidden="true"><app-icon name="menu" /></span>
+          </button>
+          <span class="context-label">{{ context() }}</span>
+        } @else {
+          <span class="brand"
+            ><span class="brand-mark" aria-hidden="true"><app-icon name="cookbook" /></span>Recipe
+            Manager</span
+          >
+        }
+      </div>
+      <label class="theme-control"
+        ><span class="theme-icon" aria-hidden="true"
+          ><app-icon [name]="theme.resolved() === 'dark' ? 'moon' : 'sun'" /></span
+        ><span class="sr-only">Appearance</span
+        ><select [value]="theme.preference()" (change)="theme.set($any($event.target).value)">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select></label
+      >
+    </header>
+    <main id="content" tabindex="-1"><router-outlet /></main>
+  </div>
+</div>
