@@ -3,7 +3,8 @@
 The SwiftUI application and embedded Share Extension are first-class version 1 clients of the same
 ASP.NET Core backend as Angular. The checked-in Xcode project targets iOS 18.0 or newer and Swift 6.
 The current implementation was built and tested with Xcode 27.2 on macOS; Linux/Compose builds the
-server and web client, and does not build or sign the iOS targets.
+server and web client, and does not build or sign the iOS targets. Hosted CI separately pins
+macOS 26 and Xcode 26.6; see [toolchain details](TOOLCHAIN.md).
 
 Open `RecipeManager.xcodeproj` in Xcode. For a device, copy `Signing.xcconfig.example` to the ignored
 `Local.xcconfig`, set your own team/bundle/App Group identifiers and provision the application and

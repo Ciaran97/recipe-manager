@@ -19,6 +19,7 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version-file: .nvmrc
+      - run: python3 scripts/test-update-server.py
       - run: npm ci --prefix tests/e2e
       - run: npx --prefix tests/e2e playwright install --with-deps chromium
       - run: npm ci --prefix scripts/contracts

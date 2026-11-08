@@ -33,3 +33,6 @@ deploy/data
 **/*.pyc
 
 recipe-manager-local-root.crt
+
+deploy/compose.home.yaml
+deploy/.update-lock
