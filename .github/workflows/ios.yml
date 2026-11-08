@@ -6,10 +6,10 @@ permissions:
   contents: read
 jobs:
   native:
-    runs-on: macos-latest
+    runs-on: macos-26
     timeout-minutes: 35
     env:
-      XCODE_VERSION: '27.2'
+      XCODE_VERSION: '26.6'
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Select pinned Xcode without changing the host default
@@ -17,10 +17,16 @@ jobs:
         run: |
           candidate="/Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer"
           if [ ! -d "$candidate" ]; then
-            candidate="/Applications/Xcode.app/Contents/Developer"
+            echo "::error::Required Xcode ${XCODE_VERSION} is not installed on this runner."
+            ls -d /Applications/Xcode*.app || true
+            exit 1
           fi
-          actual=$(DEVELOPER_DIR="$candidate" xcodebuild -version | head -1)
-          test "$actual" = "Xcode ${XCODE_VERSION}"
+          actual=$(DEVELOPER_DIR="$candidate" xcodebuild -version)
+          printf '%s\n' "$actual"
+          if [[ "${actual%%$'\n'*}" != "Xcode ${XCODE_VERSION}" ]]; then
+            echo "::error::Selected Xcode does not match ${XCODE_VERSION}."
+            exit 1
+          fi
           echo "DEVELOPER_DIR=$candidate" >> "$GITHUB_ENV"
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1
         with:
